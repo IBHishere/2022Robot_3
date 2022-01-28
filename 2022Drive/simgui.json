@@ -1,0 +1,17 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/ExampleSubsystem": "Subsystem",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/VisionSubsystem": "Subsystem"
+    },
+    "windows": {
+      "/LiveWindow/VisionSubsystem": {
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  }
+}
