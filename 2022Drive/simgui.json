@@ -1,17 +1,43 @@
 {
+  "HALProvider": {
+    "Other Devices": {
+      "SPARK MAX [21]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
-      "/LiveWindow/ExampleSubsystem": "Subsystem",
+      "/LiveWindow/DriveTrainSubsystem": "Subsystem",
+      "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/VisionSubsystem": "Subsystem"
     },
     "windows": {
-      "/LiveWindow/VisionSubsystem": {
+      "/LiveWindow/DriveTrainSubsystem": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/LiveWindow/Ungrouped/DifferentialDrive[1]": {
         "window": {
           "visible": true
         }
       }
+    }
+  },
+  "NetworkTables": {
+    "LiveWindow": {
+      "DriveTrainSubsystem": {
+        "open": true
+      },
+      "open": true
+    },
+    "TankDriveCommand_1": {
+      "open": true
     }
   }
 }

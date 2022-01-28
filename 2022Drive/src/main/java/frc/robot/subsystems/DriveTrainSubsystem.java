@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
@@ -16,11 +18,15 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private DifferentialDrive m_myRobot;
   private CANSparkMax m_leftMotor;
   private CANSparkMax m_rightMotor;
-
+  private NetworkTableInstance inst = NetworkTableInstance.getDefault();
+  private NetworkTable table = inst.getTable("DriveTrainSubsystem_2");
   
   /** Creates a new DriveTrain. */
   public DriveTrainSubsystem() {
+    this.init();
+  }
 
+  private void init(){
     m_leftMotor = new CANSparkMax(Constants.LEFT_MOTOR_CAN_ID, MotorType.kBrushless);
     m_rightMotor = new CANSparkMax(Constants.RIGHT_MOTOR_CAN_ID, MotorType.kBrushless);
 
@@ -28,7 +34,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_rightMotor.restoreFactoryDefaults();
 
     m_myRobot = new DifferentialDrive(m_leftMotor, m_rightMotor);
-    
   }
 
   @Override
@@ -36,7 +41,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
+
   public void tankDrive(double motorLeftValue, double motorRightValue) {
+    
+    table.getEntry("leftY").setDouble(motorLeftValue);
+    table.getEntry("rightY").setDouble(motorRightValue);
     m_myRobot.tankDrive(motorLeftValue, motorRightValue);
   }
 }

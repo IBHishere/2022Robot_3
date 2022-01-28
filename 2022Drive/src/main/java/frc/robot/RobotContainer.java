@@ -39,11 +39,10 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    this.m_tankDriveSubsystem.setDefaultCommand(
-        // A split-stick arcade command, with forward/backward controlled by the left
-        // hand, and turning controlled by the right.
-        new TankDriveCommand(
-            this.m_tankDriveSubsystem, m_driveController::getLeftY, m_driveController::getRightX));
+    TankDriveCommand command = new TankDriveCommand(
+               this.m_tankDriveSubsystem, m_driveController::getLeftY, m_driveController::getRightY);
+    this.m_tankDriveSubsystem.setDefaultCommand(command);
+    
   }
 
   /**
