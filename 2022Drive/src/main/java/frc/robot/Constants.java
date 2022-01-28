@@ -14,6 +14,11 @@ package frc.robot;
  */
 public final class Constants {
 
-    public static final int HELPER_XBOX_CONTROLLER = 0;
+    
+    public static final int DRIVE_XBOX_CONTROLLER = 0;
+    public static final int HELPER_XBOX_CONTROLLER = 1;
+
+    public static final int LEFT_MOTOR_CAN_ID = 21;
+    public static final int RIGHT_MOTOR_CAN_ID = 2;
 
 }

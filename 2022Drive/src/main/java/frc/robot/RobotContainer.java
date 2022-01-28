@@ -9,6 +9,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.commands.TankDriveCommand;
+import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -23,16 +25,25 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   NetworkTableInstance inst = NetworkTableInstance.getDefault();
   NetworkTable table = inst.getTable("datatable");
+
+  XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONTROLLER);
   XboxController  m_helperController = new XboxController(Constants.HELPER_XBOX_CONTROLLER);
   
   // The robot's subsystems and commands are defined here...
   private final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
+  private final DriveTrainSubsystem m_tankDriveSubsystem = new DriveTrainSubsystem();
 
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    this.m_tankDriveSubsystem.setDefaultCommand(
+        // A split-stick arcade command, with forward/backward controlled by the left
+        // hand, and turning controlled by the right.
+        new TankDriveCommand(
+            this.m_tankDriveSubsystem, m_driveController::getLeftY, m_driveController::getRightX));
   }
 
   /**
