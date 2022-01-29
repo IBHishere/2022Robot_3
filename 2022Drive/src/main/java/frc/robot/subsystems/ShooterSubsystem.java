@@ -51,7 +51,7 @@ public class ShooterSubsystem extends SubsystemBase {
     
     table.getEntry("leftY").setDouble(m_shooterMotor2);
     table.getEntry("rightY").setDouble(m_shooterMotor1);
-    m_myRobot.tankDrive(m_shooterMotor2, m_shooterMotor1);
+    m_myRobot.tankDrive(m_shooterMotor2, m_shooterMotor1); 
   }
 
 }
