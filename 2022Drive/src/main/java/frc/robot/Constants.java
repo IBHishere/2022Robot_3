@@ -20,5 +20,6 @@ public final class Constants {
 
     public static final int LEFT_MOTOR_CAN_ID = 21;
     public static final int RIGHT_MOTOR_CAN_ID = 2;
+    public static final int SHOOTER_MOTOR_CAN_ID = 31;
 
 }

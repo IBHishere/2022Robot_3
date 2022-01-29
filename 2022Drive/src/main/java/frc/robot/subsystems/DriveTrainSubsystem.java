@@ -46,6 +46,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
     
     table.getEntry("leftY").setDouble(motorLeftValue);
     table.getEntry("rightY").setDouble(motorRightValue);
-    m_myRobot.tankDrive(motorLeftValue, motorRightValue);
+    m_myRobot.tankDrive(-motorLeftValue, -motorRightValue);
   }
 }

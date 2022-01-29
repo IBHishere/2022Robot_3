@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.TankDriveCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -32,6 +33,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
   private final DriveTrainSubsystem m_tankDriveSubsystem = new DriveTrainSubsystem();
+  private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
 
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -56,14 +58,25 @@ public class RobotContainer {
     table.getEntry("isXboxConnected").forceSetBoolean( m_helperController.isConnected() );
     
     new JoystickButton (m_helperController, Button.kA.value)
-    .whenPressed( ()-> {
-      table.getEntry("test").forceSetString("A-button pressed");
-      this.m_visionSubsystem.ToggleCameraState();
-    });
+    .whenPressed( 
+      ()-> {
+        table.getEntry("test").forceSetString("A-button pressed");
+        this.m_visionSubsystem.ToggleCameraState();
+      }
+    );
 
     new JoystickButton(m_helperController, Button.kB.value)
     .whenPressed(new InstantCommand(this.m_visionSubsystem::ToggleCameraState));
 
+    new JoystickButton(m_helperController, Button.kX.value)
+    .whenPressed(
+      ()-> {
+         this.m_shooterSubsystem.startShooter();
+         
+      }
+    );
+
+    
     //.whenPressed(new InstantCommand(m_visionSubsystem::ToggleCameraState));
 
   }
