@@ -24,7 +24,17 @@
    1. Wire up subsystems, commands and buttons in RobotContainer
          1. Instance of subsystem
          2. Wireup code
-    
+
+### Git commands    
+```git clone https://github.com/FRCTeam1719/2022Robot_3``` commeand to get brand new repository
+
+```git pull``` pull down any updates from github
+
+```git add . ``` add all files that were added or modified to the local repo
+
+```git commit -m "<message goes here>" ``` stage files to commit
+
+```git push``` push your commits to github
 
 ## Programmers:
 
