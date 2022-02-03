@@ -1,12 +1,13 @@
+## CAN IDs
 
-## Subsystems
+| Motor Label   | Motor Location | CAN ID |
+| ------------- | -------------- | ------ |
+| Motor #1      | Left Drive     | 1      |
+| Motor #2      | Left Drive     | 2      |
+| Motor #3      | Right Drive    | 3      |
+| Motor #4      | Right Drive    | 4      |
 
-  ### Subsystem1 Name
-  Subsystem description
-  
-  ### Commands
-  List and describe commands
-  
+
 ## Instructions
 
 ### Useful pages
