@@ -18,8 +18,20 @@ public final class Constants {
     public static final int DRIVE_XBOX_CONTROLLER = 0;
     public static final int HELPER_XBOX_CONTROLLER = 1;
 
-    public static final int LEFT_MOTOR_CAN_ID = 21;
-    public static final int RIGHT_MOTOR_CAN_ID = 2;
+   // public static final int LEFT_MOTOR_CAN_ID = 21;
+   // public static final int RIGHT_MOTOR_CAN_ID = 2;
+    
     public static final int SHOOTER_MOTOR_CAN_ID = 31;
+   
+   
+    public static final double SHOOTER_REFERENCE = 0.25;
+    
+    
+    public static final boolean QUADRATICDRIVE = false;
+    public static final double SPEEDMODIFIER = 1;
+    public static final int LEFT_MOTOR1_CAN_ID = 1;
+    public static final int RIGHT_MOTOR1_CAN_ID = 2;
+    public static final int LEFT_MOTOR2_CAN_ID = 3;
+    public static final int RIGHT_MOTOR2_CAN_ID = 4;
 
 }
