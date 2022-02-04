@@ -45,7 +45,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void  startShooter(){
     SparkMaxPIDController shooterControler = m_shooterMotor1.getPIDController();
-    shooterControler.setReference(Constants.SHOOTER_REFERENCE, CANSparkMax.ControlType.kDutyCycle);
+//    shooterControler.setReference(Constants.SHOOTER_REFERENCE, CANSparkMax.ControlType.kDutyCycle);
     
     System.out.println("on");;
 

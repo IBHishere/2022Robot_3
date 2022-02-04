@@ -17,9 +17,9 @@ import frc.robot.Constants;
 public class DriveTrainSubsystem extends SubsystemBase {
 
   private DifferentialDrive m_myRobot;
-  private CANSparkMax m_leftMotor1;
+  private CANSparkMax m_leftMotor;
+  private CANSparkMax m_rightMotor;
   private CANSparkMax m_leftMotor2;
-  private CANSparkMax m_rightMotor1;
   private CANSparkMax m_rightMotor2;
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table = inst.getTable("DriveTrainSubsystem_2");
@@ -30,17 +30,38 @@ public class DriveTrainSubsystem extends SubsystemBase {
   }
 
   private void init(){
-    m_leftMotor1 = new CANSparkMax(Constants.LEFT_MOTOR1_CAN_ID, MotorType.kBrushless);
-    m_rightMotor1 = new CANSparkMax(Constants.RIGHT_MOTOR1_CAN_ID, MotorType.kBrushless);
-    m_leftMotor2 = new CANSparkMax(Constants.LEFT_MOTOR2_CAN_ID, MotorType.kBrushless);
-    m_rightMotor2 = new CANSparkMax(Constants.RIGHT_MOTOR2_CAN_ID, MotorType.kBrushless);
-MotorControllerGroup m_rightMotors = new MotorControllerGroup(m_rightMotor1, m_rightMotor2);
-MotorControllerGroup m_leftMotors = new MotorControllerGroup(m_leftMotor1, m_leftMotor2);
-    m_leftMotor1.restoreFactoryDefaults();
-    m_rightMotor1.restoreFactoryDefaults();
+
+    
+    m_leftMotor = new CANSparkMax(Constants.LEFT_MOTOR_CAN1_ID, MotorType.kBrushless);
+    m_leftMotor2 = new CANSparkMax(Constants.LEFT_MOTOR_CAN2_ID, MotorType.kBrushless);
+    
+    m_leftMotor.setInverted(false);
+    m_leftMotor2.setInverted(true);
+  
+    table.getEntry("Left is follower").forceSetBoolean(m_leftMotor.isFollower());
+    table.getEntry("Left2 is follower").forceSetBoolean(m_leftMotor2.isFollower());
+    
+    MotorControllerGroup m_left = new MotorControllerGroup(m_leftMotor,m_leftMotor2);
+    
+    
+    m_rightMotor = new CANSparkMax(Constants.RIGHT_MOTOR_CAN2_ID, MotorType.kBrushless);
+    m_rightMotor2 = new CANSparkMax(Constants.RIGHT_MOTOR_CAN1_ID, MotorType.kBrushless);
+    m_rightMotor.setInverted(false);
+    m_rightMotor2.setInverted(true);
+    
+    table.getEntry("Right is follower").forceSetBoolean(m_rightMotor.isFollower());MotorControllerGroup m_right = new MotorControllerGroup(m_rightMotor,m_rightMotor2 );
+
+    m_leftMotor.restoreFactoryDefaults();
     m_leftMotor2.restoreFactoryDefaults();
+    m_rightMotor.restoreFactoryDefaults();
     m_rightMotor2.restoreFactoryDefaults();
-    m_myRobot = new DifferentialDrive(m_leftMotors, m_rightMotors);
+
+    // m_leftMotor.setInverted(false);
+    // m_leftMotor2.setInverted(true);
+    // m_rightMotor.setInverted(false);
+    // m_rightMotor2.setInverted(true);
+
+    m_myRobot = new DifferentialDrive(m_left, m_right);
   }
 
   @Override
@@ -53,12 +74,16 @@ MotorControllerGroup m_leftMotors = new MotorControllerGroup(m_leftMotor1, m_lef
     
     table.getEntry("leftY").setDouble(motorLeftValue);
     table.getEntry("rightY").setDouble(motorRightValue);
-    if (Constants.QUADRATICDRIVE == false){
-    m_myRobot.tankDrive(-motorLeftValue*Constants.SPEEDMODIFIER, -motorRightValue*Constants.SPEEDMODIFIER);
-    } else if (Constants.QUADRATICDRIVE == true){
-      m_myRobot.tankDrive(-motorLeftValue*motorLeftValue*Constants.SPEEDMODIFIER, -motorRightValue*motorRightValue*Constants.SPEEDMODIFIER);
-    }else {
-      m_myRobot.tankDrive(-motorLeftValue, -motorRightValue);
-    }
+    m_myRobot.tankDrive(motorLeftValue * .3, motorRightValue *.3);
+    
+
+    // if (Constants.QUADRATICDRIVE == false){
+    //   m_myRobot.tankDrive(-motorLeftValue*Constants.SPEEDMODIFIER, -motorRightValue*Constants.SPEEDMODIFIER);
+    //   } else if (Constants.QUADRATICDRIVE == true){
+    //     m_myRobot.tankDrive(-motorLeftValue*motorLeftValue*Constants.SPEEDMODIFIER, -motorRightValue*motorRightValue*Constants.SPEEDMODIFIER);
+    //   }else {
+    //     m_myRobot.tankDrive(-motorLeftValue, -motorRightValue);
+    //   }
+
   }
 }
