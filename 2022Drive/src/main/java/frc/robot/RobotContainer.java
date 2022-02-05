@@ -13,6 +13,7 @@ import frc.robot.commands.TankDriveCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -34,6 +35,7 @@ public class RobotContainer {
   private final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
   private final DriveTrainSubsystem m_tankDriveSubsystem = new DriveTrainSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
 
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -62,6 +64,14 @@ public class RobotContainer {
       ()-> {
         table.getEntry("test").forceSetString("A-button pressed");
         this.m_visionSubsystem.ToggleCameraState();
+      }
+    );
+
+    new JoystickButton (m_helperController, Button.kY.value)
+    .whenPressed( 
+      ()-> {
+        table.getEntry("test").forceSetString("Y-button pressed");
+        this.m_intakeSubsystem.startIntake();
       }
     );
 
