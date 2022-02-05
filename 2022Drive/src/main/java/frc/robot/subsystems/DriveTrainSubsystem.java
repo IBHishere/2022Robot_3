@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
+import java.lang.Math;
 
 
 public class DriveTrainSubsystem extends SubsystemBase {
@@ -71,12 +72,14 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
 
   public void tankDrive(double motorLeftValue, double motorRightValue) {
-    
     table.getEntry("leftY").setDouble(motorLeftValue);
     table.getEntry("rightY").setDouble(motorRightValue);
-    m_myRobot.tankDrive(motorLeftValue * .3, motorRightValue *.3);
-    
-
+    if ((motorLeftValue > .015 || motorLeftValue < -.015) && (motorRightValue < -.015 || motorRightValue > .015)){
+    m_myRobot.tankDrive(Math.pow(-motorLeftValue,3)*.5, Math.pow(motorRightValue, 3)*.5);
+    }
+    else{
+      m_myRobot.tankDrive(0,0);
+    }
     // if (Constants.QUADRATICDRIVE == false){
     //   m_myRobot.tankDrive(-motorLeftValue*Constants.SPEEDMODIFIER, -motorRightValue*Constants.SPEEDMODIFIER);
     //   } else if (Constants.QUADRATICDRIVE == true){
