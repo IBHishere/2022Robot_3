@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+<<<<<<< HEAD
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -45,10 +46,30 @@ public class IntakeSubsystem extends SubsystemBase {
 
   }
 
+=======
+import com.revrobotics.CANSparkMax;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+public class IntakeSubsystem extends SubsystemBase {
+  /** Creates a new Intake. */
+  private CANSparkMax m_shooterMotor1;
+  public IntakeSubsystem() {
+  
+  }
+  
+  // private void init(){
+  //   m_IntakeMotor1 = new CANSparkMax(Constants.INTAKE_MOTOR_CAN_ID, MotorType.kBrushless);
+  //  m_IntakeMotor1.restoreFactoryDefaults();
+  
+>>>>>>> bc8f8f3060bb81dc02a2eec31b0e2db78d9a0fc0
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> bc8f8f3060bb81dc02a2eec31b0e2db78d9a0fc0
 }

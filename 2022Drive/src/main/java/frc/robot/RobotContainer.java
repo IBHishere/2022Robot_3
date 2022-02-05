@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.TankDriveCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -36,7 +37,10 @@ public class RobotContainer {
   private final DriveTrainSubsystem m_tankDriveSubsystem = new DriveTrainSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+<<<<<<< HEAD
 
+=======
+>>>>>>> bc8f8f3060bb81dc02a2eec31b0e2db78d9a0fc0
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
