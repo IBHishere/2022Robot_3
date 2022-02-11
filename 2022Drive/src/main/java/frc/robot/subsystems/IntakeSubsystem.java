@@ -14,6 +14,15 @@ public class IntakeSubsystem extends SubsystemBase {
   public IntakeSubsystem() {
   
   }
+  public void intakePull() {
+
+  }
+  public void intakePush() {
+
+  }
+  public void intakeStop() {
+
+  }
 public void startIntake() {
   this.init();
 }

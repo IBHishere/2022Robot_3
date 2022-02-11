@@ -67,11 +67,21 @@ public class RobotContainer {
       }
     );
 
-    new JoystickButton (m_helperController, Button.kY.value)
-    .whenPressed( 
+    new JoystickButton (m_helperController, Button.kRightStick.value)
+    .whileHeld( 
       ()-> {
-        table.getEntry("test").forceSetString("Y-button pressed");
-        this.m_intakeSubsystem.startIntake();
+        table.getEntry("test").forceSetString("Rt-button pressed");
+        this.m_intakeSubsystem.intakePull();
+        //do not uncomment the following line of code unless you know what you are doing
+        //this.m_intakeSubsystem.startIntake();
+      }
+    );
+    new JoystickButton (m_helperController, Button.kLeftStick.value)
+    .whileHeld( 
+      ()-> {
+        table.getEntry("test").forceSetString("Lt-button pressed");
+        this.m_intakeSubsystem.intakePush();
+        
       }
     );
 
