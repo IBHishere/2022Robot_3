@@ -41,4 +41,6 @@
 
 Matthew Wetzler @mwetz08(Lead Programmer)
 ------------------------------------------------------
-Sam Rabb-Jaros  @GethrexFe(Head assistant Programmer
+Sam Rabb-Jaros  @GethrexFe(Head assistant Programmer)
+______________________________________________________
+Jai Setty @IBHishere(Head Non-Assistant Non-Lead Programmer)
