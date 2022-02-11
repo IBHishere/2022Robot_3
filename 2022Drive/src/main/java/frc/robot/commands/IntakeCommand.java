@@ -11,11 +11,11 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeCommand extends CommandBase {
   /** Creates a new IntakeCommand. */
 
-  private final IntakeSubsystem m_robotIntake;// = new IntakeSubsystem();
+  private final IntakeSubsystem m_robotIntake = new IntakeSubsystem();
 
   public IntakeCommand(IntakeSubsystem subsystem) {
        // Use addRequirements() here to declare subsystem dependencies.
-       m_robotIntake = subsystem;
+       // m_robotIntake = subsystem;
        addRequirements(m_robotIntake);
   }
 
