@@ -57,11 +57,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_rightMotor.restoreFactoryDefaults();
     m_rightMotor2.restoreFactoryDefaults();
 
-    // m_leftMotor.setInverted(false);
-    // m_leftMotor2.setInverted(true);
-    // m_rightMotor.setInverted(false);
-    // m_rightMotor2.setInverted(true);
-
     m_myRobot = new DifferentialDrive(m_left, m_right);
   }
 

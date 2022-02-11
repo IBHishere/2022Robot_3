@@ -11,6 +11,8 @@
 ## Instructions
 
 ### Useful pages
+   Setup: https://docs.wpilib.org/en/stable/docs/zero-to-robot/step-2/offline-installation-preparations.html
+   
    WPILib Java Examples: https://docs.wpilib.org/en/stable/docs/software/examples-tutorials/wpilib-examples.html
    
 
@@ -41,4 +43,6 @@
 
 Matthew Wetzler @mwetz08(Lead Programmer)
 ------------------------------------------------------
-Sam Rabb-Jaros  @GethrexFe(Head assistant Programmer
+Sam Rabb-Jaros  @GethrexFe(Head assistant Programmer)
+______________________________________________________
+Jai Setty @IBHishere(Head Non-Assistant Non-Lead Programmer)

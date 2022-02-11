@@ -14,6 +14,7 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -63,6 +64,24 @@ public class RobotContainer {
       ()-> {
         table.getEntry("test").forceSetString("A-button pressed");
         this.m_visionSubsystem.ToggleCameraState();
+      }
+    );
+
+    new JoystickButton (m_helperController, Button.kRightStick.value)
+    .whileHeld( 
+      ()-> {
+        table.getEntry("test").forceSetString("Rt-button pressed");
+        this.m_intakeSubsystem.intakePull();
+        //do not uncomment the following line of code unless you know what you are doing
+        //this.m_intakeSubsystem.startIntake();
+      }
+    );
+    new JoystickButton (m_helperController, Button.kLeftStick.value)
+    .whileHeld( 
+      ()-> {
+        table.getEntry("test").forceSetString("Lt-button pressed");
+        this.m_intakeSubsystem.intakePush();
+        
       }
     );
 
