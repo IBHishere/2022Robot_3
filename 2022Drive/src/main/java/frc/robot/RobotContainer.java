@@ -102,10 +102,15 @@ public class RobotContainer {
          this.m_shooterSubsystem.startShooter();
          
       }
+      
     );
-
-    
-    //.whenPressed(new InstantCommand(m_visionSubsystem::ToggleCameraState));
+    new JoystickButton(m_helperController, Button.kY.value)
+    .whenPressed(
+      ()-> {
+         this.m_shooterSubsystem.stopShooter();
+         
+      }
+    );
 
   }
 
