@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new Intake. */
-  private CANSparkMax m_shooterMotor1;
+  private CANSparkMax m_intakeMotor1;
   public IntakeSubsystem() {
   
   }
