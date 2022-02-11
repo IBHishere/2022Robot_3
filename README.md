@@ -11,6 +11,8 @@
 ## Instructions
 
 ### Useful pages
+   Setup: https://docs.wpilib.org/en/stable/docs/zero-to-robot/step-2/offline-installation-preparations.html
+   
    WPILib Java Examples: https://docs.wpilib.org/en/stable/docs/software/examples-tutorials/wpilib-examples.html
    
 
