@@ -18,18 +18,18 @@ public final class Constants {
     public static final int DRIVE_XBOX_CONTROLLER = 0;
     public static final int HELPER_XBOX_CONTROLLER = 1;
 // left drive
-    public static final int LEFT_MOTOR_CAN1_ID = 1;
-    public static final int LEFT_MOTOR_CAN2_ID = 2;
+    public static final int LEFT_MOTOR_CAN1_ID = 5; // change to 1
+    public static final int LEFT_MOTOR_CAN2_ID = 6; // change to 2
 //right drive
-    public static final int RIGHT_MOTOR_CAN1_ID = 3;
-    public static final int RIGHT_MOTOR_CAN2_ID = 4;
+    public static final int RIGHT_MOTOR_CAN1_ID = 7; // gange to 3
+    public static final int RIGHT_MOTOR_CAN2_ID = 8; // change to 4
 // intake    
-    public static final int INTAKE_MOTOR_CAN_ID = 5;
-    public static final double INTAKEPULLSPEED = 1;
-    public static final double INTAKEPUSHSPEED = -1;
+    public static final int INTAKE_MOTOR_CAN_ID = 1;  // change to 5
+    public static final double INTAKEPULLSPEED = 0.4;
+    public static final double INTAKEPUSHSPEED = -0.4;
 // shooter & queue
-    public static final int SHOOTER_MOTOR_CAN_ID = 6;
-    public static final int QUEUE_MOTOR_CAN_ID = 7;
+    public static final int SHOOTER_MOTOR_CAN_ID = 2;// change to 6
+    public static final int QUEUE_MOTOR_CAN_ID = 3; // change to 7
 
     
 

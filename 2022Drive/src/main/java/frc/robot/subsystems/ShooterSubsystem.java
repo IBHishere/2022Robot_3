@@ -41,12 +41,12 @@ public class ShooterSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void increaseVelicity(double inc) {
+  public void increaseVelocity(double inc) {
     this.m_velocity = Math.min(1, this.m_velocity+inc);
   }
 
-  public void increaseVelicity() {
-    this.increaseVelicity(.05);
+  public void increaseVelocity() {
+    this.increaseVelocity(.05);
   }
 
   public void setSpeed(double velocity) {
