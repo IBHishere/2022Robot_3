@@ -15,13 +15,13 @@ public class IntakeSubsystem extends SubsystemBase {
   
   }
   public void intakePull() {
-
+m_intakeMotor1.set(Constants.INTAKEPULLSPEED);
   }
   public void intakePush() {
-
+m_intakeMotor1.set(Constants.INTAKEPUSHSPEED);
   }
   public void intakeStop() {
-
+m_intakeMotor1.set(0);
   }
 public void startIntake() {
   this.init();

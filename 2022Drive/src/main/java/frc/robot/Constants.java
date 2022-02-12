@@ -25,8 +25,13 @@ public final class Constants {
     public static final int RIGHT_MOTOR_CAN2_ID = 4;
 // intake    
     public static final int INTAKE_MOTOR_CAN_ID = 5;
+    public static final double INTAKEPULLSPEED = 1;
+    public static final double INTAKEPUSHSPEED = -1;
 // shooter & queue
     public static final int SHOOTER_MOTOR_CAN_ID = 6;
     public static final int QUEUE_MOTOR_CAN_ID = 7;
+
+    
+
    
 }
