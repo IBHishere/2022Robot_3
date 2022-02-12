@@ -6,6 +6,22 @@
 | Motor #2      | Left Drive     | 2      |
 | Motor #3      | Right Drive    | 3      |
 | Motor #4      | Right Drive    | 4      |
+| Motor #5      | Intake         | 5      |
+| Motor #6      | Shooter        | 6      |
+| Motor #7      | Queue Loading  | 7      |
+| Motor #8      | Queue Shooter  | 8      |
+
+## Button Mappings:
+### Driver Controller: 
+      Left Axis: Controls left motors /n
+      Right Axis: Controls right motors /n
+### Helper Controller:
+      Left Stick: Push out balls from intake /n
+      Right Stick: Pull in balls into intake /n
+      A: Start shoot queue /n
+      B: Stop shoot queue /n
+      X: Start shooting /n
+      Y: Stop shooting /n
 
 
 ## Instructions
