@@ -7,6 +7,18 @@
 | Motor #3      | Right Drive    | 3      |
 | Motor #4      | Right Drive    | 4      |
 
+## Button Mappings:
+Driver Controller: 
+      Left Axis: Controls left motors
+      Right Axis: Controls right motors
+Helper Controller:
+      Left Stick: Push out balls from intake
+      Right Stick: Pull in balls into intake
+      A: Start shoot queue
+      B: Stop shoot queue
+      X: Start shooting
+      Y: Stop shooting
+
 
 ## Instructions
 

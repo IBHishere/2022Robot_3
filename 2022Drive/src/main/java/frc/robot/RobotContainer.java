@@ -119,7 +119,7 @@ public class RobotContainer {
     new JoystickButton(m_helperController, Button.kA.value)
     .whenPressed(
       ()-> {
-         this.m_shooterSubsystem.stopQueue();
+         this.m_shooterSubsystem.startQueue();
       }
     );
   }
