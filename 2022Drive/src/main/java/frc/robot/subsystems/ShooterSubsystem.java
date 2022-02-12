@@ -21,6 +21,7 @@ import frc.robot.Constants;
 public class ShooterSubsystem extends SubsystemBase {
     private CANSparkMax m_shooterMotor1;  
     private CANSparkMax m_queueMotor1; 
+    private double m_velocity = .5;
   
 
   public ShooterSubsystem() {
@@ -29,39 +30,51 @@ public class ShooterSubsystem extends SubsystemBase {
   }
   private void init(){
     m_shooterMotor1 = new CANSparkMax(Constants.SHOOTER_MOTOR_CAN_ID, MotorType.kBrushless);
-    m_queueMotor1 = new CANSparkMax(Constants.SHOOTER_MOTOR_CAN_ID, MotorType.kBrushless);
+    m_queueMotor1 = new CANSparkMax(Constants.QUEUE_MOTOR_CAN_ID, MotorType.kBrushless);
 
     m_shooterMotor1.restoreFactoryDefaults();
     m_queueMotor1.restoreFactoryDefaults();
-
-
   }
-  
- 
   
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
 
-  public void  startShooter(){
-    m_shooterMotor1.set(1);    
+  public void increaseVelicity(double inc) {
+    this.m_velocity = Math.min(1, this.m_velocity+inc);
+  }
+
+  public void increaseVelicity() {
+    this.increaseVelicity(.05);
+  }
+
+  public void setSpeed(double velocity) {
+    this.m_velocity = velocity;
+  }
+
+  public double getVelocity() {
+    return this.m_velocity;
+  }
+
+  public void startShooter(){
+    System.out.println("startShooter");
+    m_shooterMotor1.set(this.m_velocity);    
 
 
   }
-  public void  stopShooter(){
+  public void stopShooter(){
+    System.out.println("stopShooter");
     m_shooterMotor1.set(0);  
+  }
 
-  
-}
-public void  startQueue(){
-  m_queueMotor1.set(1);  
-
-}
-public void  stopQueue(){
-  m_queueMotor1.set(0); 
-
-
-}
+  public void  startQueue(){
+    System.out.println("startQueue");
+    m_queueMotor1.set(1);  
+  }
+  public void  stopQueue(){
+    System.out.println("stopQueue");
+    m_queueMotor1.set(0); 
+  }
 }
 

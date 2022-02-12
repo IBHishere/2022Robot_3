@@ -14,17 +14,19 @@ package frc.robot;
  */
 public final class Constants {
 
-    
+// controlers    
     public static final int DRIVE_XBOX_CONTROLLER = 0;
     public static final int HELPER_XBOX_CONTROLLER = 1;
-
+// left drive
     public static final int LEFT_MOTOR_CAN1_ID = 1;
     public static final int LEFT_MOTOR_CAN2_ID = 2;
-
+//right drive
     public static final int RIGHT_MOTOR_CAN1_ID = 3;
     public static final int RIGHT_MOTOR_CAN2_ID = 4;
-    
-    public static final int SHOOTER_MOTOR_CAN_ID = 31;
-    public static final int INTAKE_MOTOR_CAN_ID = 41;
+// intake    
+    public static final int INTAKE_MOTOR_CAN_ID = 5;
+// shooter & queue
+    public static final int SHOOTER_MOTOR_CAN_ID = 6;
+    public static final int QUEUE_MOTOR_CAN_ID = 7;
    
 }

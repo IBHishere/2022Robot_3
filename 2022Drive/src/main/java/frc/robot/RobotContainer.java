@@ -94,16 +94,26 @@ public class RobotContainer {
          this.m_shooterSubsystem.startShooter();
          
       }
-      
     );
+
     new JoystickButton(m_helperController, Button.kY.value)
     .whenPressed(
       ()-> {
          this.m_shooterSubsystem.stopShooter();
-         
       }
     );
-
+    new JoystickButton(m_helperController, Button.kB.value)
+    .whenPressed(
+      ()-> {
+         this.m_shooterSubsystem.stopQueue();
+      }
+    );
+    new JoystickButton(m_helperController, Button.kA.value)
+    .whenPressed(
+      ()-> {
+         this.m_shooterSubsystem.stopQueue();
+      }
+    );
   }
 
   /**

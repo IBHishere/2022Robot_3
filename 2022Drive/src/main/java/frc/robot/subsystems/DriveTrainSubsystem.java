@@ -70,18 +70,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
     table.getEntry("leftY").setDouble(motorLeftValue);
     table.getEntry("rightY").setDouble(motorRightValue);
     if ((motorLeftValue > .015 || motorLeftValue < -.015) && (motorRightValue < -.015 || motorRightValue > .015)){
-    m_myRobot.tankDrive(Math.pow(-motorLeftValue,3)*.5, Math.pow(motorRightValue, 3)*.5);
+    m_myRobot.tankDrive(Math.pow(-motorLeftValue,3)*.5, Math.pow(-motorRightValue, 3)*.5);
     }
     else{
       m_myRobot.tankDrive(0,0);
     }
-    // if (Constants.QUADRATICDRIVE == false){
-    //   m_myRobot.tankDrive(-motorLeftValue*Constants.SPEEDMODIFIER, -motorRightValue*Constants.SPEEDMODIFIER);
-    //   } else if (Constants.QUADRATICDRIVE == true){
-    //     m_myRobot.tankDrive(-motorLeftValue*motorLeftValue*Constants.SPEEDMODIFIER, -motorRightValue*motorRightValue*Constants.SPEEDMODIFIER);
-    //   }else {
-    //     m_myRobot.tankDrive(-motorLeftValue, -motorRightValue);
-    //   }
-
+    
   }
 }
