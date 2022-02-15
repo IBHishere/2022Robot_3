@@ -87,6 +87,7 @@ public class RobotContainer {
         table.getEntry("test").forceSetString("Lt-button pressed");
         this.m_intakeSubsystem.intakePush();
         
+        
       }
     );
 
@@ -120,7 +121,31 @@ public class RobotContainer {
       ()-> {
          this.m_shooterSubsystem.startQueue();
       }
+      
     );
+    new JoystickButton(m_driveController, Button.kA.value)
+    .whenPressed(
+      ()-> {
+         this.m_shooterSubsystem.startQueue2();
+      }
+      
+    );
+new JoystickButton(m_driveController, Button.kX.value)
+    .whenPressed(
+      ()-> {
+         this.m_shooterSubsystem.stopQueue2();
+      }
+      
+    );
+
+    new JoystickButton(m_driveController, Button.kB.value)
+    .whenPressed(
+      ()-> {
+         this.m_intakeSubsystem.intakeStop();
+      }
+      
+    );
+
   }
 
   /**
