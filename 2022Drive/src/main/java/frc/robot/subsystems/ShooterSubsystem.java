@@ -21,6 +21,7 @@ import frc.robot.Constants;
 public class ShooterSubsystem extends SubsystemBase {
     private CANSparkMax m_shooterMotor1;  
     private CANSparkMax m_queueMotor1; 
+    private CANSparkMax m_queueMotor2; 
     private double m_velocity = .5;
   
 
@@ -30,11 +31,15 @@ public class ShooterSubsystem extends SubsystemBase {
   }
   private void init(){
     m_shooterMotor1 = new CANSparkMax(Constants.SHOOTER_MOTOR_CAN_ID, MotorType.kBrushless);
-    m_queueMotor1 = new CANSparkMax(Constants.QUEUE_MOTOR_CAN_ID, MotorType.kBrushless);
+    m_queueMotor1 = new CANSparkMax(Constants.QUEUE_MOTOR_CAN_1ID, MotorType.kBrushless);
+    m_queueMotor2 = new CANSparkMax(Constants.QUEUE_MOTOR_CAN2_ID, MotorType.kBrushless);
 
     m_shooterMotor1.restoreFactoryDefaults();
     m_queueMotor1.restoreFactoryDefaults();
+    m_queueMotor2.restoreFactoryDefaults();
+
   }
+
   
   @Override
   public void periodic() {
@@ -75,6 +80,16 @@ public class ShooterSubsystem extends SubsystemBase {
   public void  stopQueue(){
     System.out.println("stopQueue");
     m_queueMotor1.set(0); 
+  }
+
+  //new stuff
+  public void  stopQueue2(){
+    System.out.println("stopQueue2");
+    m_queueMotor2.set(0); 
+  }
+  public void  startQueue2(){
+    System.out.println("startQueue2");
+    m_queueMotor2.set(1); 
   }
 }
 

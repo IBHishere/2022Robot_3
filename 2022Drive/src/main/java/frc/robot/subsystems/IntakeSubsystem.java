@@ -11,27 +11,37 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new Intake. */
   private CANSparkMax m_intakeMotor1;
-  public IntakeSubsystem() {
+
+
+public IntakeSubsystem() {
   this.init();
   }
-  public void intakePull() {
-m_intakeMotor1.set(Constants.INTAKEPULLSPEED);
-System.out.println("intakePull");
+private void init(){
+
+  m_intakeMotor1 = new CANSparkMax(Constants.INTAKE_MOTOR_CAN_ID, MotorType.kBrushless);
+  m_intakeMotor1.restoreFactoryDefaults();
+    }
+
+ public void intakePull() {
+
+  m_intakeMotor1.set(1);
+  System.out.println("intakePull");
+
   }
-  public void intakePush() {
-m_intakeMotor1.set(Constants.INTAKEPUSHSPEED);
+public void intakePush() {
+
+m_intakeMotor1.set(-1);
 System.out.println("intakePush");
+
   }
   public void intakeStop() {
-m_intakeMotor1.set(0);
-System.out.println("intakeStop");
+
+    m_intakeMotor1.set(0);
+    System.out.println("intakeStop");
+    
   }
 
- private void init(){
-
- m_intakeMotor1 = new CANSparkMax(Constants.INTAKE_MOTOR_CAN_ID, MotorType.kBrushless);
-  m_intakeMotor1.restoreFactoryDefaults();
- }
+ 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
