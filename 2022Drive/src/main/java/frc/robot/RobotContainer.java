@@ -9,7 +9,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
-//import frc.robot.commands.AutonomousCommand;
+import frc.robot.commands.AutoCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.TankDriveCommand;
 //import frc.robot.subsystems.AutonomousSubsystem;
@@ -39,7 +39,6 @@ public class RobotContainer {
   private final DriveTrainSubsystem m_tankDriveSubsystem = new DriveTrainSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
    private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
- // private final AutonomousSubsystem m_autonomousSubsystem = new AutonomousSubsystem();
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -52,8 +51,9 @@ public class RobotContainer {
     TankDriveCommand command = new TankDriveCommand(
                this.m_tankDriveSubsystem, m_driveController::getLeftY, m_driveController::getRightY);
     this.m_tankDriveSubsystem.setDefaultCommand(command);
-    //AutonomousCommand m_autonomousCommand = new AutonomousCommand(m_autonomousSubsystem);
-   // this.m_autonomousSubsystem.setDefaultCommand(m_autonomousCommand);
+ AutoCommand m_autoCommand = new AutoCommand(
+                this.m_visionSubsystem, this.m_tankDriveSubsystem, this.m_shooterSubsystem, this.m_intakeSubsystem);
+
   }
 
   /**
@@ -129,7 +129,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
+    
     return null;
   }
 }
