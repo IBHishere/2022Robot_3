@@ -10,6 +10,7 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import edu.wpi.first.wpilibj.Timer;
 
 public class AutoCommand extends CommandBase {
   /** Creates a new AutoCommand. */
@@ -35,8 +36,17 @@ public class AutoCommand extends CommandBase {
   @Override
   public void initialize() {
   this.m_intakeSubsystem.intakePull();
-  autoDrive(1,0);
+  autoDrive(1,-1);
   this.m_shooterSubsystem.startQueue2();
+  Timer.delay(2.0); 
+  autoDrive(0,0);
+  Timer.delay(3.0); 
+  this.m_intakeSubsystem.intakePush();
+  this.m_shooterSubsystem.stopQueue2();
+  autoDrive(0.5, 0.5);
+  this.m_intakeSubsystem.intakeStop();
+  Timer.delay(5.0);
+  autoDrive(0, 0);
   }
   public void autoDrive(double setLeft, double setRight ){
     this.m_leftDrive = setLeft;
@@ -46,6 +56,9 @@ public class AutoCommand extends CommandBase {
   @Override
   public void execute() {
     this.m_driveTrainSubsystem.autoTankDrive(this.m_leftDrive, this.m_rightDrive);
+
+
+
   }
 
   // Called once the command ends or is interrupted.
