@@ -34,9 +34,9 @@ public class AutoCommand extends CommandBase {
 
   @Override
   public void initialize() {
-this.m_intakeSubsystem.intakePull();
-autoDrive(1, 0);
-this.m_shooterSubsystem.startQueue2();
+  this.m_intakeSubsystem.intakePull();
+  autoDrive(1,0);
+  this.m_shooterSubsystem.startQueue2();
   }
   public void autoDrive(double setLeft, double setRight ){
     this.m_leftDrive = setLeft;
