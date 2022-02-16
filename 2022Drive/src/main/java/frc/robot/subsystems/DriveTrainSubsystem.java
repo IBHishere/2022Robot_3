@@ -77,4 +77,13 @@ public class DriveTrainSubsystem extends SubsystemBase {
     }
     
   }
+  public void autoTankDrive(double motorLeftValue, double motorRightValue) {
+    if ((motorLeftValue > .015 || motorLeftValue < -.015) && (motorRightValue < -.015 || motorRightValue > .015)){
+    m_myRobot.tankDrive(Math.pow(-motorLeftValue,3)*.5, Math.pow(-motorRightValue, 3)*.5);
+    }
+    else{
+      m_myRobot.tankDrive(0,0);
+    }
+    
+  }
 }
