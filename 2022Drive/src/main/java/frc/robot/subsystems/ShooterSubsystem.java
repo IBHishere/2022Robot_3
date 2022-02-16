@@ -48,48 +48,57 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void increaseVelocity(double inc) {
     this.m_velocity = Math.min(1, this.m_velocity+inc);
+    // this increases the speed of the shooter motor
   }
 
   public void increaseVelocity() {
     this.increaseVelocity(.05);
+    // see above, by 0.5
   }
 
   public void setSpeed(double velocity) {
     this.m_velocity = velocity;
+    // this is used to set the velocity to the required value
   }
 
   public double getVelocity() {
     return this.m_velocity;
+    // this returns the current velocity
   }
 
   public void startShooter(){
     System.out.println("startShooter");
     m_shooterMotor1.set(this.m_velocity);    
 
-
+// this shoots with a speed based on the velocity
   }
   public void stopShooter(){
     System.out.println("stopShooter");
     m_shooterMotor1.set(0);  
+    // this stops the shooter
   }
 
   public void  startQueue(){
     System.out.println("startQueue");
     m_queueMotor1.set(1);  
+    // this starts the belt to bring balls upward
   }
   public void  stopQueue(){
     System.out.println("stopQueue");
     m_queueMotor1.set(0); 
+    // this stops bringing balls upward
   }
 
   //new stuff
   public void  stopQueue2(){
     System.out.println("stopQueue2");
     m_queueMotor2.set(0); 
+    //this stops the entrance to the shooter to allow shooter to be turned on
   }
   public void  startQueue2(){
     System.out.println("startQueue2");
     m_queueMotor2.set(1); 
+    // this activates the queue motor that feeds balls into the shooter
   }
 }
 
