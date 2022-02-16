@@ -31,7 +31,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
   private void init(){
     m_shooterMotor1 = new CANSparkMax(Constants.SHOOTER_MOTOR_CAN_ID, MotorType.kBrushless);
-    m_queueMotor1 = new CANSparkMax(Constants.QUEUE_MOTOR_CAN_1ID, MotorType.kBrushless);
+    m_queueMotor1 = new CANSparkMax(Constants.QUEUE_MOTOR_CAN1_ID, MotorType.kBrushless);
     m_queueMotor2 = new CANSparkMax(Constants.QUEUE_MOTOR_CAN2_ID, MotorType.kBrushless);
 
     m_shooterMotor1.restoreFactoryDefaults();

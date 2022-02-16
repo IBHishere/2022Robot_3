@@ -39,6 +39,8 @@ public class RobotContainer {
   private final DriveTrainSubsystem m_tankDriveSubsystem = new DriveTrainSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
    private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+   AutoCommand m_autoCommand = new AutoCommand(
+                this.m_visionSubsystem, this.m_tankDriveSubsystem, this.m_shooterSubsystem, this.m_intakeSubsystem);
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -51,8 +53,7 @@ public class RobotContainer {
     TankDriveCommand command = new TankDriveCommand(
                this.m_tankDriveSubsystem, m_driveController::getLeftY, m_driveController::getRightY);
     this.m_tankDriveSubsystem.setDefaultCommand(command);
- AutoCommand m_autoCommand = new AutoCommand(
-                this.m_visionSubsystem, this.m_tankDriveSubsystem, this.m_shooterSubsystem, this.m_intakeSubsystem);
+ 
 
   }
 
@@ -155,6 +156,6 @@ new JoystickButton(m_driveController, Button.kX.value)
    */
   public Command getAutonomousCommand() {
     
-    return null;
+    return this.m_autoCommand;
   }
 }
