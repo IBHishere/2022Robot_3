@@ -17,10 +17,14 @@ public class AutoCommand extends CommandBase {
   private VisionSubsystem m_visionSubsystem;
   private ShooterSubsystem m_shooterSubsystem;
   private IntakeSubsystem m_intakeSubsystem;
+  private double m_leftDrive = 0;
+  private double m_rightDrive = 0;
+
 
   public AutoCommand( VisionSubsystem visionSubsystem, DriveTrainSubsystem tankDriveSubsystem, ShooterSubsystem shooterSubsystem, IntakeSubsystem intakeSubsystem){
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intakeSubsystem, visionSubsystem, tankDriveSubsystem, shooterSubsystem );
+    
     this.m_driveTrainSubsystem = tankDriveSubsystem;
     this.m_visionSubsystem = visionSubsystem;
     this.m_shooterSubsystem = shooterSubsystem;
@@ -28,16 +32,18 @@ public class AutoCommand extends CommandBase {
 
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
 this.m_intakeSubsystem.intakePull();
+this.m_leftDrive = 1;
+this.m_rightDrive = 0;
+this.m_shooterSubsystem.startQueue2();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.m_driveTrainSubsystem.tankDrive(0.5, -0.5);
+    this.m_driveTrainSubsystem.tankDrive(this.m_leftDrive, this.m_rightDrive);
   }
 
   // Called once the command ends or is interrupted.
