@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.AutoCommand;
-import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ShootCommands;
 import frc.robot.commands.TankDriveCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -40,7 +40,9 @@ public class RobotContainer {
    private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
    AutoCommand m_autoCommand = new AutoCommand(
                 this.m_visionSubsystem, this.m_tankDriveSubsystem, this.m_shooterSubsystem, this.m_intakeSubsystem);
-  
+  ShootCommands m_shootCommand = new ShootCommands(
+                this.m_shooterSubsystem);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -52,7 +54,7 @@ public class RobotContainer {
     TankDriveCommand command = new TankDriveCommand(
                this.m_tankDriveSubsystem, m_driveController::getLeftY, m_driveController::getRightY);
     this.m_tankDriveSubsystem.setDefaultCommand(command);
- 
+ this.m_shooterSubsystem.setDefaultCommand(m_shootCommand);
 
   }
 
