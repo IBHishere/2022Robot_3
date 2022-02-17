@@ -1,0 +1,61 @@
+{
+  "HALProvider": {
+    "Other Devices": {
+      "SPARK MAX [1]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [31]": {
+        "header": {
+          "open": true
+        }
+      }
+    },
+    "RoboRIO": {
+      "window": {
+        "visible": true
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/DriveTrainSubsystem": "Subsystem",
+      "/LiveWindow/IntakeSubsystem": "Subsystem",
+      "/LiveWindow/ShooterSubsystem": "Subsystem",
+      "/LiveWindow/TestPIDPositionSubsystem": "Subsystem",
+      "/LiveWindow/TestPIDPositionSubsystem/PID Controller": "PIDController",
+      "/LiveWindow/TestPIDSpeedSubsystem": "Subsystem",
+      "/LiveWindow/TestPIDSpeedSubsystem/PID Controller": "PIDController",
+      "/LiveWindow/TestSingleMotorSubsystem": "Subsystem",
+      "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
+      "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/VisionSubsystem": "Subsystem"
+    },
+    "windows": {
+      "/LiveWindow/DriveTrainSubsystem": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/LiveWindow/Ungrouped/DifferentialDrive[1]": {
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables": {
+    "LiveWindow": {
+      "DriveTrainSubsystem": {
+        "open": true
+      },
+      "open": true
+    },
+    "TankDriveCommand_1": {
+      "open": true
+    }
+  }
+}
