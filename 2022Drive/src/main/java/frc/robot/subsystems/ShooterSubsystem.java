@@ -84,6 +84,11 @@ public class ShooterSubsystem extends SubsystemBase {
     m_queueMotor1.set(.4);  
     // this starts the belt to bring balls upward
   }
+  public void  reverseQueue(){
+    System.out.println("reverseQueue");
+    m_queueMotor1.set(.4);  
+    // this reverses the belt in order to help push balls out
+  }
   public void  stopQueue(){
     System.out.println("stopQueue");
     m_queueMotor1.set(0); 
