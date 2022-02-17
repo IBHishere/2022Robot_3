@@ -35,6 +35,7 @@ public class AutoCommand extends CommandBase {
 
   @Override
   public void initialize() {
+  disableShooter();
   this.m_intakeSubsystem.intakePull();
   autoDrive(1,-1);
   this.m_shooterSubsystem.startQueue2();
@@ -44,9 +45,9 @@ public class AutoCommand extends CommandBase {
   this.m_intakeSubsystem.intakePush();
   this.m_shooterSubsystem.stopQueue2();
   autoDrive(0.5, 0.5);
-  this.m_intakeSubsystem.intakeStop();
+  this.m_shooterSubsystem.startQueue();
   Timer.delay(5.0);
-  autoDrive(0, 0);
+  robotOff();
   }
   public void autoDrive(double setLeft, double setRight ){
     this.m_leftDrive = setLeft;
@@ -70,5 +71,19 @@ public class AutoCommand extends CommandBase {
   public boolean isFinished() {
     return false;
   }
+ // the following commands are groupings for efficiency
+ public void disableShooter(){
+  this.m_shooterSubsystem.stopShooter();
+  this.m_shooterSubsystem.stopQueue();
+  this.m_shooterSubsystem.stopQueue2();
+}
+public void disableintake(){
+  this.m_intakeSubsystem.intakeStop();
+}
+public void robotOff(){
+  disableShooter();
+  disableintake();
+  autoDrive(0, 0);
+}
 
 }
