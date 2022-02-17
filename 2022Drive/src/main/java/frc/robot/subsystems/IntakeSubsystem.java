@@ -24,13 +24,13 @@ private void init(){
 
  public void intakePull() {
 // this pulls in balls from the ground into the center of the robot
-  m_intakeMotor1.set(1);
+  m_intakeMotor1.set(.4);
   System.out.println("intakePull");
 
   }
 public void intakePush() {
 // this pushes out balls incase one of the wrong color is pulled in
-m_intakeMotor1.set(-1);
+m_intakeMotor1.set(-.4);
 System.out.println("intakePush");
 
   }
