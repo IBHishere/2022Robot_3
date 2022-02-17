@@ -4,17 +4,16 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class ShooterCommand extends CommandBase {
-  /** Creates a new ShooterCommand. */
-  public ShooterCommand() {
+public class ShootCommands extends CommandBase {
+  /** Creates a new ShootCommands. */
+  private ShooterSubsystem m_shooterSubsystem;
+  public ShootCommands(ShooterSubsystem ShooterSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
+    m_shooterSubsystem = ShooterSubsystem;
+    addRequirements(m_shooterSubsystem);
   }
 
   // Called when the command is initially scheduled.

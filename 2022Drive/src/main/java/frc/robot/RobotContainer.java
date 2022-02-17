@@ -9,12 +9,13 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.commands.AutoCommand;
+import frc.robot.commands.ShootCommands;
 import frc.robot.commands.TankDriveCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -36,17 +37,25 @@ public class RobotContainer {
   private final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
   private final DriveTrainSubsystem m_tankDriveSubsystem = new DriveTrainSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
-  
+   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+   AutoCommand m_autoCommand = new AutoCommand(
+                this.m_visionSubsystem, this.m_tankDriveSubsystem, this.m_shooterSubsystem, this.m_intakeSubsystem);
+  ShootCommands m_shootCommand = new ShootCommands(
+                this.m_shooterSubsystem);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-
+   // IntakeCommand m_intakecommand = new IntakeCommand(
+   //         this.m_intakeSubsystem);
+   //   this.m_intakeSubsystem.setDefaultCommand(m_intakecommand);
+    
     TankDriveCommand command = new TankDriveCommand(
                this.m_tankDriveSubsystem, m_driveController::getLeftY, m_driveController::getRightY);
     this.m_tankDriveSubsystem.setDefaultCommand(command);
-    
+ this.m_shooterSubsystem.setDefaultCommand(m_shootCommand);
+
   }
 
   /**
@@ -67,11 +76,20 @@ public class RobotContainer {
       }
     );
 
-    new JoystickButton (m_helperController, Button.kY.value)
+    new JoystickButton (m_helperController, Button.kRightBumper.value)
     .whenPressed( 
       ()-> {
-        table.getEntry("test").forceSetString("Y-button pressed");
-        this.m_intakeSubsystem.startIntake();
+        table.getEntry("test").forceSetString("Rt-button pressed");
+        this.m_intakeSubsystem.intakePull();
+      }
+    );
+    new JoystickButton (m_helperController, Button.kLeftBumper.value)
+    .whenPressed( 
+      ()-> {
+        table.getEntry("test").forceSetString("Lt-button pressed");
+        this.m_intakeSubsystem.intakePush();
+        
+        
       }
     );
 
@@ -86,8 +104,49 @@ public class RobotContainer {
       }
     );
 
-    
-    //.whenPressed(new InstantCommand(m_visionSubsystem::ToggleCameraState));
+    new JoystickButton(m_helperController, Button.kY.value)
+    .whenPressed(
+      ()-> {
+         this.m_shooterSubsystem.stopShooter();
+
+      }
+    );
+    new JoystickButton(m_helperController, Button.kB.value)
+    .whenPressed(
+      ()-> {
+         this.m_shooterSubsystem.stopQueue();
+
+      }
+    );
+    new JoystickButton(m_helperController, Button.kA.value)
+    .whenPressed(
+      ()-> {
+         this.m_shooterSubsystem.startQueue();
+      }
+      
+    );
+    new JoystickButton(m_driveController, Button.kA.value)
+    .whenPressed(
+      ()-> {
+         this.m_shooterSubsystem.startQueue2();
+      }
+      
+    );
+new JoystickButton(m_driveController, Button.kX.value)
+    .whenPressed(
+      ()-> {
+         this.m_shooterSubsystem.stopQueue2();
+      }
+      
+    );
+
+    new JoystickButton(m_driveController, Button.kB.value)
+    .whenPressed(
+      ()-> {
+         this.m_intakeSubsystem.intakeStop();
+      }
+      
+    );
 
   }
 
@@ -97,7 +156,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return null;
+    
+    return this.m_autoCommand;
   }
 }
