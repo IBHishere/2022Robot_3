@@ -20,6 +20,7 @@ public class AutoCommand extends CommandBase {
   private IntakeSubsystem m_intakeSubsystem;
   private double m_leftDrive = 0;
   private double m_rightDrive = 1;
+  private double delay;
 
 
   public AutoCommand( VisionSubsystem visionSubsystem, DriveTrainSubsystem tankDriveSubsystem, ShooterSubsystem shooterSubsystem, IntakeSubsystem intakeSubsystem){
@@ -35,19 +36,21 @@ public class AutoCommand extends CommandBase {
 
   @Override
   public void initialize() {
+  
   disableShooter();
   intakePull();
   autoDrive(1,-1);
-  this.m_shooterSubsystem.startQueue2();
+  
   Timer.delay(2.0); 
   autoDrive(0,0);
+  shootSequence2();
+  
   Timer.delay(3.0); 
-  this.m_intakeSubsystem.intakePush();
-  this.m_shooterSubsystem.stopQueue2();
+  intakePush();
   autoDrive(0.5, 0.5);
-  this.m_shooterSubsystem.startQueue();
+  
   Timer.delay(5.0);
-  robotOff();
+  robotOff(); 
   }
   public void autoDrive(double setLeft, double setRight ){
     this.m_leftDrive = setLeft;
