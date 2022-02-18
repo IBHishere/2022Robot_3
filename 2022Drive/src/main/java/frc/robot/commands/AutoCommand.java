@@ -36,7 +36,7 @@ public class AutoCommand extends CommandBase {
   @Override
   public void initialize() {
   disableShooter();
-  this.m_intakeSubsystem.intakePull();
+  intakePull();
   autoDrive(1,-1);
   this.m_shooterSubsystem.startQueue2();
   Timer.delay(2.0); 
@@ -80,10 +80,41 @@ public class AutoCommand extends CommandBase {
 public void disableintake(){
   this.m_intakeSubsystem.intakeStop();
 }
+public void intakePush(){
+  this.m_intakeSubsystem.intakePush();
+}
+public void intakePull(){
+  this.m_intakeSubsystem.intakePull();
+}
 public void robotOff(){
   disableShooter();
   disableintake();
   autoDrive(0, 0);
 }
-
+public void uploadShooter(){
+  this.m_shooterSubsystem.startShooter();
+  this.m_shooterSubsystem.startQueue();
+  this.m_intakeSubsystem.intakePull();
+}
+public void shoot(){
+  this.m_shooterSubsystem.startShooter();
+  this.m_shooterSubsystem.startQueue();
+  this.m_shooterSubsystem.startQueue2();
+}
+public void unload(){
+  this.m_shooterSubsystem.reverseQueue();
+  intakePush();
+}
+public void onload(){
+  this.m_shooterSubsystem.startQueue();
+  intakePull();
+}
+public void shootSequence2(){
+  this.m_shooterSubsystem.startQueue();
+  this.m_shooterSubsystem.startShooter();
+  Timer.delay(2);
+  shoot();
+  Timer.delay(2);
+  disableShooter();
+}
 }
