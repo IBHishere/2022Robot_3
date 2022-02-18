@@ -15,7 +15,7 @@ import frc.robot.subsystems.TestSingleMotorSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TestPIDCommand extends PIDCommand {
   public static double TargetSetpoint = 0;
-  public static final double TargetIncrement = 50;
+  public static final double TargetIncrement = 1;
   
   NetworkTableInstance inst = NetworkTableInstance.getDefault();
   NetworkTable table = inst.getTable("TestPIDCommand");
@@ -25,7 +25,7 @@ public class TestPIDCommand extends PIDCommand {
   public TestPIDCommand(TestSingleMotorSubsystem motorSubsystem) {
     super(
         // The controller that the command will use
-        new PIDController(1.0/250.0, 0, 0),
+        new PIDController(1.0, 1.0, 0),
         // This should return the measurement
         () -> motorSubsystem.getMeasurement(),
         // This should return the setpoint (can also be a constant)
@@ -47,7 +47,8 @@ public class TestPIDCommand extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return this.m_controller.atSetpoint();
+    //return false;
   }
 
   public void enable() {
@@ -60,9 +61,13 @@ public class TestPIDCommand extends PIDCommand {
 
   public static void increaseSetpoint() {
     TargetSetpoint += TargetIncrement;
+    System.out.println("Increase to "+TargetSetpoint);
+    
   }
 
   public static void decreaseSetpoint() {
     TargetSetpoint -= TargetIncrement;
+    
+    System.out.println("Increase to "+TargetSetpoint);
   }
 }
