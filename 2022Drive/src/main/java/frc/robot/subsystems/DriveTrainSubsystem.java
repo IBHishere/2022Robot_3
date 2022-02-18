@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
 import java.lang.Math;
@@ -19,12 +20,16 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
   private DifferentialDrive m_myRobot;
   private CANSparkMax m_leftMotor;
+  private RelativeEncoder m_leftEncoder = this.m_leftMotor.getEncoder();
   private CANSparkMax m_rightMotor;
+  private RelativeEncoder m_rightEncoder = this.m_rightMotor.getEncoder();
   private CANSparkMax m_leftMotor2;
+  private RelativeEncoder m_left2Encoder = this.m_leftMotor2.getEncoder();
   private CANSparkMax m_rightMotor2;
+  private RelativeEncoder m_right2Encoder = this.m_rightMotor2.getEncoder();
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table = inst.getTable("DriveTrainSubsystem_2");
-  
+  private double measurement;
   /** Creates a new DriveTrain. */
   public DriveTrainSubsystem() {
     this.init();
@@ -84,4 +89,25 @@ public class DriveTrainSubsystem extends SubsystemBase {
     
     
   }
+  public double getAngle(){
+    //this sets the measurement equal to the total of all the angles in order to know what the angle position is.
+    measurement = getMeasurement(this.m_leftEncoder)+getMeasurement(this.m_left2Encoder)+getMeasurement(this.m_rightEncoder)+getMeasurement(this.m_right2Encoder);
+  
+  // the following line is optional and halves the measurement to account for the fact that there are 2 motors on each side. This is not necessary because it does not matter if this number is scaled or not
+    //measurement = measurement/2
+    
+    
+    this.table.getEntry("total measurement").setDouble(measurement);
+    //System.out.println("measure");
+    
+    return measurement;
+  }
+  public double getMeasurement(RelativeEncoder encoder) {
+    double measurement = encoder.getPosition();
+    this.table.getEntry("Pos measurement").setDouble(measurement);
+    //System.out.println("measure");
+    
+    return measurement;
+  }
 }
+
