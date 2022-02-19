@@ -23,6 +23,13 @@ public class LimelightVisionSubsystem extends SubsystemBase {
     double targetOffsetAngle_Vertical = m_limelightTable.getEntry("ty").getDouble(0.0);
     double targetArea = m_limelightTable.getEntry("ta").getDouble(0.0);
     double targetSkew = m_limelightTable.getEntry("ts").getDouble(0.0);
+
+    System.out.println(
+      " targetOffsetAngle_Horizontal: "+ targetOffsetAngle_Horizontal +
+      " targetOffsetAngle_Vertical: "+ targetOffsetAngle_Vertical +
+      " targetArea: "+ targetArea +
+      " targetSkew: "+ targetSkew 
+    );
   
   }
 }
