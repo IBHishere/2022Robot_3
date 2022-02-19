@@ -23,7 +23,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private CANSparkMax m_shooterMotor1;  
     private CANSparkMax m_queueMotor1; 
     private CANSparkMax m_queueMotor2; 
-    private double m_velocity = 1;
+    private double m_velocity = .5;
   
 
   public ShooterSubsystem() {
@@ -69,7 +69,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void startShooter(){
     System.out.println("startShooter");
-    m_shooterMotor1.set(1);    
+    m_shooterMotor1.set(this.m_velocity);    
 
 // this shoots with a speed based on the velocity
   }
@@ -81,7 +81,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void  startQueue(){
     System.out.println("startQueue");
-    m_queueMotor1.set(.4);  
+    m_queueMotor1.set(1);  
     // this starts the belt to bring balls upward
   }
   public void  reverseQueue(){
@@ -103,7 +103,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
   public void  startQueue2(){
     System.out.println("startQueue2");
-    m_queueMotor2.set(.4); 
+    m_queueMotor2.set(1); 
     // this activates the queue motor that feeds balls into the shooter
   }
 }
