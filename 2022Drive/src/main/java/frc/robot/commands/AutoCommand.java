@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.Timer;
 public class AutoCommand extends CommandBase {
   /** Creates a new AutoCommand. */
   private DriveTrainSubsystem m_driveTrainSubsystem;
-  private VisionSubsystem m_visionSubsystem;
   private ShooterSubsystem m_shooterSubsystem;
   private IntakeSubsystem m_intakeSubsystem;
   private double m_leftDrive = 0;
@@ -22,12 +21,11 @@ public class AutoCommand extends CommandBase {
   public double currentShootSpeed;
 
 
-  public AutoCommand( VisionSubsystem visionSubsystem, DriveTrainSubsystem tankDriveSubsystem, ShooterSubsystem shooterSubsystem, IntakeSubsystem intakeSubsystem){
+  public AutoCommand(  DriveTrainSubsystem tankDriveSubsystem, ShooterSubsystem shooterSubsystem, IntakeSubsystem intakeSubsystem){
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intakeSubsystem, visionSubsystem, tankDriveSubsystem, shooterSubsystem );
+    addRequirements(intakeSubsystem,  tankDriveSubsystem, shooterSubsystem );
     
     this.m_driveTrainSubsystem = tankDriveSubsystem;
-    this.m_visionSubsystem = visionSubsystem;
     this.m_shooterSubsystem = shooterSubsystem;
     this.m_intakeSubsystem = intakeSubsystem;
 
@@ -102,10 +100,6 @@ public void shoot(){
   this.m_shooterSubsystem.startShooter();
   this.m_shooterSubsystem.startQueue();
   this.m_shooterSubsystem.startQueue2();
-}
-public void unload(){
-  this.m_shooterSubsystem.reverseQueue();
-  intakePush();
 }
 public void onload(){
   this.m_shooterSubsystem.startQueue();

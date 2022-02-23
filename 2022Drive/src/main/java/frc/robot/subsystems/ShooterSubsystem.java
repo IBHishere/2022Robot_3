@@ -24,18 +24,21 @@ public class ShooterSubsystem extends SubsystemBase {
     private CANSparkMax m_queueMotor1; 
     private CANSparkMax m_queueMotor2; 
     private double m_velocity = .5;
-  
+    private boolean m_isShooterOn = false;
+    private boolean m_isQueue1On = false;
+    private boolean m_isQueue2On = false;
 
   public ShooterSubsystem() {
     this.init();
-
   }
+  
   private void init(){
     m_shooterMotor1 = new CANSparkMax(Constants.SHOOTER_MOTOR_CAN_ID, MotorType.kBrushless);
+    m_shooterMotor1.restoreFactoryDefaults();
+    
+    
     m_queueMotor1 = new CANSparkMax(Constants.QUEUE_MOTOR_CAN1_ID, MotorType.kBrushless);
     m_queueMotor2 = new CANSparkMax(Constants.QUEUE_MOTOR_CAN2_ID, MotorType.kBrushless);
-
-    m_shooterMotor1.restoreFactoryDefaults();
     m_queueMotor1.restoreFactoryDefaults();
     m_queueMotor2.restoreFactoryDefaults();
 
@@ -70,6 +73,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void startShooter(){
     System.out.println("startShooter");
     m_shooterMotor1.set(this.m_velocity);  
+    m_isShooterOn = true;  
       
 
 // this shoots with a speed based on the velocity
@@ -77,22 +81,20 @@ public class ShooterSubsystem extends SubsystemBase {
   public void stopShooter(){
     System.out.println("stopShooter");
     m_shooterMotor1.set(0);  
-    // this stops the shooter
+    m_isShooterOn = false;
   }
 
   public void  startQueue(){
     System.out.println("startQueue");
     m_queueMotor1.set(1);  
-    // this starts the belt to bring balls upward
+   m_isQueue1On = true;
   }
-  public void  reverseQueue(){
-    System.out.println("reverseQueue");
-    m_queueMotor1.set(.4);  
-    // this reverses the belt in order to help push balls out
-  }
+
+  
   public void  stopQueue(){
     System.out.println("stopQueue");
     m_queueMotor1.set(0); 
+    m_isQueue1On = false;
     // this stops bringing balls upward
   }
 
@@ -100,12 +102,42 @@ public class ShooterSubsystem extends SubsystemBase {
   public void  stopQueue2(){
     System.out.println("stopQueue2");
     m_queueMotor2.set(0); 
+    m_isQueue2On = false;
     //this stops the entrance to the shooter to allow shooter to be turned on
   }
   public void  startQueue2(){
     System.out.println("startQueue2");
     m_queueMotor2.set(1); 
+    m_isQueue2On = true;
+
+
     // this activates the queue motor that feeds balls into the shooter
   }
-}
 
+  public void toggleShooter(){ 
+    if(m_isShooterOn == false){
+      startShooter();
+    }
+    else{
+      stopShooter(); 
+    }
+  }
+
+  public void toggleQueue(){ 
+    if(m_isQueue1On == false){
+      startQueue();
+    }
+    else{
+      stopQueue(); 
+    }
+  }
+
+  public void toggleQueue2(){ 
+    if(m_isQueue2On == false){
+      startQueue2();
+    }
+    else{
+      stopQueue2(); 
+    }
+  }
+}

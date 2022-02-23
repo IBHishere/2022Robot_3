@@ -35,12 +35,11 @@ public class RobotContainer {
   XboxController  m_helperController = new XboxController(Constants.HELPER_XBOX_CONTROLLER);
   
   // The robot's subsystems and commands are defined here...
-  private final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
+
   private final DriveTrainSubsystem m_tankDriveSubsystem = new DriveTrainSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
    private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
- AutoCommand m_autoCommand = new AutoCommand(
-            this.m_visionSubsystem, this.m_tankDriveSubsystem, this.m_shooterSubsystem, this.m_intakeSubsystem);
+ AutoCommand m_autoCommand = new AutoCommand( this.m_tankDriveSubsystem, this.m_shooterSubsystem, this.m_intakeSubsystem);
   ShootCommands m_shootCommand = new ShootCommands(
                 this.m_shooterSubsystem);
 
@@ -49,11 +48,12 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     
-   TankDriveCommand command = new TankDriveCommand(
-               this.m_tankDriveSubsystem, m_driveController::getLeftY, m_driveController::getRightY);
+    TankDriveCommand command = new TankDriveCommand(
+        this.m_tankDriveSubsystem, 
+        m_driveController::getLeftY, 
+        m_driveController::getRightY);
     this.m_tankDriveSubsystem.setDefaultCommand(command);
- this.m_shooterSubsystem.setDefaultCommand(m_shootCommand);
-
+    this.m_shooterSubsystem.setDefaultCommand(m_shootCommand);
   }
 
   /**
@@ -66,20 +66,27 @@ public class RobotContainer {
 
     table.getEntry("isXboxConnected").forceSetBoolean( m_helperController.isConnected() );
     
-    // new JoystickButton (m_helperController, Button.kA.value)
-    // .whenPressed( 
-    //   ()-> {
-    //     table.getEntry("test").forceSetString("A-button pressed");
-    //     this.m_visionSubsystem.ToggleCameraState();
-    //   }
-    // );
-    // new JoystickButton(m_helperContrPoller, Button.kA.value)
-    // .whenPressed(new PIDTurnRobotCommand(this.m_tankDriveSubsystem, 10));
+    //TODO: decide if we are doing anything with vision
+    /*
+    new JoystickButton (m_helperController, Button.kA.value)
+    .whenPressed( 
+      ()-> {
+        table.getEntry("test").forceSetString("A-button pressed");
+        this.m_visionSubsystem.ToggleCameraState();
+      }
+    );
 
+    new JoystickButton(m_helperController, Button.kB.value)
+    .whenPressed(new InstantCommand(this.m_visionSubsystem::ToggleCameraState));
+
+    */
+
+
+    //Start: Intake controls
     new JoystickButton (m_helperController, Button.kRightBumper.value)
     .whenPressed( 
       ()-> {
-        table.getEntry("test").forceSetString("Rt-button pressed");
+        table.getEntry("intake").forceSetString("Rt-Bumper/helper pressed: intakePull");
         this.m_intakeSubsystem.intakePull();
       }
     );
@@ -87,68 +94,51 @@ public class RobotContainer {
     new JoystickButton (m_helperController, Button.kLeftBumper.value)
     .whenPressed( 
       ()-> {
-        table.getEntry("test").forceSetString("Lt-button pressed");
+        table.getEntry("intake").forceSetString("Lt-Bumper/helper pressed: intakePush");
         this.m_intakeSubsystem.intakePush();
-        
-        
       }
     );
 
     new JoystickButton(m_helperController, Button.kB.value)
-    .whenPressed(new InstantCommand(this.m_visionSubsystem::ToggleCameraState));
+    .whenPressed(
+      ()-> {
+        table.getEntry("intake").forceSetString("B-Button/drive pressed: intakeStop");
+        this.m_intakeSubsystem.intakeStop();
+      }      
+    );
+    //End: intake controls
 
+    
+    //Shooter controls
     new JoystickButton(m_helperController, Button.kX.value)
     .whenPressed(
       ()-> {
-         this.m_shooterSubsystem.startShooter();
-         
+        table.getEntry("shooter").forceSetString("X-Button/helper pressed: toggleShooter");
+        this.m_shooterSubsystem.toggleShooter();  
+      }
+    );
+
+    //Start: Queuing controls
+    //TODO: Refactor queue to toggle with single button
+    new JoystickButton(m_helperController, Button.kA.value)
+    .whenPressed(
+      ()-> {
+        table.getEntry("queuing").forceSetString("A-Button/helper pressed: startQueue");
+        this.m_shooterSubsystem.toggleQueue();
       }
     );
 
     new JoystickButton(m_helperController, Button.kY.value)
     .whenPressed(
       ()-> {
-         this.m_shooterSubsystem.stopShooter();
-
-      }
-    );
-    new JoystickButton(m_helperController, Button.kB.value)
-    .whenPressed(
-      ()-> {
-         this.m_shooterSubsystem.stopQueue();
-
-      }
-    );
-    new JoystickButton(m_helperController, Button.kA.value)
-    .whenPressed(
-      ()-> {
-         this.m_shooterSubsystem.startQueue();
-      }
-      
-    );
-    new JoystickButton(m_driveController, Button.kA.value)
-    .whenPressed(
-      ()-> {
-         this.m_shooterSubsystem.startQueue2();
-      }
-      
-    );
-new JoystickButton(m_driveController, Button.kX.value)
-    .whenPressed(
-      ()-> {
-         this.m_shooterSubsystem.stopQueue2();
-      }
-      
+        table.getEntry("queuing").forceSetString("A-Button/drive pressed: startQueue2");
+        this.m_shooterSubsystem.toggleQueue2();
+      }  
     );
 
-    new JoystickButton(m_driveController, Button.kB.value)
-    .whenPressed(
-      ()-> {
-         this.m_intakeSubsystem.intakeStop();
-      }
-      
-    );
-
+  
+    //End: Queue controls
+    
   }
 
   /**

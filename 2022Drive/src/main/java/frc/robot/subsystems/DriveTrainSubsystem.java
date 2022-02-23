@@ -10,18 +10,18 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
 import java.lang.Math;
+import com.revrobotics.RelativeEncoder;
 
 
 public class DriveTrainSubsystem extends SubsystemBase {
 
   private DifferentialDrive m_myRobot;
-  private CANSparkMax m_leftMotor;
+  private CANSparkMax m_leftMotor1;
   private RelativeEncoder m_leftEncoder ;
-  private CANSparkMax m_rightMotor;
+  private CANSparkMax m_rightMotor1;
   private RelativeEncoder m_rightEncoder; 
   private CANSparkMax m_leftMotor2;
   private RelativeEncoder m_left2Encoder;
@@ -29,90 +29,70 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private RelativeEncoder m_right2Encoder ;
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table = inst.getTable("DriveTrainSubsystem_2");
-  private double measurement;
+  
   /** Creates a new DriveTrain. */
   public DriveTrainSubsystem() {
     this.init();
   }
 
   private void init(){
-
-    
-    m_leftMotor = new CANSparkMax(Constants.LEFT_MOTOR_CAN1_ID, MotorType.kBrushless);
+    m_leftMotor1 = new CANSparkMax(Constants.LEFT_MOTOR_CAN1_ID, MotorType.kBrushless);
     m_leftMotor2 = new CANSparkMax(Constants.LEFT_MOTOR_CAN2_ID, MotorType.kBrushless);
-    
-    m_leftMotor.setInverted(false);
-    m_leftMotor2.setInverted(true);
-  
-    table.getEntry("Left is follower").forceSetBoolean(m_leftMotor.isFollower());
-    table.getEntry("Left2 is follower").forceSetBoolean(m_leftMotor2.isFollower());
-    
-    MotorControllerGroup m_left = new MotorControllerGroup(m_leftMotor,m_leftMotor2);
-    
-    
-    m_rightMotor = new CANSparkMax(Constants.RIGHT_MOTOR_CAN2_ID, MotorType.kBrushless);
-    m_rightMotor2 = new CANSparkMax(Constants.RIGHT_MOTOR_CAN1_ID, MotorType.kBrushless);
-    m_rightMotor.setInverted(false);
-    m_rightMotor2.setInverted(true);
-    
-    table.getEntry("Right is follower").forceSetBoolean(m_rightMotor.isFollower());MotorControllerGroup m_right = new MotorControllerGroup(m_rightMotor,m_rightMotor2 );
-
-    m_leftMotor.restoreFactoryDefaults();
+    m_leftMotor1.restoreFactoryDefaults();
     m_leftMotor2.restoreFactoryDefaults();
-    m_rightMotor.restoreFactoryDefaults();
+    MotorControllerGroup m_leftMotorGroup = new MotorControllerGroup(m_leftMotor1,m_leftMotor2);
+  
+    m_rightMotor1 = new CANSparkMax(Constants.RIGHT_MOTOR_CAN2_ID, MotorType.kBrushless);
+    m_rightMotor2 = new CANSparkMax(Constants.RIGHT_MOTOR_CAN1_ID, MotorType.kBrushless);
+    m_rightMotor1.restoreFactoryDefaults();
     m_rightMotor2.restoreFactoryDefaults();
+    MotorControllerGroup m_rightMotorGroup = new MotorControllerGroup(m_rightMotor1,m_rightMotor2);
+    
 
-    m_leftEncoder= this.m_leftMotor.getEncoder();
-    m_rightEncoder= this.m_rightMotor.getEncoder();
+
+    m_leftEncoder= this.m_leftMotor1.getEncoder();
+    m_rightEncoder= this.m_rightMotor1.getEncoder();
     m_left2Encoder = this.m_leftMotor2.getEncoder();
-    m_left2Encoder = this.m_rightMotor2.getEncoder();
+    m_right2Encoder = this.m_rightMotor2.getEncoder();
 
-    m_myRobot = new DifferentialDrive(m_left, m_right);
+  m_rightMotor1.setInverted(false);
+  m_rightMotor2.setInverted(true);
+  m_leftMotor1.setInverted(false);
+  m_leftMotor2.setInverted(true);
+    m_myRobot = new DifferentialDrive(m_leftMotorGroup, m_rightMotorGroup);
   }
 
   @Override
-  public void periodic() {
+  public void periodic() {}
     // This method will be called once per scheduler run
-  }
 
-
-  public void tankDrive(double motorLeftValue, double motorRightValue) {
-    table.getEntry("leftY").setDouble(motorLeftValue);
-    table.getEntry("rightY").setDouble(motorRightValue);
-    if ((motorLeftValue > .015 || motorLeftValue < -.015) && (motorRightValue < -.015 || motorRightValue > .015)){
-    m_myRobot.tankDrive(Math.pow(-motorLeftValue,3)*.5, Math.pow(-motorRightValue, 3)*.5);
-    }
-    else{
-      m_myRobot.tankDrive(0,0);
-    }
+  private double computeActualDriveFromInput(double joystickValue) {
+    //TODO: Move this to constants?
+    double zeroLimit = 0.2;
+    double driveCurvePower = 3.0;
+    double driveScalingFactor = 1;
     
+    double outputValue  = Math.abs(joystickValue) < zeroLimit ? 0 : Math.pow(joystickValue, driveCurvePower) * driveScalingFactor;
+
+    return outputValue;
+
   }
+
+  public void tankDrive(double leftJoystickValue, double rightJoystickValue) {
+    //log joystick values to network tables
+    table.getEntry("motorLeftValue").setDouble(leftJoystickValue);
+    table.getEntry("motorRightValue").setDouble(rightJoystickValue);
+
+    //convert joystick values to motor inputs
+    double leftMotorValue = this.computeActualDriveFromInput(leftJoystickValue);
+    double rightMotorValue = this.computeActualDriveFromInput(rightJoystickValue);
+
+    
+    m_myRobot.tankDrive( -leftMotorValue, rightMotorValue);
+  }
+
   public void autoTankDrive(double motorLeftValue, double motorRightValue) {
-    
     m_myRobot.tankDrive(Math.pow(-motorLeftValue,3)*.5, Math.pow(-motorRightValue, 3)*.5);
-   
-    
-    
-  }
-  public double getAngle(){
-    //this sets the measurement equal to the total of all the angles in order to know what the angle position is.
-    measurement = getMeasurement(this.m_leftEncoder)+getMeasurement(this.m_left2Encoder)+getMeasurement(this.m_rightEncoder)+getMeasurement(this.m_right2Encoder);
-  
-  // the following line is optional and halves the measurement to account for the fact that there are 2 motors on each side. This is not necessary because it does not matter if this number is scaled or not
-    //measurement = measurement/2
-    
-    
-    this.table.getEntry("total measurement").setDouble(measurement);
-    //System.out.println("measure");
-    
-    return measurement;
-  }
-  public double getMeasurement(RelativeEncoder encoder) {
-    double measurement = encoder.getPosition();
-    this.table.getEntry("Pos measurement").setDouble(measurement);
-    //System.out.println("measure");
-    
-    return measurement;
   }
 }
 

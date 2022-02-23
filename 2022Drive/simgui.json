@@ -56,9 +56,15 @@
       "DriveTrainSubsystem": {
         "open": true
       },
+      "ShooterSubsystem": {
+        "open": true
+      },
       "open": true
     },
     "TankDriveCommand_1": {
+      "open": true
+    },
+    "datatable": {
       "open": true
     }
   }
