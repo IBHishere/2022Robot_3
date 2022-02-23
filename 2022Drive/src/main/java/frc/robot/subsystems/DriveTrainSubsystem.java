@@ -20,13 +20,13 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
   private DifferentialDrive m_myRobot;
   private CANSparkMax m_leftMotor;
-  private RelativeEncoder m_leftEncoder = this.m_leftMotor.getEncoder();
+  private RelativeEncoder m_leftEncoder ;
   private CANSparkMax m_rightMotor;
-  private RelativeEncoder m_rightEncoder = this.m_rightMotor.getEncoder();
+  private RelativeEncoder m_rightEncoder; 
   private CANSparkMax m_leftMotor2;
-  private RelativeEncoder m_left2Encoder = this.m_leftMotor2.getEncoder();
+  private RelativeEncoder m_left2Encoder;
   private CANSparkMax m_rightMotor2;
-  private RelativeEncoder m_right2Encoder = this.m_rightMotor2.getEncoder();
+  private RelativeEncoder m_right2Encoder ;
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table = inst.getTable("DriveTrainSubsystem_2");
   private double measurement;
@@ -61,6 +61,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_leftMotor2.restoreFactoryDefaults();
     m_rightMotor.restoreFactoryDefaults();
     m_rightMotor2.restoreFactoryDefaults();
+
+    m_leftEncoder= this.m_leftMotor.getEncoder();
+    m_rightEncoder= this.m_rightMotor.getEncoder();
+    m_left2Encoder = this.m_leftMotor2.getEncoder();
+    m_left2Encoder = this.m_rightMotor2.getEncoder();
 
     m_myRobot = new DifferentialDrive(m_left, m_right);
   }

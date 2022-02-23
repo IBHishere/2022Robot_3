@@ -69,7 +69,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void startShooter(){
     System.out.println("startShooter");
-    m_shooterMotor1.set(this.m_velocity);    
+    m_shooterMotor1.set(this.m_velocity);  
+      
 
 // this shoots with a speed based on the velocity
   }
