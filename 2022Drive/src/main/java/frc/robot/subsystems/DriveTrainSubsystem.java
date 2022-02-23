@@ -92,7 +92,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   }
 
   public void autoTankDrive(double motorLeftValue, double motorRightValue) {
-    m_myRobot.tankDrive(Math.pow(-motorLeftValue,3)*.5, Math.pow(-motorRightValue, 3)*.5);
+    m_myRobot.tankDrive(Math.pow(-motorLeftValue,3)*.5, Math.pow(motorRightValue, 3)*.5);
   }
 }
 
