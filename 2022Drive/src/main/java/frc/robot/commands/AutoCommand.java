@@ -40,14 +40,17 @@ public class AutoCommand extends CommandBase {
   
   Timer.delay(2.0); 
   autoDrive(0,0);
-  shootSequence2();
+  shootSequence2(); 
   
-  Timer.delay(3.0); 
   intakePush();
   autoDrive(0.5, 0.5);
   
   Timer.delay(5.0);
-  robotOff(); 
+  robotOff();
+  intakePull();
+  shoot();
+  
+  
   }
   public void autoDrive(double setLeft, double setRight ){
     this.m_leftDrive = setLeft;
@@ -113,8 +116,10 @@ public void shootSequence2(){
   Timer.delay(2);
   disableShooter();
 }
-public void shootSequence3(){
-  this.m_shooterSubsystem.startQueue();
+public void shootSequence1(){
+  this.m_shooterSubsystem.startQueue2();
   this.m_shooterSubsystem.startShooter();
+  Timer.delay(1);
+  this.m_shooterSubsystem.startQueue();
 }
 }
