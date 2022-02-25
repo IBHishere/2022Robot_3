@@ -28,7 +28,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private CANSparkMax m_rightMotor2;
   private RelativeEncoder m_right2Encoder ;
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
-  private NetworkTable table = inst.getTable("DriveTrainSubsystem_2");
+  private NetworkTable table = inst.getTable("DriveTrainSubsystem");
   
   /** Creates a new DriveTrain. */
   public DriveTrainSubsystem() {
@@ -47,18 +47,12 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_rightMotor1.restoreFactoryDefaults();
     m_rightMotor2.restoreFactoryDefaults();
     MotorControllerGroup m_rightMotorGroup = new MotorControllerGroup(m_rightMotor1,m_rightMotor2);
-    
-
 
     m_leftEncoder= this.m_leftMotor1.getEncoder();
     m_rightEncoder= this.m_rightMotor1.getEncoder();
     m_left2Encoder = this.m_leftMotor2.getEncoder();
     m_right2Encoder = this.m_rightMotor2.getEncoder();
 
-  m_rightMotor1.setInverted(false);
-  m_rightMotor2.setInverted(true);
-  m_leftMotor1.setInverted(false);
-  m_leftMotor2.setInverted(true);
     m_myRobot = new DifferentialDrive(m_leftMotorGroup, m_rightMotorGroup);
   }
 
@@ -87,12 +81,34 @@ public class DriveTrainSubsystem extends SubsystemBase {
     double leftMotorValue = this.computeActualDriveFromInput(leftJoystickValue);
     double rightMotorValue = this.computeActualDriveFromInput(rightJoystickValue);
 
-    
+    table.getEntry("computedMotorLeftValue").setDouble(leftMotorValue);
+    table.getEntry("computedMotorRightValue").setDouble(rightMotorValue);
+
     m_myRobot.tankDrive( -leftMotorValue, rightMotorValue);
   }
 
   public void autoTankDrive(double motorLeftValue, double motorRightValue) {
     m_myRobot.tankDrive(Math.pow(-motorLeftValue,3)*.5, Math.pow(motorRightValue, 3)*.5);
+  }
+
+  private double getLeftPosition() {
+    return (this.m_leftEncoder.getPosition() + this.m_left2Encoder.getPosition() )/2.0;
+  }
+
+  private double getRightPosition() {
+    return (this.m_rightEncoder.getPosition() + this.m_right2Encoder.getPosition() )/2.0;
+  }
+
+  public double getPosition() {
+      double pos = (this.getLeftPosition() + this.getRightPosition())/2.0; 
+      this.table.getEntry("pos").setDouble(pos);
+      return  pos;
+  }
+
+  public double getAngle() {
+      double angle = (this.getLeftPosition() - this.getRightPosition())/2.0; 
+      this.table.getEntry("pos").setDouble(angle);
+      return angle;
   }
 }
 

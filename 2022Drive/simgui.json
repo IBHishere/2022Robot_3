@@ -1,16 +1,6 @@
 {
   "HALProvider": {
     "Other Devices": {
-      "SPARK MAX [1]": {
-        "header": {
-          "open": true
-        }
-      },
-      "SPARK MAX [2]": {
-        "header": {
-          "open": true
-        }
-      },
       "SPARK MAX [31]": {
         "header": {
           "open": true
@@ -35,6 +25,8 @@
       "/LiveWindow/IntakeSubsystem": "Subsystem",
       "/LiveWindow/ShooterSubsystem": "Subsystem",
       "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
+      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/VisionSubsystem": "Subsystem"
     },
@@ -52,16 +44,21 @@
     }
   },
   "NetworkTables": {
+    "DriveTrainSubsystem_2": {
+      "open": true
+    },
     "LiveWindow": {
       "DriveTrainSubsystem": {
         "open": true
       },
       "ShooterSubsystem": {
         "open": true
-      },
-      "open": true
+      }
     },
     "TankDriveCommand_1": {
+      "open": true
+    },
+    "TurnAnglePidCommand": {
       "open": true
     },
     "datatable": {

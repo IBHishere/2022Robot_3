@@ -10,9 +10,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.AutoCommand;
+import frc.robot.commands.DriveDistancePidCommand;
 // import frc.robot.commands.PIDTurnRobotCommand;
 import frc.robot.commands.ShootCommands;
 import frc.robot.commands.TankDriveCommand;
+import frc.robot.commands.TurnAnglePidCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -148,7 +150,36 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    
-    return this.m_autoCommand;
+    this.table.getEntry("autonomousStarted").setBoolean(true);
+
+    Command autoCommand =
+        new DriveDistancePidCommand( this.m_tankDriveSubsystem, 10.0 )  //drive a distance of 10
+        .andThen(
+          new TurnAnglePidCommand( this.m_tankDriveSubsystem, 22) // turn an angle of 22
+        )
+        
+        ; /// drive distance of 10
+   /*
+    // Start the command by spinning up the shooter...
+        new InstantCommand(m_shooter::enable, m_shooter)
+        .andThen(
+            // Wait until the shooter is at speed before feeding the frisbees
+            new WaitUntilCommand(m_shooter::atSetpoint),
+            // Start running the feeder
+            new InstantCommand(m_shooter::runFeeder, m_shooter),
+            // Shoot for the specified time
+            new WaitCommand(AutoConstants.kAutoShootTimeSeconds))
+        // Add a timeout (will end the command if, for instance, the shooter never gets up to
+        // speed)
+        .withTimeout(AutoConstants.kAutoTimeoutSeconds)
+        // When the command ends, turn off the shooter and the feeder
+        .andThen(
+            () -> {
+              m_shooter.disable();
+              m_shooter.stopFeeder();
+            });  
+    */ 
+    return autoCommand;
+
   }
 }
