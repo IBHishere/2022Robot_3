@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   NetworkTableInstance inst = NetworkTableInstance.getDefault();
-  NetworkTable table = inst.getTable("datatable");
+  NetworkTable table = inst.getTable("RobotContainer");
 // TODO: change code relating to the following line
   double targetAngle = 90;
   
@@ -151,14 +151,17 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
     this.table.getEntry("autonomousStarted").setBoolean(true);
 
     AutonomousState autonomousState = new AutonomousState(this.m_tankDriveSubsystem);
-    
+    this.table.getEntry("pos-autostate").setDouble(autonomousState.getPriorCommandFinishPosition());
+    this.table.getEntry("pos-subsystem").setDouble(this.m_tankDriveSubsystem.getPosition());
+
+
     Command autoCommand =
-        new DriveDistancePidCommand( this.m_tankDriveSubsystem, .3, autonomousState ) //drive a distance
+        new DriveDistancePidCommand( this.m_tankDriveSubsystem, .5, autonomousState ) //drive a distance
+        //.andThen(
+        //   new TurnAnglePidCommand( this.m_tankDriveSubsystem, 1, autonomousState) // turn an angle 
+        //)
         .andThen(
-           new TurnAnglePidCommand( this.m_tankDriveSubsystem, 1, autonomousState) // turn an angle 
-        )
-        .andThen(
-          new DriveDistancePidCommand( this.m_tankDriveSubsystem, -.3, autonomousState )  //drive a distance
+          new DriveDistancePidCommand( this.m_tankDriveSubsystem, -.5, autonomousState )  //drive a distance
         )
     
         ; /// drive distance of 10

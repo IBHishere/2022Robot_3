@@ -22,7 +22,7 @@ public class TurnAnglePidCommand extends PIDCommand {
   private double m_angleToTurn;
   private AutonomousState m_autonomousState;
 
-  private final static double kP = 0.5;
+  private final static double kP = 1;
   private final static double kI = .2;
   private final static double kD = 0;
 

@@ -111,7 +111,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
   public double getAngle() {
       double angle = (this.getLeftPosition() - this.getRightPosition())/2.0; 
-      this.table.getEntry("pos").setDouble(angle);
+      this.table.getEntry("angle").setDouble(angle);
       return angle;
   }
 }

@@ -38,7 +38,7 @@ public class AutonomousState {
 
     public void setValues(DriveTrainSubsystem driveTrainSubsystem) {
         this.priorCommandFinishPosition = driveTrainSubsystem.getPosition();
-        this.priorCommandFinishPosition = driveTrainSubsystem.getAngle();
+        this.priorCommandFinishAngle = driveTrainSubsystem.getAngle();
         this.logValues();
     }
 }

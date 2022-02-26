@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
 //import java.util.Timer;
@@ -13,6 +14,7 @@ import frc.robot.Constants;
 
 
 public class ShooterSubsystem extends SubsystemBase {
+    private static final double QUEUE_MOTOR_POWER = .5;
     private CANSparkMax m_shooterMotor1;  
     private CANSparkMax m_queueMotor1; 
     private CANSparkMax m_queueMotor2; 
@@ -35,6 +37,8 @@ public class ShooterSubsystem extends SubsystemBase {
     m_queueMotor2 = new CANSparkMax(Constants.QUEUE_MOTOR_CAN2_ID, MotorType.kBrushless);
     m_queueMotor1.restoreFactoryDefaults();
     m_queueMotor2.restoreFactoryDefaults();
+
+    m_queueMotor2.setIdleMode(IdleMode.kBrake);
   }
 
   
@@ -100,7 +104,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
   public void  startQueue2(){
     System.out.println("startQueue2");
-    m_queueMotor2.set(1); 
+    m_queueMotor2.set(ShooterSubsystem.QUEUE_MOTOR_POWER); 
     m_isQueue2On = true;
 
 

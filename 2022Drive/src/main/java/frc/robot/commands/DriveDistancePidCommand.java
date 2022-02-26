@@ -23,7 +23,7 @@ public class DriveDistancePidCommand extends PIDCommand {
   private double m_distanceToDrive;
   private AutonomousState m_autonomousState;
 
-  private final static double kP = .5;
+  private final static double kP = 1;
   private final static double kI = .2;
   private final static double kD = 0;
   private final static double rotationTolerance =0.1;
@@ -46,6 +46,7 @@ public class DriveDistancePidCommand extends PIDCommand {
     this.m_dDriveTrainSubsystem = driveTrainSubsystem;
     this.m_distanceToDrive = distanceToDrive;
     this.m_autonomousState = autonomousState;
+    DriveDistancePidCommand.table.getEntry("start setpoint").setDouble(autonomousState.getPriorCommandFinishPosition() + distanceToDrive);
     DriveDistancePidCommand.table.getEntry("m_distanceToDrive").setDouble(this.m_distanceToDrive);
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -79,7 +80,10 @@ public class DriveDistancePidCommand extends PIDCommand {
   public void execute() {
     DriveDistancePidCommand.table.getEntry("setpoint").setDouble( m_setpoint.getAsDouble());
     DriveDistancePidCommand.table.getEntry("pos").setDouble(m_measurement.getAsDouble());  
-      super.execute();
+    
+    System.out.println(m_setpoint.getAsDouble()  + ", " + m_measurement.getAsDouble() );
+    
+    super.execute();
   }
 
   @Override
