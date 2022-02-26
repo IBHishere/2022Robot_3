@@ -4,18 +4,11 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import java.security.Principal;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMaxAlternateEncoder;
-import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
-import java.util.Timer;
+//import java.util.Timer;
 
 
 
@@ -23,7 +16,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private CANSparkMax m_shooterMotor1;  
     private CANSparkMax m_queueMotor1; 
     private CANSparkMax m_queueMotor2; 
-    private double m_velocity = .5;
+    private double m_velocity = 1.0;
+
     private boolean m_isShooterOn = false;
     private boolean m_isQueue1On = false;
     private boolean m_isQueue2On = false;
@@ -41,7 +35,6 @@ public class ShooterSubsystem extends SubsystemBase {
     m_queueMotor2 = new CANSparkMax(Constants.QUEUE_MOTOR_CAN2_ID, MotorType.kBrushless);
     m_queueMotor1.restoreFactoryDefaults();
     m_queueMotor2.restoreFactoryDefaults();
-
   }
 
   

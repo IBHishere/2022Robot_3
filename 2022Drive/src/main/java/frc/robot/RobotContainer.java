@@ -9,17 +9,16 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import frc.robot.commands.AutoCommand;
 import frc.robot.commands.DriveDistancePidCommand;
 // import frc.robot.commands.PIDTurnRobotCommand;
 import frc.robot.commands.ShootCommands;
 import frc.robot.commands.TankDriveCommand;
 import frc.robot.commands.TurnAnglePidCommand;
+import frc.robot.subsystems.AutonomousState;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -42,7 +41,6 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
   private final DriveTrainSubsystem m_tankDriveSubsystem = new DriveTrainSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
    private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
- AutoCommand m_autoCommand = new AutoCommand( this.m_tankDriveSubsystem, this.m_shooterSubsystem, this.m_intakeSubsystem);
   ShootCommands m_shootCommand = new ShootCommands(
                 this.m_shooterSubsystem);
  // PIDTurnRobotCommand m_PIDTurnRobotCommand = new PIDTurnRobotCommand(this.m_tankDriveSubsystem, targetAngle);
@@ -152,12 +150,17 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
   public Command getAutonomousCommand() {
     this.table.getEntry("autonomousStarted").setBoolean(true);
 
+    AutonomousState autonomousState = new AutonomousState(this.m_tankDriveSubsystem);
+    
     Command autoCommand =
-        new DriveDistancePidCommand( this.m_tankDriveSubsystem, 10.0 )  //drive a distance of 10
+        new DriveDistancePidCommand( this.m_tankDriveSubsystem, .3, autonomousState ) //drive a distance
         .andThen(
-          new TurnAnglePidCommand( this.m_tankDriveSubsystem, 22) // turn an angle of 22
+           new TurnAnglePidCommand( this.m_tankDriveSubsystem, 1, autonomousState) // turn an angle 
         )
-        
+        .andThen(
+          new DriveDistancePidCommand( this.m_tankDriveSubsystem, -.3, autonomousState )  //drive a distance
+        )
+    
         ; /// drive distance of 10
    /*
     // Start the command by spinning up the shooter...

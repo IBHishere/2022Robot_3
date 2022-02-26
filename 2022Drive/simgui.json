@@ -27,6 +27,7 @@
       "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/VisionSubsystem": "Subsystem"
     },
@@ -44,6 +45,9 @@
     }
   },
   "NetworkTables": {
+    "AutonomousState": {
+      "open": true
+    },
     "DriveTrainSubsystem_2": {
       "open": true
     },
@@ -54,12 +58,6 @@
       "ShooterSubsystem": {
         "open": true
       }
-    },
-    "TankDriveCommand_1": {
-      "open": true
-    },
-    "TurnAnglePidCommand": {
-      "open": true
     },
     "datatable": {
       "open": true

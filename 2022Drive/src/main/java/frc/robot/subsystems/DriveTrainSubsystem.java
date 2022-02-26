@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
 import java.lang.Math;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 
 public class DriveTrainSubsystem extends SubsystemBase {
@@ -30,6 +31,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table = inst.getTable("DriveTrainSubsystem");
   
+
+
   /** Creates a new DriveTrain. */
   public DriveTrainSubsystem() {
     this.init();
@@ -40,12 +43,17 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_leftMotor2 = new CANSparkMax(Constants.LEFT_MOTOR_CAN2_ID, MotorType.kBrushless);
     m_leftMotor1.restoreFactoryDefaults();
     m_leftMotor2.restoreFactoryDefaults();
+    m_leftMotor1.setIdleMode(IdleMode.kBrake);
+    m_leftMotor2.setIdleMode(IdleMode.kBrake);
+
     MotorControllerGroup m_leftMotorGroup = new MotorControllerGroup(m_leftMotor1,m_leftMotor2);
-  
+    
     m_rightMotor1 = new CANSparkMax(Constants.RIGHT_MOTOR_CAN2_ID, MotorType.kBrushless);
     m_rightMotor2 = new CANSparkMax(Constants.RIGHT_MOTOR_CAN1_ID, MotorType.kBrushless);
     m_rightMotor1.restoreFactoryDefaults();
     m_rightMotor2.restoreFactoryDefaults();
+    m_rightMotor1.setIdleMode(IdleMode.kBrake);
+    m_rightMotor2.setIdleMode(IdleMode.kBrake);
     MotorControllerGroup m_rightMotorGroup = new MotorControllerGroup(m_rightMotor1,m_rightMotor2);
 
     m_leftEncoder= this.m_leftMotor1.getEncoder();
@@ -64,7 +72,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     //TODO: Move this to constants?
     double zeroLimit = 0.2;
     double driveCurvePower = 3.0;
-    double driveScalingFactor = 1;
+    double driveScalingFactor = .4;
     
     double outputValue  = Math.abs(joystickValue) < zeroLimit ? 0 : Math.pow(joystickValue, driveCurvePower) * driveScalingFactor;
 
@@ -85,10 +93,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
     table.getEntry("computedMotorRightValue").setDouble(rightMotorValue);
 
     m_myRobot.tankDrive( -leftMotorValue, rightMotorValue);
-  }
-
-  public void autoTankDrive(double motorLeftValue, double motorRightValue) {
-    m_myRobot.tankDrive(Math.pow(-motorLeftValue,3)*.5, Math.pow(motorRightValue, 3)*.5);
   }
 
   private double getLeftPosition() {
