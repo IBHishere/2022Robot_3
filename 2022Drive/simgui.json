@@ -48,6 +48,9 @@
     "AutonomousState": {
       "open": true
     },
+    "DriveDistancePidCommand": {
+      "open": true
+    },
     "DriveTrainSubsystem_2": {
       "open": true
     },

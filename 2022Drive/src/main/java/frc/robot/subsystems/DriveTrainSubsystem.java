@@ -31,6 +31,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table = inst.getTable("DriveTrainSubsystem");
   
+  public boolean doLog = false;
 
 
   /** Creates a new DriveTrain. */
@@ -41,11 +42,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private void init(){
     m_leftMotor1 = new CANSparkMax(Constants.LEFT_MOTOR_CAN1_ID, MotorType.kBrushless);
     m_leftMotor2 = new CANSparkMax(Constants.LEFT_MOTOR_CAN2_ID, MotorType.kBrushless);
-    m_leftMotor1.restoreFactoryDefaults();
-    m_leftMotor2.restoreFactoryDefaults();
     m_leftMotor1.setIdleMode(IdleMode.kBrake);
     m_leftMotor2.setIdleMode(IdleMode.kBrake);
-
+    m_leftMotor1.setInverted(true);
+    m_leftMotor2.setInverted(true);
     MotorControllerGroup m_leftMotorGroup = new MotorControllerGroup(m_leftMotor1,m_leftMotor2);
     
     m_rightMotor1 = new CANSparkMax(Constants.RIGHT_MOTOR_CAN2_ID, MotorType.kBrushless);
@@ -60,6 +60,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_rightEncoder= this.m_rightMotor1.getEncoder();
     m_left2Encoder = this.m_leftMotor2.getEncoder();
     m_right2Encoder = this.m_rightMotor2.getEncoder();
+    
+    
 
     m_myRobot = new DifferentialDrive(m_leftMotorGroup, m_rightMotorGroup);
   }
@@ -70,17 +72,24 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
   private double computeActualDriveFromInput(double joystickValue) {
     //TODO: Move this to constants?
-    double zeroLimit = 0.2;
-    double driveCurvePower = 3.0;
-    double driveScalingFactor = .4;
+    double zeroLimit = 0.1;
+    double driveCurvePower = 1.0; // 3.0;
+    double driveScalingFactor = .2;
     
-    double outputValue  = Math.abs(joystickValue) < zeroLimit ? 0 : Math.pow(joystickValue, driveCurvePower) * driveScalingFactor;
+    double outputValue  = Math.abs(joystickValue) < zeroLimit ? 0 :
+       Math.pow(joystickValue, driveCurvePower) * driveScalingFactor;
 
     return outputValue;
-
   }
 
   public void tankDrive(double leftJoystickValue, double rightJoystickValue) {
+    if(doLog) System.out.println("joystick-l-r,  " + leftJoystickValue +", " + rightJoystickValue);
+
+    //limit input to [-1,1] range
+    leftJoystickValue = Math.signum(leftJoystickValue) * Math.min(1, Math.abs(leftJoystickValue));
+    rightJoystickValue = Math.signum(rightJoystickValue) * Math.min(1, Math.abs(rightJoystickValue));
+    
+    
     //log joystick values to network tables
     table.getEntry("motorLeftValue").setDouble(leftJoystickValue);
     table.getEntry("motorRightValue").setDouble(rightJoystickValue);
@@ -92,12 +101,15 @@ public class DriveTrainSubsystem extends SubsystemBase {
     table.getEntry("computedMotorLeftValue").setDouble(leftMotorValue);
     table.getEntry("computedMotorRightValue").setDouble(rightMotorValue);
 
-    m_myRobot.tankDrive( -leftMotorValue, rightMotorValue);
+    if(doLog) System.out.println("drive-l-r,  " + leftMotorValue +", " + rightMotorValue);
+
+    m_myRobot.tankDrive( leftMotorValue, rightMotorValue);
   }
 
   private double getLeftPosition() {
     return (this.m_leftEncoder.getPosition() + this.m_left2Encoder.getPosition() )/2.0;
   }
+
 
   private double getRightPosition() {
     return (this.m_rightEncoder.getPosition() + this.m_right2Encoder.getPosition() )/2.0;
@@ -105,6 +117,17 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
   public double getPosition() {
       double pos = (this.getLeftPosition() + this.getRightPosition())/2.0; 
+      
+      // System.out.println("Enc-l1-l2-r1-r2-l-r-p, " 
+      //   + this.m_leftEncoder.getPosition() + ", "
+      //   + this.m_left2Encoder.getPosition() + ", "
+      //   + this.m_rightEncoder.getPosition() + ", "
+      //   + this.m_right2Encoder.getPosition() + ", "
+      //   + this.getLeftPosition() + ", "
+      //   + this.getRightPosition() + ", "
+      //   + pos
+      // );
+
       this.table.getEntry("pos").setDouble(pos);
       return  pos;
   }
@@ -113,6 +136,13 @@ public class DriveTrainSubsystem extends SubsystemBase {
       double angle = (this.getLeftPosition() - this.getRightPosition())/2.0; 
       this.table.getEntry("angle").setDouble(angle);
       return angle;
+  }
+
+  public void zeroEncoders() {
+    this.m_leftEncoder.setPosition(0);
+    this.m_left2Encoder.setPosition(0);
+    this.m_rightEncoder.setPosition(0);
+    this.m_right2Encoder.setPosition(0);
   }
 }
 

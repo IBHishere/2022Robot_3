@@ -14,11 +14,14 @@ import frc.robot.commands.DriveDistancePidCommand;
 import frc.robot.commands.ShootCommands;
 import frc.robot.commands.TankDriveCommand;
 import frc.robot.commands.TurnAnglePidCommand;
-import frc.robot.subsystems.AutonomousState;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -150,41 +153,41 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
   public Command getAutonomousCommand() {
     this.table.getEntry("autonomousStarted").setBoolean(true);
 
-    AutonomousState autonomousState = new AutonomousState(this.m_tankDriveSubsystem);
-    this.table.getEntry("pos-autostate").setDouble(autonomousState.getPriorCommandFinishPosition());
-    this.table.getEntry("pos-subsystem").setDouble(this.m_tankDriveSubsystem.getPosition());
-
-
+    
     Command autoCommand =
-        new DriveDistancePidCommand( this.m_tankDriveSubsystem, .5, autonomousState ) //drive a distance
-        //.andThen(
-        //   new TurnAnglePidCommand( this.m_tankDriveSubsystem, 1, autonomousState) // turn an angle 
-        //)
+        new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() )
+         .andThen(
+           new DriveDistancePidCommand( this.m_tankDriveSubsystem, 1) 
+         ) //drive a distance
+         .andThen(new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() ) )
         .andThen(
-          new DriveDistancePidCommand( this.m_tankDriveSubsystem, -.5, autonomousState )  //drive a distance
+            new TurnAnglePidCommand( this.m_tankDriveSubsystem, 91.9) // turn an angle 
         )
+        // .andThen(new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() ) ) 
+        // .andThen(
+        //    new DriveDistancePidCommand( this.m_tankDriveSubsystem, 1 )  //drive a distance
+        // )
+        
+        
+        // .andThen(
+        //   new SequentialCommandGroup(
+        //     // start shooter
+        //     new InstantCommand( ()-> this.m_shooterSubsystem.startShooter(), this.m_shooterSubsystem ),
+        //     new WaitCommand(1.5), // wait 1.5 to let the shooter spin up
+        //     new InstantCommand( ()-> { 
+        //       this.m_shooterSubsystem.startQueue2();
+        //       this.m_shooterSubsystem.startQueue();
+        //     }, this.m_shooterSubsystem ),
+        //     new WaitCommand(1.0), // wait 1 s to complete the shot
+        //     new InstantCommand( ()-> { 
+        //       this.m_shooterSubsystem.stopShooter();
+        //       this.m_shooterSubsystem.stopQueue2();
+        //       this.m_shooterSubsystem.stopQueue();
+        //     }, this.m_shooterSubsystem )
+        //   )
+        // )
     
         ; /// drive distance of 10
-   /*
-    // Start the command by spinning up the shooter...
-        new InstantCommand(m_shooter::enable, m_shooter)
-        .andThen(
-            // Wait until the shooter is at speed before feeding the frisbees
-            new WaitUntilCommand(m_shooter::atSetpoint),
-            // Start running the feeder
-            new InstantCommand(m_shooter::runFeeder, m_shooter),
-            // Shoot for the specified time
-            new WaitCommand(AutoConstants.kAutoShootTimeSeconds))
-        // Add a timeout (will end the command if, for instance, the shooter never gets up to
-        // speed)
-        .withTimeout(AutoConstants.kAutoTimeoutSeconds)
-        // When the command ends, turn off the shooter and the feeder
-        .andThen(
-            () -> {
-              m_shooter.disable();
-              m_shooter.stopFeeder();
-            });  
-    */ 
     return autoCommand;
 
   }
