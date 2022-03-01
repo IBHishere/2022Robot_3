@@ -1,6 +1,11 @@
 {
   "HALProvider": {
     "Other Devices": {
+      "SPARK MAX [2]": {
+        "header": {
+          "open": true
+        }
+      },
       "SPARK MAX [31]": {
         "header": {
           "open": true
@@ -10,17 +15,13 @@
         "header": {
           "open": true
         }
-      },
-      "SPARK MAX [4]": {
-        "header": {
-          "open": true
-        }
       }
     }
   },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/ClimberSubsystem": "Subsystem",
       "/LiveWindow/DriveTrainSubsystem": "Subsystem",
       "/LiveWindow/IntakeSubsystem": "Subsystem",
       "/LiveWindow/ShooterSubsystem": "Subsystem",
@@ -28,6 +29,7 @@
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[4]": "PIDController",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/VisionSubsystem": "Subsystem"
     },
@@ -48,9 +50,6 @@
     "AutonomousState": {
       "open": true
     },
-    "DriveDistancePidCommand": {
-      "open": true
-    },
     "DriveTrainSubsystem_2": {
       "open": true
     },
@@ -61,6 +60,9 @@
       "ShooterSubsystem": {
         "open": true
       }
+    },
+    "PidClimbCommand": {
+      "open": true
     },
     "datatable": {
       "open": true

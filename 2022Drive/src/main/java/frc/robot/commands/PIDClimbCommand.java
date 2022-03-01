@@ -33,14 +33,14 @@ public class PIDClimbCommand extends PIDCommand {
         // This should return the measurement
         () -> m_climberSubsystem.getPosition(),
         // This should return the setpoint (can also be a constant)
-        distance,
+        () -> distance,
         // This uses the output
         output -> {
           // Use the output here
         m_climberSubsystem.climb(output);
         });
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.m_climberSubsystem);
+    addRequirements(m_climberSubsystem);
 
     // Configure additional PID options by calling `getController` here.
     getController().setTolerance(rotationTolerance);
@@ -54,6 +54,8 @@ public class PIDClimbCommand extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    boolean isFin = this.m_controller.atSetpoint();
+    this.table.getEntry("atSetpoint").setBoolean(isFin);
+    return isFin;
   }
 }
