@@ -10,10 +10,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.DriveDistancePidCommand;
+import frc.robot.commands.PIDClimbCommand;
 // import frc.robot.commands.PIDTurnRobotCommand;
 import frc.robot.commands.ShootCommands;
 import frc.robot.commands.TankDriveCommand;
 import frc.robot.commands.TurnAnglePidCommand;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -40,7 +42,7 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
   XboxController  m_helperController = new XboxController(Constants.HELPER_XBOX_CONTROLLER);
   
   // The robot's subsystems and commands are defined here...
-
+  private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final DriveTrainSubsystem m_tankDriveSubsystem = new DriveTrainSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
    private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
@@ -131,7 +133,18 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
         this.m_shooterSubsystem.toggleQueue();
       }
     );
-
+    new JoystickButton(m_helperController, Button.kB.value)
+    .whenPressed(
+      //climber up
+        new PIDClimbCommand(m_climberSubsystem, Constants.CLIMBDISTANCE)
+      
+    );
+    new JoystickButton(m_helperController, Button.kA.value)
+    .whenPressed(
+      //climber down
+        new PIDClimbCommand(m_climberSubsystem, 0)
+      
+    );
     new JoystickButton(m_helperController, Button.kY.value)
     .whenPressed(
       ()-> {

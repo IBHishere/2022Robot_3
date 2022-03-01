@@ -17,6 +17,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 
+
 public class DriveTrainSubsystem extends SubsystemBase {
 
   private DifferentialDrive m_myRobot;
@@ -48,8 +49,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_leftMotor2.setInverted(true);
     MotorControllerGroup m_leftMotorGroup = new MotorControllerGroup(m_leftMotor1,m_leftMotor2);
     
-    m_rightMotor1 = new CANSparkMax(Constants.RIGHT_MOTOR_CAN2_ID, MotorType.kBrushless);
-    m_rightMotor2 = new CANSparkMax(Constants.RIGHT_MOTOR_CAN1_ID, MotorType.kBrushless);
+    m_rightMotor1 = new CANSparkMax(Constants.RIGHT_MOTOR_CAN1_ID, MotorType.kBrushless);
+    m_rightMotor2 = new CANSparkMax(Constants.RIGHT_MOTOR_CAN2_ID, MotorType.kBrushless);
     m_rightMotor1.restoreFactoryDefaults();
     m_rightMotor2.restoreFactoryDefaults();
     m_rightMotor1.setIdleMode(IdleMode.kBrake);

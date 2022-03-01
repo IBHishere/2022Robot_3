@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.function.DoubleSupplier;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -30,6 +32,11 @@ public final class Constants {
 
     public static final int QUEUE_MOTOR_CAN1_ID = 7; // change to 7
     public static final int QUEUE_MOTOR_CAN2_ID = 8; // change to 8
+  // climber  
+    
+    public static final int CLIMBDISTANCE = 1; // change to correct number
+    public static final int CLIMBER_MOTOR_CAN1_ID = 9;  // change to 9
+    public static final int CLIMBER_MOTOR_CAN2_ID = 10; // change to 10
 
     
 
