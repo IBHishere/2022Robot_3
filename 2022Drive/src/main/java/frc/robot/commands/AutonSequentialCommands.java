@@ -24,8 +24,9 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     addCommands();
     m_tankDriveSubsystem = tankDriveSubsystem;
   }
-  public DriveDistancePidCommand  drive(double feet){
+  public DriveDistancePidCommand drive(double feet){
     return new DriveDistancePidCommand(m_tankDriveSubsystem, feet);
   }
-}
+
 // don't delete this btw
+}
