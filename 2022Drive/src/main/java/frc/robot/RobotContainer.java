@@ -49,6 +49,7 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
    private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   ShootCommands m_shootCommand = new ShootCommands(
                 this.m_shooterSubsystem);
+AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDriveSubsystem, this.m_intakeSubsystem, this.m_shooterSubsystem);
  // PIDTurnRobotCommand m_PIDTurnRobotCommand = new PIDTurnRobotCommand(this.m_tankDriveSubsystem, targetAngle);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -61,8 +62,9 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
         m_driveController::getRightY);
     this.m_tankDriveSubsystem.setDefaultCommand(command);
     this.m_shooterSubsystem.setDefaultCommand(m_shootCommand);
+    
   }
-   AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDriveSubsystem, this.m_intakeSubsystem, this.m_shooterSubsystem);
+  
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -170,15 +172,15 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
     this.table.getEntry("autonomousStarted").setBoolean(true);
 
     
-    Command autoCommand =
-        new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() )
-         .andThen(
-           new DriveDistancePidCommand( this.m_tankDriveSubsystem, 1) 
-         ) //drive a distance
-         .andThen(new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() ) )
-        .andThen(
-            new TurnAnglePidCommand( this.m_tankDriveSubsystem, 91.9) // turn an angle 
-        )
+    // Command autoCommand =
+        // new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() )
+        //  .andThen(
+        //    new DriveDistancePidCommand( this.m_tankDriveSubsystem, 1) 
+        //  ) //drive a distance
+        //  .andThen(new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() ) )
+        // .andThen(
+        //     new TurnAnglePidCommand( this.m_tankDriveSubsystem, 91.9) // turn an angle 
+        // )
         // .andThen(new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() ) ) 
         // .andThen(
         //    new DriveDistancePidCommand( this.m_tankDriveSubsystem, 1 )  //drive a distance
@@ -203,8 +205,8 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
         //   )
         // )
     
-        ; /// drive distance of 10
-    return autoCommand;
+        //; /// drive distance of 10
+    return this.m_autonomous;
 
   }
 }

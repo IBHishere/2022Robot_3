@@ -37,7 +37,7 @@ public class DriveDistancePidCommand extends PIDCommand {
         // This should return the measurement
         () -> driveTrainSubsystem.getPosition(),
         // This should return the setpoint (can also be a constant)
-        distanceToDriveInFeet*rotationsPerFeet,
+        () -> distanceToDriveInFeet*rotationsPerFeet,
         // This uses the output
         output -> {
           //System.out.println("output, " + output);

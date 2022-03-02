@@ -35,7 +35,7 @@ public class TurnAnglePidCommand extends PIDCommand {
         // This should return the measurement
         () -> driveTrainSubsystem.getAngle(),
         // This should return the setpoint (can also be a constant)
-        angleToTurnInDegrees*rotationsPerDegree,
+        () -> angleToTurnInDegrees*rotationsPerDegree,
         // This uses the output
         output -> {
           driveTrainSubsystem.tankDrive(output, -output);

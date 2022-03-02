@@ -17,15 +17,42 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
   private DriveTrainSubsystem m_tankDriveSubsystem;
   private IntakeSubsystem m_intakeSubsystem;
   private ShooterSubsystem m_shooterSubsystem;
-  public AutonSequentialCommands(DriveTrainSubsystem tankDriveSubsystem, IntakeSubsystem m_intakeSubsystem, ShooterSubsystem m_shooterSubsystem) {
+  private double feetTotal = 0;
+  private double angleTotal = 0;
+  public AutonSequentialCommands(DriveTrainSubsystem tankDriveSubsystem, IntakeSubsystem intakeSubsystem, ShooterSubsystem shooterSubsystem) {
+    m_tankDriveSubsystem = tankDriveSubsystem;
+    m_intakeSubsystem = intakeSubsystem;
+    m_shooterSubsystem = shooterSubsystem;
     addRequirements(m_tankDriveSubsystem, m_intakeSubsystem, m_shooterSubsystem);
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands();
-    m_tankDriveSubsystem = tankDriveSubsystem;
+    
+    
+    addCommands(
+      // all commands will go here with commas after them.
+      drive(10),
+      turn(90),
+      drive(10),
+      turn(30)
+      
+    
+    
+    
+    
+    
+      );
+    
   }
   public DriveDistancePidCommand  drive(double feet){
-    return new DriveDistancePidCommand(m_tankDriveSubsystem, feet);
+    feetTotal += feet;
+    System.out.println(feetTotal);
+    return new DriveDistancePidCommand(m_tankDriveSubsystem, feetTotal);
   }
+  public TurnAnglePidCommand  turn(double angle){
+  angleTotal += angle;
+  System.out.println(angleTotal);
+    return new TurnAnglePidCommand(m_tankDriveSubsystem, angleTotal);
+  }
+
 }
 // don't delete this btw
