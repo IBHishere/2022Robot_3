@@ -38,6 +38,7 @@ public class PIDClimbCommand extends PIDCommand {
         output -> {
           // Use the output here
         m_climberSubsystem.climb(output);
+        
         });
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_climberSubsystem);

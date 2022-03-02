@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.commands.AutonSequentialCommands;
 import frc.robot.commands.DriveDistancePidCommand;
 import frc.robot.commands.PIDClimbCommand;
 // import frc.robot.commands.PIDTurnRobotCommand;
@@ -61,6 +62,7 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
     this.m_tankDriveSubsystem.setDefaultCommand(command);
     this.m_shooterSubsystem.setDefaultCommand(m_shootCommand);
   }
+   AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDriveSubsystem, this.m_intakeSubsystem, this.m_shooterSubsystem);
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
