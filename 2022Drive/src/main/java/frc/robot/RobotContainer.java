@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.AutonSequentialCommands;
 import frc.robot.commands.DriveDistancePidCommand;
+import frc.robot.commands.FollowLimelightPidCommand;
 import frc.robot.commands.PIDClimbCommand;
 // import frc.robot.commands.PIDTurnRobotCommand;
 import frc.robot.commands.ShootCommands;
@@ -19,6 +20,7 @@ import frc.robot.commands.TurnAnglePidCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightVisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -46,7 +48,10 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final DriveTrainSubsystem m_tankDriveSubsystem = new DriveTrainSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  private final LimelightVisionSubsystem m_limelightVisionSubsystem = new LimelightVisionSubsystem();
+
+
   ShootCommands m_shootCommand = new ShootCommands(
                 this.m_shooterSubsystem);
  // PIDTurnRobotCommand m_PIDTurnRobotCommand = new PIDTurnRobotCommand(this.m_tankDriveSubsystem, targetAngle);
@@ -172,13 +177,14 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
     
     Command autoCommand =
         new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() )
-         .andThen(
-           new DriveDistancePidCommand( this.m_tankDriveSubsystem, 1) 
-         ) //drive a distance
-         .andThen(new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() ) )
-        .andThen(
-            new TurnAnglePidCommand( this.m_tankDriveSubsystem, 91.9) // turn an angle 
-        )
+        .andThen(()-> {
+          System.out.println("limelight start");
+          this.m_limelightVisionSubsystem.turnOnLed();
+        })
+        .andThen(new FollowLimelightPidCommand(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem))
+        .andThen( ()-> {
+          System.out.println("limelight done");
+          this.m_limelightVisionSubsystem.turnOffLed(); } )
         // .andThen(new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() ) ) 
         // .andThen(
         //    new DriveDistancePidCommand( this.m_tankDriveSubsystem, 1 )  //drive a distance

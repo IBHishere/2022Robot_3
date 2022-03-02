@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
+import frc.robot.commands.TankDriveCommand;
+
 import java.lang.Math;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -31,7 +33,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private RelativeEncoder m_right2Encoder ;
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table = inst.getTable("DriveTrainSubsystem");
-  
+  private final static double defaultDriveSpeedScalingFactor = .5;
+    
   public boolean doLog = false;
 
 
@@ -71,19 +74,24 @@ public class DriveTrainSubsystem extends SubsystemBase {
   public void periodic() {}
     // This method will be called once per scheduler run
 
-  private double computeActualDriveFromInput(double joystickValue) {
+  private double computeActualDriveFromInput(double joystickValue, double speedScalingFactor) {
     //TODO: Move this to constants?
     double zeroLimit = 0.1;
     double driveCurvePower = 1.0; // 3.0;
-    double driveScalingFactor = .2;
     
     double outputValue  = Math.abs(joystickValue) < zeroLimit ? 0 :
-       Math.pow(joystickValue, driveCurvePower) * driveScalingFactor;
+       Math.pow(joystickValue, driveCurvePower) * speedScalingFactor;
 
     return outputValue;
   }
 
   public void tankDrive(double leftJoystickValue, double rightJoystickValue) {
+    this.tankDrive(leftJoystickValue, rightJoystickValue, DriveTrainSubsystem.defaultDriveSpeedScalingFactor);
+  }
+
+  public void tankDrive(double leftJoystickValue, double rightJoystickValue, double speedScalingFactor ) {
+    
+    
     if(doLog) System.out.println("joystick-l-r,  " + leftJoystickValue +", " + rightJoystickValue);
 
     //limit input to [-1,1] range
@@ -96,8 +104,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     table.getEntry("motorRightValue").setDouble(rightJoystickValue);
 
     //convert joystick values to motor inputs
-    double leftMotorValue = this.computeActualDriveFromInput(leftJoystickValue);
-    double rightMotorValue = this.computeActualDriveFromInput(rightJoystickValue);
+    double leftMotorValue = this.computeActualDriveFromInput(leftJoystickValue, speedScalingFactor);
+    double rightMotorValue = this.computeActualDriveFromInput(rightJoystickValue, speedScalingFactor);
 
     table.getEntry("computedMotorLeftValue").setDouble(leftMotorValue);
     table.getEntry("computedMotorRightValue").setDouble(rightMotorValue);

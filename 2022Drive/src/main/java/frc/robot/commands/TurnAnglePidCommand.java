@@ -38,7 +38,7 @@ public class TurnAnglePidCommand extends PIDCommand {
         angleToTurnInDegrees*rotationsPerDegree,
         // This uses the output
         output -> {
-          driveTrainSubsystem.tankDrive(output, -output);
+          driveTrainSubsystem.tankDrive(output, -output, .3);
         });
 
         

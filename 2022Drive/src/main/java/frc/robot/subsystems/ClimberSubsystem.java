@@ -21,9 +21,12 @@ public class ClimberSubsystem extends SubsystemBase {
   private RelativeEncoder m_climber1encoder;
   private CANSparkMax m_climber2;
   private RelativeEncoder m_climber2encoder ;
+
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table = inst.getTable("ClimberSubsystem");
+  
   MotorControllerGroup m_climbGroup;
+  
   public ClimberSubsystem() {
     this.init();
   }
@@ -47,6 +50,8 @@ public class ClimberSubsystem extends SubsystemBase {
     return  pos;
   }
   public void climb(double speed){
+    //TODO: we should probably limit the speed so that it doesn't shoot up 
+    
     this.m_climbGroup.set(speed);
   }
   @Override
