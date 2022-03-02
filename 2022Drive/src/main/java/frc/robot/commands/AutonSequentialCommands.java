@@ -7,7 +7,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightVisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -17,19 +19,22 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
   private DriveTrainSubsystem m_tankDriveSubsystem;
   private IntakeSubsystem m_intakeSubsystem;
   private ShooterSubsystem m_shooterSubsystem;
+  private LimelightVisionSubsystem m_limelightVisionSubsystem;
   private double feetTotal = 0;
   private double angleTotal = 0;
-  public AutonSequentialCommands(DriveTrainSubsystem tankDriveSubsystem, IntakeSubsystem intakeSubsystem, ShooterSubsystem shooterSubsystem) {
+  public AutonSequentialCommands(DriveTrainSubsystem tankDriveSubsystem, IntakeSubsystem intakeSubsystem, ShooterSubsystem shooterSubsystem, LimelightVisionSubsystem limelightVisionSubsystem) {
+    m_limelightVisionSubsystem = limelightVisionSubsystem;
     m_tankDriveSubsystem = tankDriveSubsystem;
     m_intakeSubsystem = intakeSubsystem;
     m_shooterSubsystem = shooterSubsystem;
-    addRequirements(m_tankDriveSubsystem, m_intakeSubsystem, m_shooterSubsystem);
+    addRequirements(m_tankDriveSubsystem, m_intakeSubsystem, m_shooterSubsystem, m_limelightVisionSubsystem);
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     
     
     addCommands(
       // all commands will go here with commas after them.
+      
       drive(10),
       turn(90),
       drive(10),
@@ -53,5 +58,9 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
   System.out.println(angleTotal);
     return new TurnAnglePidCommand(m_tankDriveSubsystem, angleTotal);
   }
+  public FollowLimelightPidCommand followlimelight(){
+    
+    return new FollowLimelightPidCommand(m_tankDriveSubsystem,  m_limelightVisionSubsystem);
+  } 
 }
 

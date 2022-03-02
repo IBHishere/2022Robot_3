@@ -38,6 +38,7 @@ public class ClimberSubsystem extends SubsystemBase {
     m_climber2.restoreFactoryDefaults();
     m_climber1.setIdleMode(IdleMode.kBrake);
     m_climber2.setIdleMode(IdleMode.kBrake);
+    m_climber1.setInverted(true);
     m_climbGroup = new MotorControllerGroup(m_climber1,m_climber2);
   
     m_climber2encoder= this.m_climber2.getEncoder();

@@ -54,7 +54,7 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
 
   ShootCommands m_shootCommand = new ShootCommands(
                 this.m_shooterSubsystem);
-AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDriveSubsystem, this.m_intakeSubsystem, this.m_shooterSubsystem);
+AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDriveSubsystem, this.m_intakeSubsystem, this.m_shooterSubsystem, this.m_limelightVisionSubsystem);
  // PIDTurnRobotCommand m_PIDTurnRobotCommand = new PIDTurnRobotCommand(this.m_tankDriveSubsystem, targetAngle);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -176,21 +176,21 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
   public Command getAutonomousCommand() {
     this.table.getEntry("autonomousStarted").setBoolean(true);
 
-    
+   
     Command autoCommand =
         new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() )
         .andThen(()-> {
-          System.out.println("limelight start");
-          this.m_limelightVisionSubsystem.turnOnLed();
-        })
+         System.out.println("limelight start");
+          
+       })
         .andThen(new FollowLimelightPidCommand(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem))
-        .andThen( ()-> {
-          System.out.println("limelight done");
-          this.m_limelightVisionSubsystem.turnOffLed(); } );
-        // .andThen(new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() ) ) 
-        // .andThen(
-        //    new DriveDistancePidCommand( this.m_tankDriveSubsystem, 1 )  //drive a distance
-        // )
+       .andThen( ()-> {
+         System.out.println("limelight done");
+         this.m_limelightVisionSubsystem.turnOffLed(); } )
+        .andThen(new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() ) ) 
+        .andThen(
+           new DriveDistancePidCommand( this.m_tankDriveSubsystem, 1 )  //drive a distance
+        );
         
         
         // .andThen(
@@ -212,6 +212,7 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
         // )
     
         //; /// drive distance of 10
+  
     return this.m_autonomous;
 
   }
