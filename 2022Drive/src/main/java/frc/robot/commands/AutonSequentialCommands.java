@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -34,7 +35,6 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     
     addCommands(
       // all commands will go here with commas after them.
-      
       drive(10),
       turn(90),
       drive(10),
@@ -60,7 +60,8 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
   }
   public FollowLimelightPidCommand followlimelight(){
     
-    return new FollowLimelightPidCommand(m_tankDriveSubsystem,  m_limelightVisionSubsystem);
-  } 
+    return new FollowLimelightPidCommand(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem);
+  }
+  
 }
 

@@ -12,15 +12,17 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.AutonSequentialCommands;
 import frc.robot.commands.DriveDistancePidCommand;
 import frc.robot.commands.FollowLimelightPidCommand;
-import frc.robot.commands.PIDClimbCommand;
+import frc.robot.commands.PIDClimbLeftCommand;
+import frc.robot.commands.PIDClimbRightCommand;
 // import frc.robot.commands.PIDTurnRobotCommand;
 import frc.robot.commands.ShootCommands;
 import frc.robot.commands.TankDriveCommand;
 import frc.robot.commands.TurnAnglePidCommand;
-import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.LeftClimberSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightVisionSubsystem;
+import frc.robot.subsystems.RightClimberSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -45,7 +47,8 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
   XboxController  m_helperController = new XboxController(Constants.HELPER_XBOX_CONTROLLER);
   
   // The robot's subsystems and commands are defined here...
-  private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
+  private final LeftClimberSubsystem m_leftClimberSubsystem = new LeftClimberSubsystem();
+  private final RightClimberSubsystem m_rightClimberSubsystem = new RightClimberSubsystem();
   private final DriveTrainSubsystem m_tankDriveSubsystem = new DriveTrainSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
@@ -102,7 +105,7 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
     .whenPressed( 
       ()-> {
         table.getEntry("intake").forceSetString("Rt-Bumper/helper pressed: intakePull");
-        this.m_intakeSubsystem.intakePull();
+       // this.m_intakeSubsystem.intakePull();
       }
     );
 
@@ -110,7 +113,7 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
     .whenPressed( 
       ()-> {
         table.getEntry("intake").forceSetString("Lt-Bumper/helper pressed: intakePush");
-        this.m_intakeSubsystem.intakePush();
+       // this.m_intakeSubsystem.intakePush();
       }
     );
 
@@ -142,19 +145,27 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
         this.m_shooterSubsystem.toggleQueue();
       }
     );
-    new JoystickButton(m_helperController, Button.kB.value)
+
+
+    new JoystickButton(m_helperController, Button.kRightBumper.value)
     .whenPressed(
       //climber up
-      
-        new PIDClimbCommand(m_climberSubsystem, Constants.CLIMBDISTANCE)
-      
+        new ParallelCommandGroup(
+         new PIDClimbRightCommand(m_rightClimberSubsystem, Constants.CLIMBDISTANCE,.15),
+          new PIDClimbLeftCommand(m_leftClimberSubsystem, Constants.CLIMBDISTANCE,.15)
+        )  
     );
-    new JoystickButton(m_helperController, Button.kA.value)
+    
+    new JoystickButton(m_helperController, Button.kLeftBumper.value)
     .whenPressed(
       //climber down
-        new PIDClimbCommand(m_climberSubsystem, 0)
-      
+      new ParallelCommandGroup(
+        new PIDClimbLeftCommand(m_leftClimberSubsystem, 0,1),
+        new PIDClimbRightCommand(m_rightClimberSubsystem, 0,1)
+      )
     );
+
+
     new JoystickButton(m_helperController, Button.kY.value)
     .whenPressed(
       ()-> {
@@ -181,7 +192,7 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
         new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() )
         .andThen(()-> {
          System.out.println("limelight start");
-          
+         this.m_limelightVisionSubsystem.turnOnLed();   
        })
         .andThen(new FollowLimelightPidCommand(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem))
        .andThen( ()-> {
@@ -213,7 +224,7 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
     
         //; /// drive distance of 10
   
-    return this.m_autonomous;
+    return autoCommand;
 
   }
 }
