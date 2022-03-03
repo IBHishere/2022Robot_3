@@ -34,9 +34,12 @@ public final class Constants {
     public static final int QUEUE_MOTOR_CAN2_ID = 8; // change to 8
   // climber  
     
-    public static final int CLIMBDISTANCE = 1; // change to correct number
-    public static final int CLIMBER_MOTOR_CAN1_ID = 9;  // change to 9
-    public static final int CLIMBER_MOTOR_CAN2_ID = 10; // change to 10
+    public static final double CLIMBDISTANCE = 60; // change to correct number
+
+
+    public static final int CLIMBER_MOTOR_CANRIGHT_ID = 9; // change to 9
+    public static final int CLIMBER_MOTOR_CANLEFT_ID = 10;  // change to 10
+    
 
     
 

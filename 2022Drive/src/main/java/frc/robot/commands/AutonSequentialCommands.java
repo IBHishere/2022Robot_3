@@ -4,10 +4,14 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightVisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.LimelightVisionSubsystem;
+
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -17,18 +21,77 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
   private DriveTrainSubsystem m_tankDriveSubsystem;
   private IntakeSubsystem m_intakeSubsystem;
   private ShooterSubsystem m_shooterSubsystem;
-  public AutonSequentialCommands(DriveTrainSubsystem tankDriveSubsystem, IntakeSubsystem m_intakeSubsystem, ShooterSubsystem m_shooterSubsystem) {
-    addRequirements(m_tankDriveSubsystem, m_intakeSubsystem, m_shooterSubsystem);
+  private LimelightVisionSubsystem m_limelightVisionSubsystem;
+  private double feetTotal = 0;
+  private double angleTotal = 0;
+  public AutonSequentialCommands(DriveTrainSubsystem tankDriveSubsystem, IntakeSubsystem intakeSubsystem, ShooterSubsystem shooterSubsystem, LimelightVisionSubsystem limelightVisionSubsystem) {
+    m_limelightVisionSubsystem = limelightVisionSubsystem;
+    m_tankDriveSubsystem = tankDriveSubsystem;
+    m_intakeSubsystem = intakeSubsystem;
+    m_shooterSubsystem = shooterSubsystem;
+    addRequirements(m_tankDriveSubsystem, m_intakeSubsystem, m_shooterSubsystem, m_limelightVisionSubsystem);
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands();
-    m_tankDriveSubsystem = tankDriveSubsystem;
+    
+    
+    addCommands(
+      // all commands will go here with commas after them.
+      
+      TurnLimelightOff(),
+      TurnLimelightOn(),
+      followlimelight(),
+      TurnLimelightOff(),
+      drive(1)
+      
+    
+    
+    
+    
+    
+      );
+    
   }
-  public DriveDistancePidCommand drive(double feet){
-    return new DriveDistancePidCommand(m_tankDriveSubsystem, feet);
+  public DriveDistancePidCommand  drive(double feet){
+    feetTotal += feet;
+    System.out.println(feetTotal);
+    return new DriveDistancePidCommand(m_tankDriveSubsystem, feetTotal);
+  }
+  public TurnAnglePidCommand  turn(double angle){
+  angleTotal += angle;
+  System.out.println(angleTotal);
+    return new TurnAnglePidCommand(m_tankDriveSubsystem, angleTotal);
   }
   public ShootCommands shootSequence5(){
     return new ShootCommands(m_shooterSubsystem);
   }
 // don't delete this btw
+
+  public FollowLimelightPidCommand followlimelight(){
+    
+    return new FollowLimelightPidCommand(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem);
+  }
+  public InstantCommand TurnLimelightOn(){
+
+  return new InstantCommand(
+    ()->{
+      
+      System.out.println("limelight start");
+      m_limelightVisionSubsystem.turnOnLed();
+    
+  });
+  }
+  public InstantCommand TurnLimelightOff(){
+
+    return new InstantCommand(
+      ()->{
+        System.out.println("limelight stop");
+        m_limelightVisionSubsystem.turnOffLed();
+        // the following lines will be removed later
+        m_tankDriveSubsystem.zeroEncoders();
+        feetTotal=0;
+        angleTotal=0;
+    });
+    }
+  
 }
+

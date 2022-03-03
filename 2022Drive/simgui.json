@@ -30,6 +30,8 @@
       "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[4]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[5]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[6]": "PIDController",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/VisionSubsystem": "Subsystem"
     },
@@ -50,6 +52,9 @@
     "AutonomousState": {
       "open": true
     },
+    "DriveDistancePidCommand": {
+      "open": true
+    },
     "DriveTrainSubsystem_2": {
       "open": true
     },
@@ -62,6 +67,9 @@
       }
     },
     "PidClimbCommand": {
+      "open": true
+    },
+    "TurnAnglePidCommand": {
       "open": true
     },
     "datatable": {

@@ -15,40 +15,43 @@ import java.lang.Math;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 
-public class ClimberSubsystem extends SubsystemBase {
+public class RightClimberSubsystem extends SubsystemBase {
   /** Creates a new ClimberSubsystem. */
-  private CANSparkMax m_climber1;
-  private RelativeEncoder m_climber1encoder;
-  private CANSparkMax m_climber2;
-  private RelativeEncoder m_climber2encoder ;
+  private static final double defaultSpeedLimit = .5;
+  
+  private CANSparkMax m_climberRight;
+  private RelativeEncoder m_climberRightEncoder ;
+
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table = inst.getTable("ClimberSubsystem");
-  MotorControllerGroup m_climbGroup;
-  public ClimberSubsystem() {
+  
+  
+  public RightClimberSubsystem() {
     this.init();
   }
   
   private void init(){
-    m_climber1 = new CANSparkMax(Constants.CLIMBER_MOTOR_CAN1_ID, MotorType.kBrushless);
-    m_climber2 = new CANSparkMax(Constants.CLIMBER_MOTOR_CAN2_ID, MotorType.kBrushless);
-    m_climber1.restoreFactoryDefaults();
-    m_climber2.restoreFactoryDefaults();
-    m_climber1.setIdleMode(IdleMode.kBrake);
-    m_climber2.setIdleMode(IdleMode.kBrake);
-    m_climbGroup = new MotorControllerGroup(m_climber1,m_climber2);
-  
-    m_climber2encoder= this.m_climber2.getEncoder();
-    m_climber1encoder= this.m_climber1.getEncoder();
-  }
-  public double getPosition() {
-    double pos = (this.m_climber1encoder.getPosition() + this.m_climber2encoder.getPosition())/2.0; 
+    m_climberRight = new CANSparkMax(Constants.CLIMBER_MOTOR_CANRIGHT_ID, MotorType.kBrushless);
+    m_climberRight.restoreFactoryDefaults();
+    m_climberRight.setIdleMode(IdleMode.kBrake);
     
+    m_climberRightEncoder= this.m_climberRight.getEncoder();
+  }
+  public double getRightPosition() {
+    double pos = this.m_climberRightEncoder.getPosition() ; 
     this.table.getEntry("posclimber").setDouble(pos);
     return  pos;
   }
-  public void climb(double speed){
-    this.m_climbGroup.set(speed);
+
+  public void climbRight(double speed) {
+    this.climbRight(speed, defaultSpeedLimit);
   }
+
+  public void climbRight(double speed, double speedLimit){
+    speed = Math.signum(speed) * Math.min(speedLimit, Math.abs(speed));
+    this.m_climberRight.set(speed);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

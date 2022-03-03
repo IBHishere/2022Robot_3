@@ -30,18 +30,20 @@ public class DriveDistancePidCommand extends PIDCommand {
   private final static double rotationTolerance =0.1;
 
   /** Creates a new DriveDistancePidCommand. */
-  public DriveDistancePidCommand( DriveTrainSubsystem driveTrainSubsystem, double distanceToDriveInFeet) {
+  public DriveDistancePidCommand( 
+    DriveTrainSubsystem driveTrainSubsystem, 
+    double distanceToDriveInFeet) {
     super(
         // The controller that the command will use
         new PIDController(kP, kI, kD),
         // This should return the measurement
         () -> driveTrainSubsystem.getPosition(),
         // This should return the setpoint (can also be a constant)
-        distanceToDriveInFeet*rotationsPerFeet,
+        () -> distanceToDriveInFeet*rotationsPerFeet,
         // This uses the output
         output -> {
           //System.out.println("output, " + output);
-          driveTrainSubsystem.tankDrive(output, output);
+          driveTrainSubsystem.tankDrive(output, output, .3);
         }); 
 
     this.m_dDriveTrainSubsystem = driveTrainSubsystem;

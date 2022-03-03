@@ -3,53 +3,55 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
+
+
+import java.lang.reflect.Method;
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.Constants;
+import frc.robot.subsystems.LeftClimberSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TurnAnglePidCommand extends PIDCommand {
-  private NetworkTableInstance inst = NetworkTableInstance.getDefault();
-  private NetworkTable table = inst.getTable("TurnAnglePidCommand");
+public class PIDClimbLeftCommand extends PIDCommand {
+  private  NetworkTableInstance inst = NetworkTableInstance.getDefault();
+  private  NetworkTable table = inst.getTable("PidClimbCommand");
 
-  
-  private DriveTrainSubsystem m_dDriveTrainSubsystem;
-  private double m_angleToTurn;
-  
-  private final static double kP = 1;
-  private final static double kI = .2;
+  private LeftClimberSubsystem m_climberSubsystem;
+  private final static double kP = 3;
+  private final static double kI = 1;
   private final static double kD = 0;
-
-  private final static double rotationsPerDegree = 1.0/13.92;
-
-
-  /** Creates a new TurnAnglePidCommand. */
-  public TurnAnglePidCommand( DriveTrainSubsystem driveTrainSubsystem, double angleToTurnInDegrees) {
+  private final static double rotationTolerance =0.1;
+  /** Creates a new PIDClimbCommand. 
+     **/
+  public PIDClimbLeftCommand(LeftClimberSubsystem m_climberSubsystem, double distance, double climbSpeed) {
     super(
         // The controller that the command will use
         new PIDController(kP, kI, kD),
         // This should return the measurement
-        () -> driveTrainSubsystem.getAngle(),
+        () -> m_climberSubsystem.getLeftPosition(),
         // This should return the setpoint (can also be a constant)
-        () -> angleToTurnInDegrees*rotationsPerDegree,
+        () -> distance,
         // This uses the output
         output -> {
-          driveTrainSubsystem.tankDrive(output, -output, .3);
+          // Use the output here
+          m_climberSubsystem.climbLeft(output,climbSpeed);;
         });
-
-        
-
-    this.m_dDriveTrainSubsystem = driveTrainSubsystem;
-    this.m_angleToTurn = angleToTurnInDegrees;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.m_dDriveTrainSubsystem);
+    addRequirements(m_climberSubsystem);
+
     // Configure additional PID options by calling `getController` here.
-  
-  
+    getController().setTolerance(rotationTolerance);
+
+    this.table.getEntry("distanceToDrive").setDouble(Constants.CLIMBDISTANCE);
+    
+    this.table.getEntry("controllerSetPoint").setDouble(this.m_controller.getSetpoint());
+    // Configure additional PID options by calling `getController` here.
   }
 
   // Returns true when the command should end.
@@ -57,15 +59,6 @@ public class TurnAnglePidCommand extends PIDCommand {
   public boolean isFinished() {
     boolean isFin = this.m_controller.atSetpoint();
     this.table.getEntry("atSetpoint").setBoolean(isFin);
-
     return isFin;
-  }
-
-  @Override
-  public void execute() {
-    this.table.getEntry("setpoint").setDouble( m_setpoint.getAsDouble());
-    this.table.getEntry("angle").setDouble(m_measurement.getAsDouble());
-          
-    super.execute();
   }
 }
