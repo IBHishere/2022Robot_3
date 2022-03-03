@@ -10,6 +10,7 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightVisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.LimelightVisionSubsystem;
 
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -35,10 +36,12 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     
     addCommands(
       // all commands will go here with commas after them.
-      drive(10),
-      turn(90),
-      drive(10),
-      turn(30)
+      
+      TurnLimelightOff(),
+      TurnLimelightOn(),
+      followlimelight(),
+      TurnLimelightOff(),
+      drive(1)
       
     
     
@@ -62,6 +65,28 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     
     return new FollowLimelightPidCommand(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem);
   }
+  public InstantCommand TurnLimelightOn(){
+
+  return new InstantCommand(
+    ()->{
+      
+      System.out.println("limelight start");
+      m_limelightVisionSubsystem.turnOnLed();
+    
+  });
+  }
+  public InstantCommand TurnLimelightOff(){
+
+    return new InstantCommand(
+      ()->{
+        System.out.println("limelight stop");
+        m_limelightVisionSubsystem.turnOffLed();
+        // the following lines will be removed later
+        m_tankDriveSubsystem.zeroEncoders();
+        feetTotal=0;
+        angleTotal=0;
+    });
+    }
   
 }
 

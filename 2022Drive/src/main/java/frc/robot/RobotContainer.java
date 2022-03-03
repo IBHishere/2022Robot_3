@@ -224,7 +224,7 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
     
         //; /// drive distance of 10
   
-    return autoCommand;
+    return m_autonomous;
 
   }
 }
