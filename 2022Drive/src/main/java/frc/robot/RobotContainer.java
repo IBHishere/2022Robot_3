@@ -116,10 +116,7 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
     //Shooter controls
     new JoystickButton(m_helperController, Button.kX.value)
     .whenPressed(
-      ()-> {
-        table.getEntry("shooter").forceSetString("X-Button/helper pressed: toggleShooter");
-        this.m_shooterSubsystem.toggleShooter();  
-      }
+      new ShootCommands(m_shooterSubsystem)
     );
 
     //Start: Queuing controls
