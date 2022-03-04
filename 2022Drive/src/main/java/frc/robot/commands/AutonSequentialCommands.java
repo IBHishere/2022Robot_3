@@ -62,6 +62,11 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
   System.out.println(angleTotal);
     return new TurnAnglePidCommand(m_tankDriveSubsystem, angleTotal);
   }
+  public ShootCommands shootSequence5(){
+    return new ShootCommands(m_shooterSubsystem);
+  }
+// don't delete this btw
+
   public FollowLimelightPidCommand followlimelight(){
     
     return new FollowLimelightPidCommand(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem);

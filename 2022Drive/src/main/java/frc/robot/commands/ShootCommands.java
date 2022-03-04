@@ -10,6 +10,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class ShootCommands extends CommandBase {
   /** Creates a new ShootCommands. */
   private ShooterSubsystem m_shooterSubsystem;
+  private boolean shotsfired = false;
   public ShootCommands(ShooterSubsystem ShooterSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooterSubsystem = ShooterSubsystem;
@@ -31,6 +32,6 @@ public class ShootCommands extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return shotsfired;
   }
 }
