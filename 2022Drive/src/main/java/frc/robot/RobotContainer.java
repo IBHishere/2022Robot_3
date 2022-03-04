@@ -16,6 +16,7 @@ import frc.robot.commands.PIDClimbLeftCommand;
 import frc.robot.commands.PIDClimbRightCommand;
 // import frc.robot.commands.PIDTurnRobotCommand;
 import frc.robot.commands.ShootCommands;
+import frc.robot.commands.ShootSequence;
 import frc.robot.commands.TankDriveCommand;
 import frc.robot.commands.TurnAnglePidCommand;
 import frc.robot.subsystems.LeftClimberSubsystem;
@@ -151,8 +152,8 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
     .whenPressed(
       //climber up
         new ParallelCommandGroup(
-         new PIDClimbRightCommand(m_rightClimberSubsystem, Constants.CLIMBDISTANCE,.15),
-          new PIDClimbLeftCommand(m_leftClimberSubsystem, Constants.CLIMBDISTANCE,.15)
+         new PIDClimbRightCommand(m_rightClimberSubsystem, Constants.CLIMBDISTANCE,.2),
+          new PIDClimbLeftCommand(m_leftClimberSubsystem, Constants.CLIMBDISTANCE,.2)
         )  
     );
     
@@ -205,22 +206,7 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
         
         
         // .andThen(
-        //   new SequentialCommandGroup(
-        //     // start shooter
-        //     new InstantCommand( ()-> this.m_shooterSubsystem.startShooter(), this.m_shooterSubsystem ),
-        //     new WaitCommand(1.5), // wait 1.5 to let the shooter spin up
-        //     new InstantCommand( ()-> { 
-        //       this.m_shooterSubsystem.startQueue2();
-        //       this.m_shooterSubsystem.startQueue();
-        //     }, this.m_shooterSubsystem ),
-        //     new WaitCommand(1.0), // wait 1 s to complete the shot
-        //     new InstantCommand( ()-> { 
-        //       this.m_shooterSubsystem.stopShooter();
-        //       this.m_shooterSubsystem.stopQueue2();
-        //       this.m_shooterSubsystem.stopQueue();
-        //     }, this.m_shooterSubsystem )
-        //   )
-        // )
+       //  new ShootSequence(m_shooterSubsystem);
     
         //; /// drive distance of 10
   

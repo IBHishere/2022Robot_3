@@ -10,7 +10,6 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightVisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.LimelightVisionSubsystem;
 
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -41,7 +40,9 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
       TurnLimelightOn(),
       followlimelight(),
       TurnLimelightOff(),
-      drive(1)
+      drive(1),
+      shootSequence()
+
       
     
     
@@ -87,6 +88,9 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
         angleTotal=0;
     });
     }
-  
+    public ShootSequence shootSequence(){
+      return new ShootSequence(m_shooterSubsystem);
+    }
 }
+
 

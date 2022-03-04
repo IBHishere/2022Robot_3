@@ -62,6 +62,6 @@ public class FollowLimelightPidCommand extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false; // this.m_controller.atSetpoint();
+    return this.m_controller.atSetpoint();
   }
 }
