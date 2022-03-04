@@ -33,7 +33,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private RelativeEncoder m_right2Encoder ;
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table = inst.getTable("DriveTrainSubsystem");
-  private final static double defaultDriveSpeedScalingFactor = .5;
+  private final static double defaultDriveSpeedScalingFactor = .75;
     
   public boolean doLog = false;
 
