@@ -9,27 +9,12 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import frc.robot.commands.AutonSequentialCommands;
-import frc.robot.commands.DriveDistancePidCommand;
-import frc.robot.commands.FollowLimelightPidCommand;
-import frc.robot.commands.PIDClimbLeftCommand;
-import frc.robot.commands.PIDClimbRightCommand;
-// import frc.robot.commands.PIDTurnRobotCommand;
-import frc.robot.commands.ShootCommands;
-import frc.robot.commands.ShootSequence;
-import frc.robot.commands.TankDriveCommand;
-import frc.robot.commands.TurnAnglePidCommand;
-import frc.robot.subsystems.LeftClimberSubsystem;
-import frc.robot.subsystems.DriveTrainSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LimelightVisionSubsystem;
-import frc.robot.subsystems.RightClimberSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**

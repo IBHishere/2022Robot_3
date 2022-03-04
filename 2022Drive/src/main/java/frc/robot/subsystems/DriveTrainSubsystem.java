@@ -65,7 +65,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_left2Encoder = this.m_leftMotor2.getEncoder();
     m_right2Encoder = this.m_rightMotor2.getEncoder();
     
-    
+    zeroEncoders();
 
     m_myRobot = new DifferentialDrive(m_leftMotorGroup, m_rightMotorGroup);
   }
