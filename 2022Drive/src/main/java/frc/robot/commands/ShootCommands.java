@@ -15,6 +15,7 @@ public class ShootCommands extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooterSubsystem = ShooterSubsystem;
     addRequirements(m_shooterSubsystem);
+    addRequirements(m_shooterSubsystem.getBeltSubsystem());
   }
 
   // Called when the command is initially scheduled.

@@ -36,16 +36,24 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
   private final LeftClimberSubsystem m_leftClimberSubsystem = new LeftClimberSubsystem();
   private final RightClimberSubsystem m_rightClimberSubsystem = new RightClimberSubsystem();
   private final DriveTrainSubsystem m_tankDriveSubsystem = new DriveTrainSubsystem();
-  private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  private final BeltSubsystem m_beltSubsystem = new BeltSubsystem();
+  private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem( this.m_beltSubsystem);
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(this.m_beltSubsystem);
   private final LimelightVisionSubsystem m_limelightVisionSubsystem = new LimelightVisionSubsystem();
+  private final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
 
+  // ShootCommands m_shootCommand = new ShootCommands(
+  //               this.m_shooterSubsystem);
 
-  ShootCommands m_shootCommand = new ShootCommands(
-                this.m_shooterSubsystem);
-AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDriveSubsystem, this.m_intakeSubsystem, this.m_shooterSubsystem, this.m_limelightVisionSubsystem);
+  AutonSequentialCommands m_autonomous = new AutonSequentialCommands(
+    this.m_tankDriveSubsystem
+    , this.m_intakeSubsystem
+    , this.m_shooterSubsystem
+    , this.m_limelightVisionSubsystem
+    , this.m_beltSubsystem);
  // PIDTurnRobotCommand m_PIDTurnRobotCommand = new PIDTurnRobotCommand(this.m_tankDriveSubsystem, targetAngle);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
@@ -55,7 +63,7 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
         m_driveController::getLeftY, 
         m_driveController::getRightY);
     this.m_tankDriveSubsystem.setDefaultCommand(command);
-    this.m_shooterSubsystem.setDefaultCommand(m_shootCommand);
+//    this.m_shooterSubsystem.setDefaultCommand(m_shootCommand);
     
   }
   
@@ -70,6 +78,13 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
 
     table.getEntry("isXboxConnected").forceSetBoolean( m_helperController.isConnected() );
     
+    new JoystickButton (this.m_driveController, Button.kRightBumper.value)
+    .whenPressed( ()-> this.m_tankDriveSubsystem.setSpeed(DriveTrainSubsystem.highSpeedLimit));
+
+    new JoystickButton (this.m_driveController, Button.kLeftBumper.value)
+    .whenPressed( ()-> this.m_tankDriveSubsystem.setSpeed(DriveTrainSubsystem.lowSpeedLimit));
+    
+
     //TODO: decide if we are doing anything with vision
     /*
     new JoystickButton (m_helperController, Button.kA.value)
@@ -88,27 +103,27 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
 
     //Start: Intake controls
     new JoystickButton (m_helperController, Button.kY.value)
-    .whenPressed( 
+    .whenPressed( new InstantCommand(
       ()-> {
         table.getEntry("intake").forceSetString("Rt-Bumper/helper pressed: intakePull");
         this.m_intakeSubsystem.intakePull();
-      }
+      }, this.m_intakeSubsystem, this.m_beltSubsystem )
     );
 
     new JoystickButton (m_helperController, Button.kA.value)
-    .whenPressed( 
+    .whenPressed( new InstantCommand( 
       ()-> {
         table.getEntry("intake").forceSetString("Lt-Bumper/helper pressed: intakePush");
         this.m_intakeSubsystem.intakePush();
-      }
+      }, this.m_intakeSubsystem, this.m_beltSubsystem)
     );
 
     new JoystickButton(m_helperController, Button.kB.value)
-    .whenPressed(
+    .whenPressed( new InstantCommand( 
       ()-> {
         table.getEntry("intake").forceSetString("B-Button/drive pressed: intakeStop");
         this.m_intakeSubsystem.intakeStop();
-      }      
+      } , this.m_intakeSubsystem, this.m_beltSubsystem)
     );
     //End: intake controls
 
@@ -116,7 +131,7 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
     //Shooter controls
     new JoystickButton(m_helperController, Button.kX.value)
     .whenPressed(
-      new ShootSequence(m_shooterSubsystem)
+      new ShootSequence(this.m_shooterSubsystem, this.m_beltSubsystem)
     );
 
     //Start: Queuing controls
@@ -143,8 +158,8 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
     .whenPressed(
       //climber down
       new ParallelCommandGroup(
-        new PIDClimbLeftCommand(m_leftClimberSubsystem, 0,1),
-        new PIDClimbRightCommand(m_rightClimberSubsystem, 0,1)
+        new PIDClimbLeftCommand(m_leftClimberSubsystem, 0, 1),
+        new PIDClimbRightCommand(m_rightClimberSubsystem, 0, 1)
       )
     );
 
@@ -171,20 +186,20 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
     this.table.getEntry("autonomousStarted").setBoolean(true);
 
    
-    Command autoCommand =
-        new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() )
-        .andThen(()-> {
-         System.out.println("limelight start");
-         this.m_limelightVisionSubsystem.turnOnLed();   
-       })
-        .andThen(new FollowLimelightPidCommand(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem))
-       .andThen( ()-> {
-         System.out.println("limelight done");
-         this.m_limelightVisionSubsystem.turnOffLed(); } )
-        .andThen(new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() ) ) 
-        .andThen(
-           new DriveDistancePidCommand( this.m_tankDriveSubsystem, 1 )  //drive a distance
-        );
+    // Command autoCommand =
+    //     new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() )
+    //     .andThen(()-> {
+    //      System.out.println("limelight start");
+    //      this.m_limelightVisionSubsystem.turnOnLed();   
+    //    })
+    //     .andThen(new FollowLimelightPidCommand(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem))
+    //    .andThen( ()-> {
+    //      System.out.println("limelight done");
+    //      this.m_limelightVisionSubsystem.turnOffLed(); } )
+    //     .andThen(new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() ) ) 
+    //     .andThen(
+    //        new DriveDistancePidCommand( this.m_tankDriveSubsystem, 1 )  //drive a distance
+    //     );
         
         
         // .andThen(

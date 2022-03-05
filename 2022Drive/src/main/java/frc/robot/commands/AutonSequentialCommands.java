@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystems.BeltSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightVisionSubsystem;
@@ -20,10 +21,16 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
   private DriveTrainSubsystem m_tankDriveSubsystem;
   private IntakeSubsystem m_intakeSubsystem;
   private ShooterSubsystem m_shooterSubsystem;
+  private BeltSubsystem m_beltSubsystem;
   private LimelightVisionSubsystem m_limelightVisionSubsystem;
   private double feetTotal = 0;
   private double angleTotal = 0;
-  public AutonSequentialCommands(DriveTrainSubsystem tankDriveSubsystem, IntakeSubsystem intakeSubsystem, ShooterSubsystem shooterSubsystem, LimelightVisionSubsystem limelightVisionSubsystem) {
+  public AutonSequentialCommands(
+      DriveTrainSubsystem tankDriveSubsystem
+      , IntakeSubsystem intakeSubsystem
+      , ShooterSubsystem shooterSubsystem
+      , LimelightVisionSubsystem limelightVisionSubsystem
+      , BeltSubsystem beltSubsystem) {
     m_limelightVisionSubsystem = limelightVisionSubsystem;
     m_tankDriveSubsystem = tankDriveSubsystem;
     m_intakeSubsystem = intakeSubsystem;
@@ -35,13 +42,17 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     
     addCommands(
       // all commands will go here with commas after them.
-      
-      TurnLimelightOff(),
-      TurnLimelightOn(),
-      followlimelight(),
-      TurnLimelightOff(),
       drive(1),
-      shootSequence()
+      turn(0),
+      shootSequence(),
+      // the following lines are for testing purposes
+      //TODO: plan what we do during autonomous
+      turn(90),
+      drive(5),
+      drive(7),
+      turn(25)
+
+
 
       
     
@@ -93,8 +104,9 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
         angleTotal=0;
     });
     }
+
     public ShootSequence shootSequence(){
-      return new ShootSequence(m_shooterSubsystem);
+      return new ShootSequence(this.m_shooterSubsystem, this.m_beltSubsystem);
     }
 }
 

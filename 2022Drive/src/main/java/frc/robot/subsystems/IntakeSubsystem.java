@@ -11,39 +11,40 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new Intake. */
   private CANSparkMax m_intakeMotor1;
+  private BeltSubsystem m_bBeltSubsystem;
 
-
-public IntakeSubsystem() {
-  this.init();
+  public IntakeSubsystem(BeltSubsystem beltSubsystem) {
+    this.m_bBeltSubsystem = beltSubsystem;
+    this.init();
   }
-private void init(){
 
-  m_intakeMotor1 = new CANSparkMax(Constants.INTAKE_MOTOR_CAN_ID, MotorType.kBrushless);
-  m_intakeMotor1.restoreFactoryDefaults();
-    }
-
- public void intakePull() {
-// this pulls in balls from the ground into the center of the robot
-  m_intakeMotor1.set(1);
-  System.out.println("intakePull");
-
+  public BeltSubsystem getBeltSubsystem() {
+    return this.m_bBeltSubsystem;
   }
-public void intakePush() {
-// this pushes out balls incase one of the wrong color is pulled in
-m_intakeMotor1.set(-1);
-System.out.println("intakePush");
 
+  private void init(){
+    this.m_intakeMotor1 = new CANSparkMax(Constants.INTAKE_MOTOR_CAN_ID, MotorType.kBrushless);
+    this.m_intakeMotor1.restoreFactoryDefaults();
   }
+
+  public void intakePull() {
+    // this pulls in balls from the ground into the center of the robot
+    System.out.println("intakePull");
+    this.m_intakeMotor1.set(1.0);
+    this.m_bBeltSubsystem.startBelt(.3);
+  }
+
+  public void intakePush() {
+  // this pushes out balls incase one of the wrong color is pulled in
+    System.out.println("intakePush");
+    this.m_intakeMotor1.set(-1.0);
+    this.m_bBeltSubsystem.startBelt(-.1);
+  }
+  
   public void intakeStop() {
-// this stops the intake
-    m_intakeMotor1.set(0);
+  // this stops the intake
     System.out.println("intakeStop");
-    
-  }
-
- 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+    this.m_intakeMotor1.set(0);
+    this.m_bBeltSubsystem.stopBelt();
   }
 }

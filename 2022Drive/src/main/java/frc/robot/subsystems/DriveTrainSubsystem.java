@@ -33,8 +33,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private RelativeEncoder m_right2Encoder ;
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table = inst.getTable("DriveTrainSubsystem");
-  private final static double defaultDriveSpeedScalingFactor = .75;
-    
+  public final static double highSpeedLimit = .75;
+  public final static double lowSpeedLimit = .45;
+  private double currentSpeed = highSpeedLimit;  
+
   public boolean doLog = false;
 
 
@@ -70,6 +72,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_myRobot = new DifferentialDrive(m_leftMotorGroup, m_rightMotorGroup);
   }
 
+  public void setSpeed(double speed) {
+    this.currentSpeed = speed;
+  }
+
+
   @Override
   public void periodic() {}
     // This method will be called once per scheduler run
@@ -77,7 +84,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private double computeActualDriveFromInput(double joystickValue, double speedScalingFactor) {
     //TODO: Move this to constants?
     double zeroLimit = 0.1;
-    double driveCurvePower = 1.0; // 3.0;
+    double driveCurvePower = 5.0; // 3.0;
     
     double outputValue  = Math.abs(joystickValue) < zeroLimit ? 0 :
        Math.pow(joystickValue, driveCurvePower) * speedScalingFactor;
@@ -86,7 +93,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   }
 
   public void tankDrive(double leftJoystickValue, double rightJoystickValue) {
-    this.tankDrive(leftJoystickValue, rightJoystickValue, DriveTrainSubsystem.defaultDriveSpeedScalingFactor);
+    this.tankDrive(leftJoystickValue, rightJoystickValue, this.currentSpeed);
   }
 
   public void tankDrive(double leftJoystickValue, double rightJoystickValue, double speedScalingFactor ) {
