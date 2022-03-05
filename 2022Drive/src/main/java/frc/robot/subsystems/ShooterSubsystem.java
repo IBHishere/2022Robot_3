@@ -81,14 +81,14 @@ public class ShooterSubsystem extends SubsystemBase {
     m_isShooterOn = false;
   }
 
-  public void  startQueue(){
+  public void  startQueueBelt(){
     System.out.println("startQueue");
     m_queueMotor1.set(1);  
    m_isQueue1On = true;
   }
 
   
-  public void  stopQueue(){
+  public void  stopQueueBelt(){
     System.out.println("stopQueue");
     m_queueMotor1.set(0); 
     m_isQueue1On = false;
@@ -96,13 +96,13 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   //new stuff
-  public void  stopQueue2(){
+  public void  stopQueueFeederWheel(){
     System.out.println("stopQueue2");
     m_queueMotor2.set(0); 
     m_isQueue2On = false;
     //this stops the entrance to the shooter to allow shooter to be turned on
   }
-  public void  startQueue2(){
+  public void  startQueueFeederWheel(){
     System.out.println("startQueue2");
     m_queueMotor2.set(ShooterSubsystem.QUEUE_MOTOR_POWER); 
     m_isQueue2On = true;
@@ -122,19 +122,19 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void toggleQueue(){ 
     if(m_isQueue1On == false){
-      startQueue();
+      startQueueBelt();
     }
     else{
-      stopQueue(); 
+      stopQueueBelt(); 
     }
   }
 
   public void toggleQueue2(){ 
     if(m_isQueue2On == false){
-      startQueue2();
+      startQueueFeederWheel();
     }
     else{
-      stopQueue2(); 
+      stopQueueFeederWheel(); 
     }
   }
 }

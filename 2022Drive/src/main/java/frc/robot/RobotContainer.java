@@ -87,19 +87,19 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
 
 
     //Start: Intake controls
-    new JoystickButton (m_helperController, Button.kRightBumper.value)
+    new JoystickButton (m_helperController, Button.kY.value)
     .whenPressed( 
       ()-> {
         table.getEntry("intake").forceSetString("Rt-Bumper/helper pressed: intakePull");
-       // this.m_intakeSubsystem.intakePull();
+        this.m_intakeSubsystem.intakePull();
       }
     );
 
-    new JoystickButton (m_helperController, Button.kLeftBumper.value)
+    new JoystickButton (m_helperController, Button.kA.value)
     .whenPressed( 
       ()-> {
         table.getEntry("intake").forceSetString("Lt-Bumper/helper pressed: intakePush");
-       // this.m_intakeSubsystem.intakePush();
+        this.m_intakeSubsystem.intakePush();
       }
     );
 
@@ -116,18 +116,18 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
     //Shooter controls
     new JoystickButton(m_helperController, Button.kX.value)
     .whenPressed(
-      new ShootCommands(m_shooterSubsystem)
+      new ShootSequence(m_shooterSubsystem)
     );
 
     //Start: Queuing controls
     //TODO: Refactor queue to toggle with single button
-    new JoystickButton(m_helperController, Button.kA.value)
-    .whenPressed(
-      ()-> {
-        table.getEntry("queuing").forceSetString("A-Button/helper pressed: startQueue");
-        this.m_shooterSubsystem.toggleQueue();
-      }
-    );
+    // new JoystickButton(m_helperController, Button.kA.value)
+    // .whenPressed(
+    //   ()-> {
+    //     table.getEntry("queuing").forceSetString("A-Button/helper pressed: startQueue");
+    //     this.m_shooterSubsystem.toggleQueue();
+    //   }
+    // );
 
 
     new JoystickButton(m_helperController, Button.kRightBumper.value)
@@ -149,13 +149,13 @@ AutonSequentialCommands m_autonomous = new AutonSequentialCommands(this.m_tankDr
     );
 
 
-    new JoystickButton(m_helperController, Button.kY.value)
-    .whenPressed(
-      ()-> {
-        table.getEntry("queuing").forceSetString("A-Button/drive pressed: startQueue2");
-        this.m_shooterSubsystem.toggleQueue2();
-      }  
-    );
+    // new JoystickButton(m_helperController, Button.kY.value)
+    // .whenPressed(
+    //   ()-> {
+    //     table.getEntry("queuing").forceSetString("A-Button/drive pressed: startQueue2");
+    //     this.m_shooterSubsystem.toggleQueue2();
+    //   }  
+    // );
 
   
     //End: Queue controls

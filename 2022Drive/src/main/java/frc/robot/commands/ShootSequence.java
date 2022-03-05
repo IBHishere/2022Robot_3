@@ -23,32 +23,24 @@ public class ShootSequence extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-   
-    // ShootSequence0(),
-    ShootSequence1()
-
-    );
+     // ShootSequence0(),
+      ShootSequence1()
+     );
   }
   public SequentialCommandGroup ShootSequence1(){
 
-    return new InstantCommand(
-      ()->{
-        this.m_shooterSubsystem.startShooter();
-        
+    //TODO: we have taken off the feeder wheel because the gearbox was not working well.  
 
-    }).andThen(new WaitCommand(1))
-    .andThen(new InstantCommand(
-      ()-> {
-      this.m_shooterSubsystem.startQueue();
-      this.m_shooterSubsystem.startQueue2();
-      }
-    ).andThen(new WaitCommand(1)).andThen( new InstantCommand(
-      ()->{
-    this.m_shooterSubsystem.stopShooter();
-    this.m_shooterSubsystem.stopQueue();
-      this.m_shooterSubsystem.stopQueue2();
-       } )))
-    ;
+     return new WaitCommand(.001)
+     .andThen(  ()-> this.m_shooterSubsystem.startShooter()  )
+     .andThen( new WaitCommand(.5))
+     .andThen( ()-> this.m_shooterSubsystem.startQueueBelt() )
+    //.andThen( () -> this.m_shooterSubsystem.startQueueFeederWheel())
+     .andThen( new WaitCommand(1))
+     .andThen( ()-> this.m_shooterSubsystem.stopShooter())
+     .andThen( ()-> this.m_shooterSubsystem.stopQueueBelt() )
+    //.andThen( ()-> this.m_shooterSubsystem.stopQueueFeederWheel() )
+;
     }
   public SequentialCommandGroup ShootSequence0(){
   return new SequentialCommandGroup(
@@ -56,14 +48,14 @@ public class ShootSequence extends SequentialCommandGroup {
             new InstantCommand( ()-> this.m_shooterSubsystem.startShooter(), this.m_shooterSubsystem ),
             new WaitCommand(1.5), // wait 1.5 to let the shooter spin up
             new InstantCommand( ()-> { 
-              this.m_shooterSubsystem.startQueue2();
-              this.m_shooterSubsystem.startQueue();
+              this.m_shooterSubsystem.startQueueFeederWheel();
+              this.m_shooterSubsystem.startQueueBelt();
             }, this.m_shooterSubsystem ),
             new WaitCommand(1.0), // wait 1 s to complete the shot
             new InstantCommand( ()-> { 
               this.m_shooterSubsystem.stopShooter();
-              this.m_shooterSubsystem.stopQueue2();
-              this.m_shooterSubsystem.stopQueue();
+              this.m_shooterSubsystem.stopQueueFeederWheel();
+              this.m_shooterSubsystem.stopQueueBelt();
             }, this.m_shooterSubsystem )
           );
         
