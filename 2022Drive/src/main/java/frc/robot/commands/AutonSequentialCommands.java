@@ -36,11 +36,7 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     addCommands(
       // all commands will go here with commas after them.
       
-      TurnLimelightOff(),
-      TurnLimelightOn(),
-      followlimelight(),
-      TurnLimelightOff(),
-      drive(1),
+      drive(-10),
       shootSequence()
 
       
