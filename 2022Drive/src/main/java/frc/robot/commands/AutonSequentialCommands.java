@@ -42,7 +42,7 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     
     addCommands(
       // all commands will go here with commas after them.
-      drive(1),
+      drive(-10),
       turn(0),
       shootSequence(),
       // the following lines are for testing purposes
