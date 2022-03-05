@@ -26,7 +26,7 @@ public class PIDClimbLeftCommand extends PIDCommand {
   private final static double kP = 1/(2*Constants.CLIMBDISTANCE);
   private final static double kI = 1;
   private final static double kD = 0;
-  private final static double rotationTolerance =0.1;
+  private final static double rotationTolerance =3;
   /** Creates a new PIDClimbCommand. 
      **/
   public PIDClimbLeftCommand(LeftClimberSubsystem m_climberSubsystem, double distance, double climbSpeed) {
