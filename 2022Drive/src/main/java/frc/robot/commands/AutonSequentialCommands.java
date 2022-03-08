@@ -46,7 +46,11 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
      
       drive(1.5),
       shootSequence() ,
-      drive(2)
+      turn(180),
+      drive(2),
+
+      turn(180),
+      shootSequence()
       // the following lines are for testing purposes
       //TODO: plan what we do during autonomous
     
@@ -106,6 +110,12 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
 
     public ShootSequence shootSequence(){
       return new ShootSequence(this.m_shooterSubsystem, this.m_beltSubsystem);
+    }
+    public InstantCommand intakePull(){
+      return new InstantCommand(
+        ()->{
+      this.m_intakeSubsystem.intakePull();
+      });
     }
 }
 

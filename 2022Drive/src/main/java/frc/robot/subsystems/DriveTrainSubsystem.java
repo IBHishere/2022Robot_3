@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
-import frc.robot.commands.TankDriveCommand;
 
 import java.lang.Math;
 import com.revrobotics.RelativeEncoder;
@@ -33,8 +32,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private RelativeEncoder m_right2Encoder ;
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table = inst.getTable("DriveTrainSubsystem");
-  public final static double highSpeedLimit = .75;
-  public final static double lowSpeedLimit = .45;
+  public final static double highSpeedLimit = .65;
+  public final static double lowSpeedLimit = .50;
   private double currentSpeed = highSpeedLimit;  
 
   public boolean doLog = false;
