@@ -34,7 +34,7 @@ public final class Constants {
     public static final int QUEUE_MOTOR_CAN2_ID = 8; // change to 8
   // climber  
     
-    public static final double CLIMBDISTANCE = 60; // change to correct number
+    public static final double CLIMBDISTANCE = 80; // change to correct number
 
 
     public static final int CLIMBER_MOTOR_CANRIGHT_ID = 9; // change to 9

@@ -21,6 +21,7 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/BeltSubsystem": "Subsystem",
       "/LiveWindow/ClimberSubsystem": "Subsystem",
       "/LiveWindow/DriveTrainSubsystem": "Subsystem",
       "/LiveWindow/IntakeSubsystem": "Subsystem",

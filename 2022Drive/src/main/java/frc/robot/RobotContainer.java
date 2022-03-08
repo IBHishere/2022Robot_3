@@ -144,13 +144,14 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
     //   }
     // );
 
+////// shhh its a secret comment you never saw this forget about it
 
     new JoystickButton(m_helperController, Button.kRightBumper.value)
     .whenPressed(
       //climber up
         new ParallelCommandGroup(
-         new PIDClimbRightCommand(m_rightClimberSubsystem, Constants.CLIMBDISTANCE,.2),
-          new PIDClimbLeftCommand(m_leftClimberSubsystem, Constants.CLIMBDISTANCE,.2)
+         new PIDClimbRightCommand(m_rightClimberSubsystem, Constants.CLIMBDISTANCE,.5),
+          new PIDClimbLeftCommand(m_leftClimberSubsystem, Constants.CLIMBDISTANCE,.5)
         )  
     );
     

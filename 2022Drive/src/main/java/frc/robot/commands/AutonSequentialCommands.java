@@ -35,22 +35,21 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     m_tankDriveSubsystem = tankDriveSubsystem;
     m_intakeSubsystem = intakeSubsystem;
     m_shooterSubsystem = shooterSubsystem;
-    addRequirements(m_tankDriveSubsystem, m_intakeSubsystem, m_shooterSubsystem, m_limelightVisionSubsystem);
+    m_beltSubsystem = beltSubsystem;
+    addRequirements(m_tankDriveSubsystem, m_intakeSubsystem, m_shooterSubsystem, m_limelightVisionSubsystem, m_beltSubsystem);
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     
     
     addCommands(
       // all commands will go here with commas after them.
-      drive(-10),
-      turn(0),
-      shootSequence(),
+     
+      drive(1.5),
+      shootSequence() ,
+      drive(2)
       // the following lines are for testing purposes
       //TODO: plan what we do during autonomous
-      turn(90),
-      drive(5),
-      drive(7),
-      turn(25)
+    
 
 
 
@@ -96,12 +95,12 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
 
     return new InstantCommand(
       ()->{
-        System.out.println("limelight stop");
-        m_limelightVisionSubsystem.turnOffLed();
+       // System.out.println("limelight stop");
+       // m_limelightVisionSubsystem.turnOffLed();
         // the following lines will be removed later
         m_tankDriveSubsystem.zeroEncoders();
-        feetTotal=0;
-        angleTotal=0;
+       // feetTotal=0;
+      //  angleTotal=0;
     });
     }
 
