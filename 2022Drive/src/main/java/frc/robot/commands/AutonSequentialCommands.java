@@ -99,12 +99,12 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
 
     return new InstantCommand(
       ()->{
-       // System.out.println("limelight stop");
-       // m_limelightVisionSubsystem.turnOffLed();
+       System.out.println("limelight stop");
+       m_limelightVisionSubsystem.turnOffLed();
         // the following lines will be removed later
         m_tankDriveSubsystem.zeroEncoders();
-       // feetTotal=0;
-      //  angleTotal=0;
+       feetTotal=0;
+       angleTotal=0;
     });
     }
 
