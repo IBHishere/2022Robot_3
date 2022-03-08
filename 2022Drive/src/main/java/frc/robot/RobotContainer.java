@@ -131,7 +131,8 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
     //Shooter controls
     new JoystickButton(m_helperController, Button.kX.value)
     .whenPressed(
-      new ShootSequence(this.m_shooterSubsystem, this.m_beltSubsystem)
+      new FollowLimelightSequence(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem).andThen(
+      new ShootSequence(this.m_shooterSubsystem, this.m_beltSubsystem))
     );
 
     //Start: Queuing controls

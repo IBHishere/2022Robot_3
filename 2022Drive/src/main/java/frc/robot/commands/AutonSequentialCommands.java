@@ -45,7 +45,9 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
       // all commands will go here with commas after them.
      
       drive(1.5),
-      shootSequence() ,
+      followlimelight(),
+      shootSequence(),
+      goback(),
       turn(180),
       drive(2),
 
@@ -85,6 +87,9 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     
     return new FollowLimelightPidCommand(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem);
   }
+  public FollowLimelightSequence limelightSequence(){
+    return new FollowLimelightSequence(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem);
+  }
   public InstantCommand TurnLimelightOn(){
 
   return new InstantCommand(
@@ -116,6 +121,12 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
         ()->{
       this.m_intakeSubsystem.intakePull();
       });
+    }
+    public FollowLimelightSequence followlimelightsequence(){
+     return new FollowLimelightSequence(m_tankDriveSubsystem, m_limelightVisionSubsystem);
+    }
+    public SequentialCommandGroup goback(){
+      return turn(0).andThen(drive(0));
     }
 }
 
