@@ -12,56 +12,52 @@ import frc.robot.subsystems.LimelightVisionSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class FollowLimelightPidCommand extends PIDCommand {
+public class LimelightVerticalCommand extends PIDCommand {
+  /** Creates a new LimelightVerticalCommand. */
   private static double kP = 1.0/25.0; // maximum
   private static double kI = 0;
   private static double kD = 1;
-
+  private static double shootangle = 10;
   private DriveTrainSubsystem m_driveTrainSubsystem;
   private LimelightVisionSubsystem m_limelightVisionSubsystem;
 
-  public FollowLimelightPidCommand(
+  public LimelightVerticalCommand(
     DriveTrainSubsystem driveTrainSubsystem, 
     LimelightVisionSubsystem limelightVisionSubsystem ) {
-      this(driveTrainSubsystem, limelightVisionSubsystem, 0);
+      this(driveTrainSubsystem, limelightVisionSubsystem, shootangle);
     }
-
-
-  
-  /** Creates a new FollowLimelightPidCommand. */
-  public FollowLimelightPidCommand(
-      DriveTrainSubsystem driveTrainSubsystem, 
-      LimelightVisionSubsystem limelightVisionSubsystem, 
-      double targetHorizontalAngle) {
+  public LimelightVerticalCommand(DriveTrainSubsystem driveTrainSubsystem, 
+  LimelightVisionSubsystem limelightVisionSubsystem, 
+  double targetVerticalAngle) {
     super(
         // The controller that the command will use
         new PIDController(kP, kI, kD),
         // This should return the measurement
-        () -> { 
-          return 
-            	  limelightVisionSubsystem.hasTarget() ?  
-                limelightVisionSubsystem.getHorizontalAngle()
-                : 10
-                ; 
+        () ->  {
+          return
+        limelightVisionSubsystem.hasTarget() ?  
+        limelightVisionSubsystem.getVerticalAngle()
+        : 10;
         },
         // This should return the setpoint (can also be a constant)
-        () -> targetHorizontalAngle,
+        () -> targetVerticalAngle,
         // This uses the output
         output -> {
+          // Use the output here
           System.out.println("limelight-output" + ", "+output);
 
-          driveTrainSubsystem.tankDrive(output, -output, .3);
+          driveTrainSubsystem.tankDrive(output, output, .25);
         });
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrainSubsystem);
     addRequirements(limelightVisionSubsystem);
     // Configure additional PID options by calling `getController` here.
-    getController().setTolerance(10); // I think this is one degree
+    getController().setTolerance(10); // I(not me tho) think this is one degree
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.m_controller.atSetpoint();
+   return this.m_controller.atSetpoint();
   }
 }

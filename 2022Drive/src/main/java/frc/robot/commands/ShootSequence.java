@@ -54,5 +54,6 @@ public class ShootSequence extends SequentialCommandGroup {
        return new InstantCommand (()-> this.m_shooterSubsystem.startShooter() ).andThen(new WaitCommand(3).andThen(new InstantCommand(()-> this.m_shooterSubsystem.startShooter())));
 
      }
+     
 }
 
