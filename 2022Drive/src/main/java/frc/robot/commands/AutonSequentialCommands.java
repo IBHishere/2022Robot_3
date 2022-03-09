@@ -45,13 +45,12 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
       // all commands will go here with commas after them.
      
       drive(1.5),
-      shootWithLimelight(),
-      goback(),
+      shootSequence(),
       turn(180),
       drive(2),
 
       turn(180),
-      shootWithLimelight()
+      shootSequence()
       // the following lines are for testing purposes
       //TODO: plan what we do during autonomous
     
