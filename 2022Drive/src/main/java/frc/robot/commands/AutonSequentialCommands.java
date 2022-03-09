@@ -45,14 +45,13 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
       // all commands will go here with commas after them.
      
       drive(1.5),
-      followlimelight(),
-      shootSequence(),
+      shootWithLimelight(),
       goback(),
       turn(180),
       drive(2),
 
       turn(180),
-      shootSequence()
+      shootWithLimelight()
       // the following lines are for testing purposes
       //TODO: plan what we do during autonomous
     
@@ -126,7 +125,10 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
      return new FollowLimelightSequence(m_tankDriveSubsystem, m_limelightVisionSubsystem);
     }
     public SequentialCommandGroup goback(){
-      return turn(0).andThen(drive(0));
+      return turn(0).andThen(drive(0)).andThen(turn(0));
+    }
+    public SequentialCommandGroup shootWithLimelight(){
+      return followlimelightsequence().andThen(goback());
     }
 }
 

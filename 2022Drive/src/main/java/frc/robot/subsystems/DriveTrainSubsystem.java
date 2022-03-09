@@ -47,8 +47,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private void init(){
     m_leftMotor1 = new CANSparkMax(Constants.LEFT_MOTOR_CAN1_ID, MotorType.kBrushless);
     m_leftMotor2 = new CANSparkMax(Constants.LEFT_MOTOR_CAN2_ID, MotorType.kBrushless);
-    m_leftMotor1.setIdleMode(IdleMode.kBrake);
-    m_leftMotor2.setIdleMode(IdleMode.kBrake);
+    m_leftMotor1.setIdleMode(IdleMode.kCoast);
+    m_leftMotor2.setIdleMode(IdleMode.kCoast);
     m_leftMotor1.setInverted(true);
     m_leftMotor2.setInverted(true);
     MotorControllerGroup m_leftMotorGroup = new MotorControllerGroup(m_leftMotor1,m_leftMotor2);
@@ -57,8 +57,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_rightMotor2 = new CANSparkMax(Constants.RIGHT_MOTOR_CAN2_ID, MotorType.kBrushless);
     m_rightMotor1.restoreFactoryDefaults();
     m_rightMotor2.restoreFactoryDefaults();
-    m_rightMotor1.setIdleMode(IdleMode.kBrake);
-    m_rightMotor2.setIdleMode(IdleMode.kBrake);
+    m_rightMotor1.setIdleMode(IdleMode.kCoast);
+    m_rightMotor2.setIdleMode(IdleMode.kCoast);
     MotorControllerGroup m_rightMotorGroup = new MotorControllerGroup(m_rightMotor1,m_rightMotor2);
 
     m_leftEncoder= this.m_leftMotor1.getEncoder();
