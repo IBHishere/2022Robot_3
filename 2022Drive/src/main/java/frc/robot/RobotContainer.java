@@ -109,7 +109,12 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
         this.m_intakeSubsystem.intakePull();
       }, this.m_intakeSubsystem, this.m_beltSubsystem )
     );
-
+    new JoystickButton (m_driveController, Button.kY.value)
+    .whenPressed( new InstantCommand(
+      ()-> {
+        this.m_limelightVisionSubsystem.turnOnLed();
+      }
+    ));
     new JoystickButton (m_helperController, Button.kA.value)
     .whenPressed( new InstantCommand( 
       ()-> {
@@ -168,6 +173,7 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
         new PIDClimbLeftCommand(m_leftClimberSubsystem, 0, 1),
         new PIDClimbRightCommand(m_rightClimberSubsystem, 0, 1)
       )
+
     );
 
 
