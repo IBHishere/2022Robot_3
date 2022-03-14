@@ -43,92 +43,81 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     
     addCommands(
       // all commands will go here with commas after them.
-     
-      drive(1.5),
-      shootSequence(),
-      turn(180),
-      drive(2),
-
-      turn(180),
-      shootSequence()
-      // the following lines are for testing purposes
-      //TODO: plan what we do during autonomous
-    
-
-
-
-      
-    
-    
-    
-    
-    
-      );
-    
+      drive(1.5), // move for the first shot
+      shootSequence(),  //shoot first shot
+      turn(180),  // turn around to pick up the second ball
+      drive(2),   // pick up the second ball //TODO: do we need start the intake?
+      turn(180),  // turn to shoot the second ball // do we need to drive back to the original position
+      shootSequence()  // second shot
+    );
   }
-  public DriveDistancePidCommand  drive(double feet){
+
+  private DriveDistancePidCommand  drive(double feet){
     feetTotal += feet;
     System.out.println(feetTotal);
     return new DriveDistancePidCommand(m_tankDriveSubsystem, feetTotal);
   }
-  public TurnAnglePidCommand  turn(double angle){
-  angleTotal += angle;
-  System.out.println(angleTotal);
+  
+  private TurnAnglePidCommand  turn(double angle){
+    angleTotal += angle;
+    System.out.println(angleTotal);
     return new TurnAnglePidCommand(m_tankDriveSubsystem, angleTotal);
   }
-  public ShootCommands shootSequence5(){
-    return new ShootCommands(m_shooterSubsystem);
-  }
-// don't delete this btw
+
+  // public ShootCommands shootSequence5(){
+  //   return new ShootCommands(m_shooterSubsystem);
+  // }
 
   public FollowLimelightPidCommand followlimelight(){
-    
     return new FollowLimelightPidCommand(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem);
   }
+    
   public FollowLimelightSequence limelightSequence(){
     return new FollowLimelightSequence(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem);
   }
-  public InstantCommand TurnLimelightOn(){
-
-  return new InstantCommand(
-    ()->{
-      
-      System.out.println("limelight start");
-      m_limelightVisionSubsystem.turnOnLed();
     
-  });
-  }
-  public InstantCommand TurnLimelightOff(){
-
+  public InstantCommand TurnLimelightOn(){
     return new InstantCommand(
       ()->{
-       System.out.println("limelight stop");
-       m_limelightVisionSubsystem.turnOffLed();
-        // the following lines will be removed later
-        m_tankDriveSubsystem.zeroEncoders();
-       feetTotal=0;
-       angleTotal=0;
-    });
-    }
-
-    public ShootSequence shootSequence(){
-      return new ShootSequence(this.m_shooterSubsystem, this.m_beltSubsystem);
-    }
-    public InstantCommand intakePull(){
-      return new InstantCommand(
-        ()->{
-      this.m_intakeSubsystem.intakePull();
+        System.out.println("limelight start");
+        m_limelightVisionSubsystem.turnOnLed();
       });
-    }
-    public FollowLimelightSequence followlimelightsequence(){
-     return new FollowLimelightSequence(m_tankDriveSubsystem, m_limelightVisionSubsystem);
-    }
-    public SequentialCommandGroup goback(){
-      return turn(0).andThen(drive(0)).andThen(turn(0));
-    }
-    public SequentialCommandGroup shootWithLimelight(){
-      return followlimelightsequence().andThen(goback());
-    }
+  }
+
+  public InstantCommand TurnLimelightOff(){
+    return new InstantCommand(
+      ()->{
+      System.out.println("limelight stop");
+      m_limelightVisionSubsystem.turnOffLed();
+      // the following lines will be removed later
+      m_tankDriveSubsystem.zeroEncoders();
+      feetTotal=0;
+      angleTotal=0;
+      });
+  }
+
+  public ShootSequence shootSequence(){
+    return new ShootSequence(this.m_shooterSubsystem, this.m_beltSubsystem);
+  }
+
+  public InstantCommand intakePull(){
+    return new InstantCommand(
+     ()->{
+     this.m_intakeSubsystem.intakePull();
+    });
+  }
+    
+  public FollowLimelightSequence followlimelightsequence(){
+    return new FollowLimelightSequence(m_tankDriveSubsystem, m_limelightVisionSubsystem);
+  }
+    
+  public SequentialCommandGroup goback(){
+    return turn(0).andThen(drive(0)).andThen(turn(0));
+  }
+    
+  public SequentialCommandGroup shootWithLimelight(){
+    return followlimelightsequence().andThen(goback());
+  }
 }
 
 
