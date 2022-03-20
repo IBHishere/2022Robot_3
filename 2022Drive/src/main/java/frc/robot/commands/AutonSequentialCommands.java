@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.BeltSubsystem;
@@ -46,11 +47,15 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
      
       drive(1.5),
       shootSequence(),
+      intakePull(),
       turn(180),
-      drive(2),
+      drive(1.5),
 
       turn(180),
+      drive(-2),
+      intakeStop(),
       shootSequence()
+      
       // the following lines are for testing purposes
       //TODO: plan what we do during autonomous
     
@@ -66,6 +71,13 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
       );
     
   }
+  private Command intakeStop() {
+  
+    return new InstantCommand(
+      ()->{
+    this.m_intakeSubsystem.intakeStop();
+    });  }
+
   public DriveDistancePidCommand  drive(double feet){
     feetTotal += feet;
     System.out.println(feetTotal);

@@ -109,12 +109,12 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
         this.m_intakeSubsystem.intakePull();
       }, this.m_intakeSubsystem, this.m_beltSubsystem )
     );
-    new JoystickButton (m_driveController, Button.kY.value)
-    .whenPressed( new InstantCommand(
-      ()-> {
-        this.m_limelightVisionSubsystem.turnOnLed();
-      }
-    ));
+    // new JoystickButton (m_driveController, Button.kY.value)
+    // .whenPressed( new InstantCommand(
+    //   ()-> {
+    //     this.m_limelightVisionSubsystem.turnOnLed();
+    //   }
+    // ));
     new JoystickButton (m_helperController, Button.kA.value)
     .whenPressed( new InstantCommand( 
       ()-> {
@@ -139,11 +139,11 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
       
       new ShootSequence(this.m_shooterSubsystem, this.m_beltSubsystem)
     );
-    new JoystickButton(m_driveController, Button.kX.value)
-    .whenPressed(
-      new FollowLimelightSequence(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem)
+    // new JoystickButton(m_driveController, Button.kX.value)
+    // .whenPressed(
+    //   new FollowLimelightSequence(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem)
       
-    );
+    // );
 
     //Start: Queuing controls
     //TODO: Refactor queue to toggle with single button
