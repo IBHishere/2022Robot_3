@@ -45,12 +45,11 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     addCommands(
       // all commands will go here with commas after them.
      
-      drive(1.5),
+      drive(2),
       shootSequence(),
       intakePull(),
       turn(180),
       drive(1.5),
-
       turn(180),
       drive(-2),
       intakeStop(),
@@ -75,7 +74,7 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
   
     return new InstantCommand(
       ()->{
-    this.m_intakeSubsystem.intakeStop();
+    this.m_intakeSubsystem.intakeStop();  
     });  }
 
   public DriveDistancePidCommand  drive(double feet){
