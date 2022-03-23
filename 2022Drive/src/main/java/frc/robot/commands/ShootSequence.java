@@ -40,7 +40,7 @@ public class ShootSequence extends SequentialCommandGroup {
      return 
      //new WaitCommand(.001)
      //.andThen(
-         new InstantCommand (()-> this.m_shooterSubsystem.startShooter() )
+         new InstantCommand (()-> this.m_shooterSubsystem.startShooter(.4) )
      .andThen( new WaitCommand(4))
      .andThen( new InstantCommand( ()-> this.m_beltSubsystem.startBelt(.1) ))
      .andThen( new InstantCommand( () -> this.m_shooterSubsystem.startQueueFeederWheel()))
