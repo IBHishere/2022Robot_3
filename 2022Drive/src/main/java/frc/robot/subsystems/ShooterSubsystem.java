@@ -62,9 +62,12 @@ public class ShooterSubsystem extends SubsystemBase {
   //   // this returns the current velocity
   // }
 
-  public void startShooter(){
+  public void startShooter() {
+    this.startShooter(1.0);
+  }
+  public void startShooter(double power){
     System.out.println("startShooter");
-    m_shooterMotor.set(1.0);  
+    m_shooterMotor.set(power);  
     m_isShooterOn = true;  
       
 

@@ -24,8 +24,8 @@ public class PIDClimbRightCommand extends PIDCommand {
   private  NetworkTable table = inst.getTable("PidClimbCommand");
 
   private LeftClimberSubsystem m_climberSubsystem;
-  private final static double kP = 1/(Constants.CLIMBDISTANCE);
-  private final static double kI = 1;
+  private final static double kP = 1.0/(Constants.CLIMBDISTANCE);
+  private final static double kI = 1.5;
   private final static double kD = 0;
   private final static double rotationTolerance =5;
   /** Creates a new PIDClimbCommand. 

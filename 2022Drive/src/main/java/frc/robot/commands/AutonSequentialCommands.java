@@ -45,15 +45,16 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     addCommands(
       // all commands will go here with commas after them.
      
-      drive(2),
       shootSequence(),
-      intakePull(),
-      turn(180),
-      drive(1.5),
-      turn(180),
-      drive(-2),
-      intakeStop(),
-      shootSequence()
+      drive(4),
+      ///intakePull(),
+      ///turn(180),
+      drive(1)
+      // ,
+      //turn(180),
+      //drive(-2),
+      ///intakeStop(),
+      ///shootSequence()
       
       // the following lines are for testing purposes
       //TODO: plan what we do during autonomous
@@ -73,8 +74,7 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
   private Command intakeStop() {
   
     return new InstantCommand(
-      ()->{
-    this.m_intakeSubsystem.intakeStop();  
+      ()->{ this.m_intakeSubsystem.intakeStop();
     });  }
 
   public DriveDistancePidCommand  drive(double feet){
@@ -82,11 +82,13 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     System.out.println(feetTotal);
     return new DriveDistancePidCommand(m_tankDriveSubsystem, feetTotal);
   }
+
   public TurnAnglePidCommand  turn(double angle){
-  angleTotal += angle;
-  System.out.println(angleTotal);
+    angleTotal += angle;
+    System.out.println(angleTotal);
     return new TurnAnglePidCommand(m_tankDriveSubsystem, angleTotal);
   }
+
   public ShootCommands shootSequence5(){
     return new ShootCommands(m_shooterSubsystem);
   }
@@ -129,7 +131,7 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
       return new InstantCommand(
         ()->{
       this.m_intakeSubsystem.intakePull();
-      });
+      }, this.m_intakeSubsystem, this.m_beltSubsystem);
     }
     public FollowLimelightSequence followlimelightsequence(){
      return new FollowLimelightSequence(m_tankDriveSubsystem, m_limelightVisionSubsystem);
