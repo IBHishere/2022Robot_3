@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.Date;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -33,8 +35,8 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
   XboxController  m_helperController = new XboxController(Constants.HELPER_XBOX_CONTROLLER);
   
   // The robot's subsystems and commands are defined here...
-  private final LeftClimberSubsystem m_leftClimberSubsystem = new LeftClimberSubsystem();
-  private final RightClimberSubsystem m_rightClimberSubsystem = new RightClimberSubsystem();
+  private final ClimberSubsystem m_leftClimberSubsystem = new ClimberSubsystem("left", Constants.CLIMBER_MOTOR_CANLEFT_ID, true);
+  private final ClimberSubsystem m_rightClimberSubsystem = new ClimberSubsystem("right", Constants.CLIMBER_MOTOR_CANRIGHT_ID, false);
   private final DriveTrainSubsystem m_tankDriveSubsystem = new DriveTrainSubsystem();
   private final BeltSubsystem m_beltSubsystem = new BeltSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem( this.m_beltSubsystem);
@@ -132,16 +134,16 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
     );
     //End: intake controls
 
-    
     //Shooter controls
     new JoystickButton(m_helperController, Button.kX.value)
     .whenPressed(
       
       new ShootSequence(this.m_shooterSubsystem, this.m_beltSubsystem)
     );
-    // new JoystickButton(m_driveController, Button.kX.value)
-    // .whenPressed(
-    //   new FollowLimelightSequence(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem)
+
+    new JoystickButton(m_driveController, Button.kX.value)
+    .whenPressed(
+      new FollowLimelightSequence(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem)
       
     // );
 
@@ -158,20 +160,39 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
 ////// shhh its a secret comment you never saw this forget about it
 
     new JoystickButton(m_helperController, Button.kRightBumper.value)
-    .whenPressed(
-      //climber up
+    .whenPressed( 
+      new InstantCommand( ()->{System.out.println("StartClimb, " + new Date().getTime());} )
+      .andThen(
         new ParallelCommandGroup(
-         new PIDClimbRightCommand(m_rightClimberSubsystem, Constants.CLIMBDISTANCE,.5),
-          new PIDClimbLeftCommand(m_leftClimberSubsystem, Constants.CLIMBDISTANCE,.5)
-        )  
+          new PIDClimbCommand(
+            m_rightClimberSubsystem,                //subsystem
+            //Constants.CLIMBDISTANCE,                // end pos
+            new LinearSetpointTrajectory(
+              m_rightClimberSubsystem.getPosition(), 
+              Constants.CLIMBDISTANCE, 2000),
+            .5,                                     // climb speed
+            true,                                   // does it end (otherwise keep holding)
+            "right")
+          //  ,
+          // new PIDClimbCommand( 
+          //   m_leftClimberSubsystem,
+          // //Constants.CLIMBDISTANCE,                // end pos
+          // new ClimberTrajectorySetpoint(
+          //   m_leftClimberSubsystem.getPosition(), 
+          //     Constants.CLIMBDISTANCE, 2000, new Date())::getSetpoint,
+          // .5,                                     // climb speed
+          // true,                                   // does it end (otherwise keep holding)
+          // "right")
+        ))
     );
     
     new JoystickButton(m_helperController, Button.kLeftBumper.value)
     .whenPressed(
       //climber down
       new ParallelCommandGroup(
-        new PIDClimbLeftCommand(m_leftClimberSubsystem, 0, 1),
-        new PIDClimbRightCommand(m_rightClimberSubsystem, 0, 1)
+        new PIDClimbCommand(m_leftClimberSubsystem, ()->20.0 , 1, false, "left", ()->true)
+         ,
+        new PIDClimbCommand(m_rightClimberSubsystem, ()->20.0, 1, false, "right", ()->true)
       )
 
     );

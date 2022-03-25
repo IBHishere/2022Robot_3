@@ -44,7 +44,7 @@ public class ShootSequence extends SequentialCommandGroup {
      .andThen( new WaitCommand(2))
      .andThen( new InstantCommand( ()-> this.m_beltSubsystem.startBelt(.5) ))
      .andThen( new InstantCommand( () -> this.m_shooterSubsystem.startQueueFeederWheel()))
-     .andThen( new WaitCommand(2.5))
+     .andThen( new WaitCommand(2))
      .andThen( new InstantCommand( ()-> this.m_shooterSubsystem.stopShooter() ))
      .andThen( new InstantCommand( ()-> this.m_beltSubsystem.stopBelt() ))
     .andThen( ()-> this.m_shooterSubsystem.stopQueueFeederWheel() )

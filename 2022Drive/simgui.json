@@ -1,19 +1,14 @@
 {
   "HALProvider": {
     "Other Devices": {
-      "SPARK MAX [2]": {
-        "header": {
-          "open": true
-        }
-      },
       "SPARK MAX [31]": {
         "header": {
-          "open": true
+          "open": false
         }
       },
       "SPARK MAX [32]": {
         "header": {
-          "open": true
+          "open": false
         }
       }
     }
@@ -25,11 +20,11 @@
       "/LiveWindow/ClimberSubsystem": "Subsystem",
       "/LiveWindow/DriveTrainSubsystem": "Subsystem",
       "/LiveWindow/IntakeSubsystem": "Subsystem",
-      "/LiveWindow/LeftClimberSubsystem": "Subsystem",
       "/LiveWindow/LimelightVisionSubsystem": "Subsystem",
-      "/LiveWindow/RightClimberSubsystem": "Subsystem",
       "/LiveWindow/ShooterSubsystem": "Subsystem",
       "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
+      "/LiveWindow/Ungrouped/PIDController[10]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[11]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
@@ -41,46 +36,31 @@
       "/LiveWindow/Ungrouped/PIDController[9]": "PIDController",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/VisionSubsystem": "Subsystem"
-    },
-    "windows": {
-      "/LiveWindow/DriveTrainSubsystem": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/LiveWindow/Ungrouped/DifferentialDrive[1]": {
-        "window": {
-          "visible": true
-        }
-      }
     }
   },
   "NetworkTables": {
     "AutonomousState": {
-      "open": true
-    },
-    "DriveDistancePidCommand": {
-      "open": true
+      "open": false
     },
     "DriveTrainSubsystem_2": {
-      "open": true
+      "open": false
     },
     "LiveWindow": {
       "DriveTrainSubsystem": {
-        "open": true
+        "open": false
       },
       "ShooterSubsystem": {
-        "open": true
+        "open": false
       }
     },
     "PidClimbCommand": {
-      "open": true
+      "open": false
     },
     "TurnAnglePidCommand": {
-      "open": true
+      "open": false
     },
     "datatable": {
-      "open": true
+      "open": false
     }
   }
 }
