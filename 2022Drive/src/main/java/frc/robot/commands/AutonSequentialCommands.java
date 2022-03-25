@@ -44,19 +44,17 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     
     addCommands(
       // all commands will go here with commas after them.
-     
+     drive(1),
       shootSequence(),
-      drive(4),
-      ///intakePull(),
-      ///turn(180),
-      drive(1)
-      // ,
-      //turn(180),
-      //drive(-2),
-      ///intakeStop(),
-      ///shootSequence()
+     drive(3),
+      turn(180),
+      intakePull(),
+      drive(3),
+      turn(180),
+      intakeStop(),
+      shootSequence(),
+      drive(3)
       
-      // the following lines are for testing purposes
       //TODO: plan what we do during autonomous
     
 
@@ -71,11 +69,6 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
       );
     
   }
-  private Command intakeStop() {
-  
-    return new InstantCommand(
-      ()->{ this.m_intakeSubsystem.intakeStop();
-    });  }
 
   public DriveDistancePidCommand  drive(double feet){
     feetTotal += feet;
@@ -133,6 +126,13 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
       this.m_intakeSubsystem.intakePull();
       }, this.m_intakeSubsystem, this.m_beltSubsystem);
     }
+    public InstantCommand intakeStop(){
+      return new InstantCommand(
+        ()->{
+      this.m_intakeSubsystem.intakeStop();
+      }, this.m_intakeSubsystem, this.m_beltSubsystem);
+    }
+
     public FollowLimelightSequence followlimelightsequence(){
      return new FollowLimelightSequence(m_tankDriveSubsystem, m_limelightVisionSubsystem);
     }
