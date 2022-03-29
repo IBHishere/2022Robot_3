@@ -37,6 +37,10 @@ public class ClimberSubsystem extends SubsystemBase {
     m_climberEncoder= this.m_climber.getEncoder();
   }
   
+  public void zeroEncoder() {
+    this.m_climberEncoder.setPosition(0.0);
+  }
+
   public double getPosition() {
     double pos = this.m_climberEncoder.getPosition() ; 
     this.table.getEntry("posclimber").setDouble(pos);

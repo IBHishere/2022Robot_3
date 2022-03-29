@@ -17,7 +17,7 @@ public class TurnAnglePidCommand extends PIDCommand {
   private NetworkTable table = inst.getTable("TurnAnglePidCommand");
 
   
-  private DriveTrainSubsystem m_dDriveTrainSubsystem;
+  private DriveTrainSubsystem m_driveTrainSubsystem;
   private double m_angleToTurn;
   
   private final static double kP = 1;
@@ -43,10 +43,10 @@ public class TurnAnglePidCommand extends PIDCommand {
 
         
 
-    this.m_dDriveTrainSubsystem = driveTrainSubsystem;
+    this.m_driveTrainSubsystem = driveTrainSubsystem;
     this.m_angleToTurn = angleToTurnInDegrees;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.m_dDriveTrainSubsystem);
+    addRequirements(this.m_driveTrainSubsystem);
     // Configure additional PID options by calling `getController` here.
   
   

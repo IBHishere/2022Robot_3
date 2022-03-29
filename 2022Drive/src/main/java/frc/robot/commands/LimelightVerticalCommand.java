@@ -44,7 +44,7 @@ public class LimelightVerticalCommand extends PIDCommand {
         // This uses the output
         output -> {
           // Use the output here
-          System.out.println("limelight-output" + ", "+output);
+          //System.out.println("limelight-output" + ", "+output);
 
           driveTrainSubsystem.tankDrive(output, output, .25);
         });

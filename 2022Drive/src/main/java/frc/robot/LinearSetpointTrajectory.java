@@ -2,6 +2,9 @@ package frc.robot;
 
 import java.util.Date;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+
 public class LinearSetpointTrajectory {
     private double m_startPosition;
     private double m_endPosition;
@@ -10,16 +13,21 @@ public class LinearSetpointTrajectory {
     private Date m_endTime;
     private boolean isStarted = false;
     private double forwardTimeStep = 100;
+  //  private NetworkTable table;
 
     public LinearSetpointTrajectory(
         double startPosition,
         double endPosition,
-        double timeInMillisecondsToComplete
+        double timeInMillisecondsToComplete, //let's stick to milliseconds.  Yes, you can convert to multiply, but then you also have to do it everywhere where this has been used and there is no real benefit to it.
+        String logName
     ) {
-        System.out.println("constructor, " + new Date().getTime());
+        //System.out.println("constructor, " + new Date().getTime());
         this.m_startPosition = startPosition;
         this.m_endPosition = endPosition;
         this.m_timeInMillisecondsToComplete = timeInMillisecondsToComplete;
+//TODO: loging
+//        this.table = NetworkTableInstance.getDefault().getTable("LinearSetpointTrajectory_"+logName);
+
     }
 
     private void initTiming() {
@@ -39,7 +47,11 @@ public class LinearSetpointTrajectory {
         }
 
         Date currentDate = new Date();
-        return calculateDesiredPositionAtTime(currentDate.getTime() + this.forwardTimeStep);
+        double setpoint = calculateDesiredPositionAtTime(currentDate.getTime() + this.forwardTimeStep);
+
+        //System.out.println("LST1-setpoint, " + setpoint);
+    //    this.table.getEntry("setpoint").setDouble(setpoint);
+        return setpoint;
     }
 
     private double calculateDesiredPositionAtTime(double milliseconds) {
@@ -49,18 +61,18 @@ public class LinearSetpointTrajectory {
         
         double desiredPosition = this.m_endPosition; //default to end setpoint 
 
-        System.out.print("setpoint, "+this.m_startTime.getTime() + ", " + milliseconds+","+this.m_endTime.getTime());
+        //System.out.print("LST2-setpoint, "+this.m_startTime.getTime() + ", " + milliseconds+","+this.m_endTime.getTime());
 
         //if during transition time then compute the position
         if(milliseconds <  this.m_endTime.getTime()) { 
             double msSinceStart = milliseconds - this.m_startTime.getTime();
             double percentComplete = msSinceStart/this.m_timeInMillisecondsToComplete;
-            System.out.print(", " + msSinceStart + ", " + percentComplete);
+            //System.out.print(", " + msSinceStart + ", " + percentComplete);
             desiredPosition = this.m_startPosition +  
                        (this.m_endPosition-this.m_startPosition) * percentComplete;
         }
         
-        System.out.println(", "+desiredPosition);
+        //System.out.println(", "+desiredPosition);
 
         return desiredPosition;       
     }

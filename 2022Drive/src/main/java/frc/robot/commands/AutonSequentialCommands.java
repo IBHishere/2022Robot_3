@@ -44,24 +44,25 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     
     addCommands(
       // all commands will go here with commas after them.
-      drive(1.5), // move for the first shot
-      shootSequence(),  //shoot first shot
-      turn(180),  // turn around to pick up the second ball
-      drive(2),   // pick up the second ball //TODO: do we need start the intake?
-      turn(180),  // turn to shoot the second ball // do we need to drive back to the original position
-      shootSequence()  // second shot
+      drive(1.5)
+      //, // move for the first shot
+      // shootSequence(),  //shoot first shot
+      // turn(180),  // turn around to pick up the second ball
+      // drive(2),   // pick up the second ball //TODO: do we need start the intake?
+      // turn(180),  // turn to shoot the second ball // do we need to drive back to the original position
+      // shootSequence()  // second shot
     );
   }
 
-  private DriveDistancePidCommand  drive(double feet){
+  private DriveDistancePidCommand drive(double feet){
     feetTotal += feet;
-    System.out.println(feetTotal);
+    //System.out.println(feetTotal);
     return new DriveDistancePidCommand(m_tankDriveSubsystem, feetTotal);
   }
-  
-  private TurnAnglePidCommand  turn(double angle){
+
+  public TurnAnglePidCommand  turn(double angle){
     angleTotal += angle;
-    System.out.println(angleTotal);
+    //System.out.println(angleTotal);
     return new TurnAnglePidCommand(m_tankDriveSubsystem, angleTotal);
   }
 
@@ -80,7 +81,15 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
   public InstantCommand TurnLimelightOn(){
     return new InstantCommand(
       ()->{
-       System.out.println("limelight stop");
+        //System.out.println("limelight start");
+        m_limelightVisionSubsystem.turnOnLed();
+      });
+  }
+
+  public InstantCommand TurnLimelightOff(){
+    return new InstantCommand(
+      ()->{
+       //System.out.println("limelight stop");
        m_limelightVisionSubsystem.turnOffLed();
         // the following lines will be removed later
         m_tankDriveSubsystem.zeroEncoders();
@@ -98,13 +107,6 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
       this.m_intakeSubsystem.intakePull();
       }, this.m_intakeSubsystem, this.m_beltSubsystem);
     }
-    public InstantCommand intakeStop(){
-      return new InstantCommand(
-        ()->{
-      this.m_intakeSubsystem.intakeStop();
-      }, this.m_intakeSubsystem, this.m_beltSubsystem);
-    }
-
     public FollowLimelightSequence followlimelightsequence(){
      return new FollowLimelightSequence(m_tankDriveSubsystem, m_limelightVisionSubsystem);
     }

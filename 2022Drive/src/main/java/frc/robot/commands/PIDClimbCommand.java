@@ -13,6 +13,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.LinearSetpointTrajectory;
+import frc.robot.PidSettings;
 import frc.robot.Constants;
 import frc.robot.subsystems.ClimberSubsystem;
 
@@ -25,9 +26,9 @@ public class PIDClimbCommand extends PIDCommand {
 
   private ClimberSubsystem m_climberSubsystem;
     
-  private final static double kP = 2/(Constants.CLIMBDISTANCE);
-  private final static double kI = 1;
-  private final static double kD = 1;
+  // private final static double kP = .5/(Constants.CLIMBDISTANCE);
+  // private final static double kI = 0;
+  // private final static double kD = .3;
   private final static double rotationTolerance =3;
 
   private boolean m_doesItEnd;
@@ -36,12 +37,13 @@ public class PIDClimbCommand extends PIDCommand {
   
   /** Creates a new PIDClimbCommand. 
      **/
-    public PIDClimbCommand(
+  public PIDClimbCommand(
       ClimberSubsystem m_climberSubsystem, 
       LinearSetpointTrajectory trajectory,
       double climbSpeed,
       boolean doesItEnd, // if set to false this will never end and will try to hold up
-      String logName)
+      String logName,
+      PidSettings pidSettings)
   {
     this(
       m_climberSubsystem,
@@ -49,7 +51,8 @@ public class PIDClimbCommand extends PIDCommand {
       climbSpeed,
       doesItEnd,
       logName,
-      trajectory::isSetpointSettingDone
+      trajectory::isSetpointSettingDone,
+      pidSettings
     );
   }
   
@@ -60,18 +63,31 @@ public class PIDClimbCommand extends PIDCommand {
     double climbSpeed,
     boolean doesItEnd, // if set to false this will never end and will try to hold up
     String logName,
-    BooleanSupplier isSetpointSettingDone
+    BooleanSupplier isSetpointSettingDone, 
+    PidSettings pidSettings
   ) {
     super(
         // The controller that the command will use
-        new PIDController(kP, kI, kD),
+        new PIDController(pidSettings.kP, pidSettings.kI, pidSettings.kD),
         // This should return the measurement
-        ()-> m_climberSubsystem.getPosition(),
+        ()-> { 
+          double pos = m_climberSubsystem.getPosition();
+          System.out.println("CL-pos, " + pos);
+          
+          return pos;
+        },
         // This should return the setpoint (can also be a constant)
         //() -> distance,
-        setpoint,
+        () -> {
+          double s = setpoint.getAsDouble();
+          NetworkTableInstance.getDefault().getTable("PidClimbCommand_"+logName).getEntry("setpoint").setDouble(s);
+          return s;
+        },
         // This uses the output
-        output-> { m_climberSubsystem.climb(output, climbSpeed);}
+        output-> { 
+          NetworkTableInstance.getDefault().getTable("PidClimbCommand_"+logName).getEntry("output").setDouble(output);
+          m_climberSubsystem.climb(output, climbSpeed);
+        }
         );
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_climberSubsystem);

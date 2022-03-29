@@ -16,7 +16,7 @@ import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -26,9 +26,18 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+  public enum Mode {
+    Undefined,
+    TeleOp,
+    Test,
+    Autonomous,
+    Practice
+  }
+
+  
   NetworkTableInstance inst = NetworkTableInstance.getDefault();
   NetworkTable table = inst.getTable("RobotContainer");
-// TODO: change code relating to the following line
   double targetAngle = 90;
   
 XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONTROLLER);
@@ -42,7 +51,7 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem( this.m_beltSubsystem);
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(this.m_beltSubsystem);
   private final LimelightVisionSubsystem m_limelightVisionSubsystem = new LimelightVisionSubsystem();
-  private final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
+  //private final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
 
   // ShootCommands m_shootCommand = new ShootCommands(
   //               this.m_shooterSubsystem);
@@ -53,18 +62,36 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
     , this.m_shooterSubsystem
     , this.m_limelightVisionSubsystem
     , this.m_beltSubsystem);
+  private edu.wpi.first.wpilibj2.command.button.Button whenPressed;
  // PIDTurnRobotCommand m_PIDTurnRobotCommand = new PIDTurnRobotCommand(this.m_tankDriveSubsystem, targetAngle);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   
   public RobotContainer() {
     // Configure the button bindings
+    
+    
     configureButtonBindings();
     
     TankDriveCommand command = new TankDriveCommand(
         this.m_tankDriveSubsystem, 
         m_driveController::getLeftY, 
         m_driveController::getRightY);
+    
     this.m_tankDriveSubsystem.setDefaultCommand(command);
+    this.m_rightClimberSubsystem.setDefaultCommand(
+      new WindClimberCommand(
+          this.m_rightClimberSubsystem, 
+          this.m_helperController::getRightY)
+    );
+
+    this.m_leftClimberSubsystem.setDefaultCommand(
+      new WindClimberCommand(
+          this.m_leftClimberSubsystem,  
+          this.m_helperController::getLeftY)
+    );
+ 
+
+
 //    this.m_shooterSubsystem.setDefaultCommand(m_shootCommand);
     
   }
@@ -111,12 +138,7 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
         this.m_intakeSubsystem.intakePull();
       }, this.m_intakeSubsystem, this.m_beltSubsystem )
     );
-    // new JoystickButton (m_driveController, Button.kY.value)
-    // .whenPressed( new InstantCommand(
-    //   ()-> {
-    //     this.m_limelightVisionSubsystem.turnOnLed();
-    //   }
-    // ));
+
     new JoystickButton (m_helperController, Button.kA.value)
     .whenPressed( new InstantCommand( 
       ()-> {
@@ -137,7 +159,6 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
     //Shooter controls
     new JoystickButton(m_helperController, Button.kX.value)
     .whenPressed(
-      
       new ShootSequence(this.m_shooterSubsystem, this.m_beltSubsystem)
     );
 
@@ -145,71 +166,48 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
     .whenPressed(
       new FollowLimelightSequence(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem)
       
-    );
+ );
 
-    //Start: Queuing controls
-    //TODO: Refactor queue to toggle with single button
-    // new JoystickButton(m_helperController, Button.kA.value)
-    // .whenPressed(
-    //   ()-> {
-    //     table.getEntry("queuing").forceSetString("A-Button/helper pressed: startQueue");
-    //     this.m_shooterSubsystem.toggleQueue();
-    //   }
+    // new JoystickButton(m_helperController, Button.kRightBumper.value)
+    // .whenPressed( 
+    //   climberMoveCommand(Constants.CLIMBDISTANCE, 500, true, getExtendClimberPidSettings()) // fast going up
     // );
 
-////// shhh its a secret comment you never saw this forget about it
-
-    new JoystickButton(m_helperController, Button.kRightBumper.value)
-    .whenPressed( 
-      new InstantCommand( ()->{System.out.println("StartClimb, " + new Date().getTime());} )
-      .andThen(
-        new ParallelCommandGroup(
-          new PIDClimbCommand(
-            m_rightClimberSubsystem,                //subsystem
-            //Constants.CLIMBDISTANCE,                // end pos
-            new LinearSetpointTrajectory(
-              m_rightClimberSubsystem.getPosition(), 
-              Constants.CLIMBDISTANCE, 2000),
-            .5,                                     // climb speed
-            true,                                   // does it end (otherwise keep holding)
-            "right")
-          //  ,
-          // new PIDClimbCommand( 
-          //   m_leftClimberSubsystem,
-          // //Constants.CLIMBDISTANCE,                // end pos
-          // new ClimberTrajectorySetpoint(
-          //   m_leftClimberSubsystem.getPosition(), 
-          //     Constants.CLIMBDISTANCE, 2000, new Date())::getSetpoint,
-          // .5,                                     // climb speed
-          // true,                                   // does it end (otherwise keep holding)
-          // "right")
-        ))
-    );
     
-    new JoystickButton(m_helperController, Button.kLeftBumper.value)
-    .whenPressed(
-      //climber down
-      new ParallelCommandGroup(
-        new PIDClimbCommand(m_leftClimberSubsystem, ()->20.0 , 1, false, "left", ()->true)
-         ,
-        new PIDClimbCommand(m_rightClimberSubsystem, ()->20.0, 1, false, "right", ()->true)
-      )
-
-    );
-
-
-    // new JoystickButton(m_helperController, Button.kY.value)
+    // new JoystickButton(m_helperController, Button.kLeftBumper.value)
     // .whenPressed(
-    //   ()-> {
-    //     table.getEntry("queuing").forceSetString("A-Button/drive pressed: startQueue2");
-    //     this.m_shooterSubsystem.toggleQueue2();
-    //   }  
+    //   climberMoveCommand(10, 3000, false, getLiftPidSettings()) //slow going down as robot is pulling up
     // );
 
-  
+
+    // new JoystickButton(m_helperController, Button.kRightStick.value)
+    // .whenPressed(
+    //   zeroClimber(this.m_rightClimberSubsystem, -20)
+    // );
+
+    // new JoystickButton(m_helperController, Button.kLeftStick.value)
+    //   .whenPressed(
+    //     zeroClimber(this.m_leftClimberSubsystem, -20)
+    // );
+
+    // new JoystickButton(m_helperController, Button.kStart.value)
+    //   .whenPressed(()->ShootPIDCommand.ToggleMode());
+    
     //End: Queue controls
     
   }
+
+
+  
+  private PidSettings getLiftPidSettings() {
+    return new PidSettings(.2/(Constants.CLIMBDISTANCE), 0, 0);
+  }
+
+
+  private PidSettings getExtendClimberPidSettings() {
+    return new PidSettings(.5/(Constants.CLIMBDISTANCE), 0, 0);
+  }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -218,30 +216,48 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
    */
   public Command getAutonomousCommand() {
     this.table.getEntry("autonomousStarted").setBoolean(true);
-
-   
-    // Command autoCommand =
-    //     new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() )
-    //     .andThen(()-> {
-    //      System.out.println("limelight start");
-    //      this.m_limelightVisionSubsystem.turnOnLed();   
-    //    })
-    //     .andThen(new FollowLimelightPidCommand(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem))
-    //    .andThen( ()-> {
-    //      System.out.println("limelight done");
-    //      this.m_limelightVisionSubsystem.turnOffLed(); } )
-    //     .andThen(new InstantCommand(()->this.m_tankDriveSubsystem.zeroEncoders() ) ) 
-    //     .andThen(
-    //        new DriveDistancePidCommand( this.m_tankDriveSubsystem, 1 )  //drive a distance
-    //     );
-        
-        
-        // .andThen(
-       //  new ShootSequence(m_shooterSubsystem);
-    
-        //; /// drive distance of 10
-  
     return m_autonomous;
+  }
 
+  private SequentialCommandGroup 
+        climberMoveCommand(double positionTarget
+        , double moveTimeInMilliseconds
+        , boolean doesItEverEnd
+        , PidSettings pidSettings) {
+    return new InstantCommand( ()->{System.out.println("StartClimb, " + new Date().getTime());} )
+    .andThen(
+      new ParallelCommandGroup(
+
+        new PIDClimbCommand(
+          m_rightClimberSubsystem,                //subsystem
+          new LinearSetpointTrajectory(
+            m_rightClimberSubsystem.getPosition(), 
+            positionTarget, moveTimeInMilliseconds, "rightClimber"),
+          1,                                     // climb speed
+          doesItEverEnd,                                   // does it end (otherwise keep holding)
+          "right",
+          pidSettings)
+         ,
+        new PIDClimbCommand( 
+          m_leftClimberSubsystem,
+          new LinearSetpointTrajectory(
+            m_leftClimberSubsystem.getPosition(), 
+            positionTarget, moveTimeInMilliseconds, "leftClimber"),
+        1,                                     // climb speed
+        doesItEverEnd,                                   // does it end (otherwise keep holding)
+        "left",
+        pidSettings)
+      ));
+  }
+
+  private Command zeroClimber(ClimberSubsystem climberSubsystem, double windAmount) {
+    return 
+     new InstantCommand( 
+       ()-> {
+         climberSubsystem.zeroEncoder();
+         //System.out.println("Zero");
+        } )
+     ;
+   
   }
 }

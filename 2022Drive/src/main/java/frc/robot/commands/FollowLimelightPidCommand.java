@@ -48,7 +48,7 @@ public class FollowLimelightPidCommand extends PIDCommand {
         () -> targetHorizontalAngle,
         // This uses the output
         output -> {
-          System.out.println("limelight-output" + ", "+output);
+          //System.out.println("limelight-output" + ", "+output);
 
           driveTrainSubsystem.tankDrive(output, -output, .3);
         });
