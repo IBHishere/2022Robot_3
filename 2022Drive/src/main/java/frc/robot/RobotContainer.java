@@ -165,30 +165,29 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
     new JoystickButton(m_driveController, Button.kX.value)
     .whenPressed(
       new FollowLimelightSequence(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem)
-      
- );
+    );
 
-    // new JoystickButton(m_helperController, Button.kRightBumper.value)
-    // .whenPressed( 
-    //   climberMoveCommand(Constants.CLIMBDISTANCE, 500, true, getExtendClimberPidSettings()) // fast going up
-    // );
+    new JoystickButton(m_helperController, Button.kRightBumper.value)
+    .whenPressed( 
+      climberMoveCommand(Constants.CLIMBDISTANCE, 500, true, getExtendClimberPidSettings()) // fast going up
+    );
 
     
-    // new JoystickButton(m_helperController, Button.kLeftBumper.value)
-    // .whenPressed(
-    //   climberMoveCommand(10, 3000, false, getLiftPidSettings()) //slow going down as robot is pulling up
-    // );
+    new JoystickButton(m_helperController, Button.kLeftBumper.value)
+    .whenPressed(
+      climberMoveCommand(0, 5000, false, getLiftPidSettings()) //slow going down as robot is pulling up
+    );
 
 
-    // new JoystickButton(m_helperController, Button.kRightStick.value)
-    // .whenPressed(
-    //   zeroClimber(this.m_rightClimberSubsystem, -20)
-    // );
+    new JoystickButton(m_helperController, Button.kRightStick.value)
+    .whenPressed(
+      zeroClimber(this.m_rightClimberSubsystem, -20)
+    );
 
-    // new JoystickButton(m_helperController, Button.kLeftStick.value)
-    //   .whenPressed(
-    //     zeroClimber(this.m_leftClimberSubsystem, -20)
-    // );
+    new JoystickButton(m_helperController, Button.kLeftStick.value)
+      .whenPressed(
+        zeroClimber(this.m_leftClimberSubsystem, -20)
+    );
 
     // new JoystickButton(m_helperController, Button.kStart.value)
     //   .whenPressed(()->ShootPIDCommand.ToggleMode());
@@ -200,12 +199,12 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
 
   
   private PidSettings getLiftPidSettings() {
-    return new PidSettings(.2/(Constants.CLIMBDISTANCE), 0, 0);
+    return new PidSettings(25.0/(80.0), 100.0/80.0, .3/80.0);
   }
 
 
   private PidSettings getExtendClimberPidSettings() {
-    return new PidSettings(.5/(Constants.CLIMBDISTANCE), 0, 0);
+    return new PidSettings(14.0/(80.0), 0, 0);
   }
 
 
@@ -219,8 +218,8 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
     return m_autonomous;
   }
 
-  private SequentialCommandGroup 
-        climberMoveCommand(double positionTarget
+  private SequentialCommandGroup climberMoveCommand(
+          double positionTarget
         , double moveTimeInMilliseconds
         , boolean doesItEverEnd
         , PidSettings pidSettings) {

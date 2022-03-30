@@ -72,7 +72,7 @@ public class PIDClimbCommand extends PIDCommand {
         // This should return the measurement
         ()-> { 
           double pos = m_climberSubsystem.getPosition();
-          System.out.println("CL-pos, " + pos);
+          NetworkTableInstance.getDefault().getTable("PidClimbCommand_"+logName).getEntry("position").setDouble(pos);
           
           return pos;
         },

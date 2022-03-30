@@ -9,6 +9,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 
 import java.util.Timer;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -28,11 +29,11 @@ public class ShootSequence extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-     // ShootSequence1()
-
-     );
+      ShootSequence1()
+    );
   }
-  public SequentialCommandGroup ShootSequence1(){
+  public Command ShootSequence1()
+  {
 
     //TODO: we have taken off the feeder wheel because the gearbox was not working well.  
     //System.out.println("ShootSequence1");
@@ -48,20 +49,22 @@ public class ShootSequence extends SequentialCommandGroup {
         new LinearSetpointTrajectory(0, ShootPIDCommand.HighGoalShooterSpeed, 500, "pidShooter") //TODO: Move 
         , this.m_shooterSubsystem
         , true
-      ) //it ends
-      .andThen(
-       new ParallelCommandGroup(
-        new ShootPIDCommand(ShootPIDCommand.HighGoalShooterSpeed, this.m_shooterSubsystem, false) // keep spinning
-        ,
-        new WaitCommand(.2)
-        .andThen( new InstantCommand( ()-> this.m_beltSubsystem.startBelt(.1) ))
-        .andThen( new InstantCommand( () -> this.m_shooterSubsystem.startQueueFeederWheel()))
-        .andThen( new WaitCommand(2))
-        .andThen( new InstantCommand( ()-> this.m_shooterSubsystem.stopShooter() ))
-        .andThen( new InstantCommand( ()-> this.m_beltSubsystem.stopBelt() ))
-        .andThen( ()-> this.m_shooterSubsystem.stopQueueFeederWheel() )
-       )
       )
+      
+      //it ends
+      // .andThen(
+      //  new ParallelCommandGroup(
+      //   new ShootPIDCommand(ShootPIDCommand.HighGoalShooterSpeed, this.m_shooterSubsystem, false) // keep spinning
+      //   ,
+      //   new WaitCommand(.2)
+      //   .andThen( new InstantCommand( ()-> this.m_beltSubsystem.startBelt(.1) ))
+      //   .andThen( new InstantCommand( () -> this.m_shooterSubsystem.startQueueFeederWheel()))
+      //   .andThen( new WaitCommand(2))
+      //   .andThen( new InstantCommand( ()-> this.m_shooterSubsystem.stopShooter() ))
+      //   .andThen( new InstantCommand( ()-> this.m_beltSubsystem.stopBelt() ))
+      //   .andThen( ()-> this.m_shooterSubsystem.stopQueueFeederWheel() )
+      //  )
+      // )
     ;
     }
      public SequentialCommandGroup onlyShoot(){
