@@ -18,7 +18,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class ShootPIDCommand extends PIDCommand {
   /** Creates a new ShootPIDCommand. */
 
-  private static final double kP = 1;
+  private static final double kP = 1/5000;
   private static final double kD = 0;
   private static final double kI = 0;
   public static final double HighGoalShooterSpeed = 5000;
@@ -85,7 +85,7 @@ public class ShootPIDCommand extends PIDCommand {
         // This uses the output
         output -> {
           System.out.println("shooter, " + m_shooterSubsystem.getVelocity() + ", " + output);   
-          m_shooterSubsystem.runShooter(output);
+          m_shooterSubsystem.increaseVelocity(output);
           // Use the output here
         });
     // Use addRequirements() here to declare subsystem dependencies.
