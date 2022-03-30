@@ -18,11 +18,11 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class ShootPIDCommand extends PIDCommand {
   /** Creates a new ShootPIDCommand. */
 
-  private static final double kP = 1/5000;
+  private static final double kP = 1/15000;
   private static final double kD = 0;
   private static final double kI = 0;
   public static final double HighGoalShooterSpeed = 5000;
-  public static final double LowGoalShooterSpeed = 500;
+  public static final double LowGoalShooterSpeed = 200;
 
   static NetworkTable table = NetworkTableInstance.getDefault().getTable("ShootPIDCommand");
 
@@ -99,11 +99,11 @@ public class ShootPIDCommand extends PIDCommand {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
-    if (this.m_doesItEverEnd) 
+ public boolean isFinished() {
+ //   if ( == 500)
+//    if (this.m_doesItEverEnd) 
       return this.getController().atSetpoint();
-    
-    return false;
+  //  return false;
   }
 public static void ToggleMode() {
   ShootPIDCommand.CurrentGoalMode = 

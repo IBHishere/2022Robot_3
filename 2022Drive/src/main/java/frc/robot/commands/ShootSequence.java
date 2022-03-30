@@ -45,26 +45,28 @@ public class ShootSequence extends SequentialCommandGroup {
      //new WaitCommand(.001)
      //.andThen(
     
-      new ShootPIDCommand(
-        new LinearSetpointTrajectory(0, ShootPIDCommand.HighGoalShooterSpeed, 500, "pidShooter") //TODO: Move 
-        , this.m_shooterSubsystem
-        , true
-      )
+      // new ShootPIDCommand(
+      //   new LinearSetpointTrajectory(0, ShootPIDCommand.HighGoalShooterSpeed, 500, "pidShooter") //TODO: Move 
+      //   , this.m_shooterSubsystem
+      //   , true
+      // )
       
       //it ends
-      // .andThen(
-      //  new ParallelCommandGroup(
-      //   new ShootPIDCommand(ShootPIDCommand.HighGoalShooterSpeed, this.m_shooterSubsystem, false) // keep spinning
-      //   ,
-      //   new WaitCommand(.2)
-      //   .andThen( new InstantCommand( ()-> this.m_beltSubsystem.startBelt(.1) ))
-      //   .andThen( new InstantCommand( () -> this.m_shooterSubsystem.startQueueFeederWheel()))
-      //   .andThen( new WaitCommand(2))
-      //   .andThen( new InstantCommand( ()-> this.m_shooterSubsystem.stopShooter() ))
-      //   .andThen( new InstantCommand( ()-> this.m_beltSubsystem.stopBelt() ))
-      //   .andThen( ()-> this.m_shooterSubsystem.stopQueueFeederWheel() )
-      //  )
-      // )
+    //  .andThen(
+      // new ParallelCommandGroup(
+      //  new ShootPIDCommand(ShootPIDCommand.HighGoalShooterSpeed, this.m_shooterSubsystem, true) // keep spinning
+        new ShootPIDCommand(new LinearSetpointTrajectory(0, ShootPIDCommand.LowGoalShooterSpeed, 500, "pidShooter"), this.m_shooterSubsystem , true
+      )
+      //  ,
+    //   .andThen( new WaitCommand(.2))
+        .andThen( new InstantCommand( ()-> this.m_beltSubsystem.startBelt(.1) ))
+        .andThen( new InstantCommand( () -> this.m_shooterSubsystem.startQueueFeederWheel()))
+        .andThen( new WaitCommand(2))
+        .andThen( new InstantCommand( ()-> this.m_shooterSubsystem.stopShooter() ))
+        .andThen( new InstantCommand( ()-> this.m_beltSubsystem.stopBelt() ))
+        .andThen( ()-> this.m_shooterSubsystem.stopQueueFeederWheel()
+       
+      )
     ;
     }
      public SequentialCommandGroup onlyShoot(){
