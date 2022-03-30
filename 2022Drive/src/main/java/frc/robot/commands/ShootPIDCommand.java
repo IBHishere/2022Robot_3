@@ -86,6 +86,7 @@ public class ShootPIDCommand extends PIDCommand {
         output -> {
           System.out.println("shooter, " + m_shooterSubsystem.getVelocity() + ", " + output);   
           m_shooterSubsystem.increaseVelocity(output);
+          m_shooterSubsystem.runShooter();
           // Use the output here
         });
     // Use addRequirements() here to declare subsystem dependencies.
