@@ -5,9 +5,12 @@
 package frc.robot.commands;
 import frc.robot.LinearSetpointTrajectory;
 import frc.robot.subsystems.BeltSubsystem;
+import frc.robot.subsystems.QueueFeederWheelSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 import java.util.Timer;
+
+import org.ejml.equation.IntegerSequence;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -22,52 +25,60 @@ public class ShootSequence extends SequentialCommandGroup {
   /** Creates a new ShootSequence. */
   private ShooterSubsystem m_shooterSubsystem;
   private BeltSubsystem m_beltSubsystem;
-  public ShootSequence(ShooterSubsystem shooterSubsystem, BeltSubsystem beltSubsystem) {
+  private QueueFeederWheelSubsystem m_queueFeederSubsytem;
+
+  public ShootSequence(
+    ShooterSubsystem shooterSubsystem, 
+    BeltSubsystem beltSubsystem,
+    QueueFeederWheelSubsystem queueFeederWheelSubsystem
+    ) {
     this.m_shooterSubsystem = shooterSubsystem;
     this.m_beltSubsystem = beltSubsystem;
+    this.m_queueFeederSubsytem = queueFeederWheelSubsystem;
+
+
     addRequirements(m_shooterSubsystem);
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       ShootSequence1()
+      //TestShootSequence()
     );
   }
+
+  private Command TestShootSequence() {
+    return new InstantCommand( () -> 
+    this.m_queueFeederSubsytem.startQueueFeederWheel() )
+    .andThen( new WaitCommand(3))
+    .andThen( ()-> this.m_queueFeederSubsytem.stopQueueFeederWheel());
+
+  }
+
   public Command ShootSequence1()
   {
 
-    //TODO: we have taken off the feeder wheel because the gearbox was not working well.  
-    //System.out.println("ShootSequence1");
-//     return new InstantCommand(()-> this.m_shooterSubsystem.startShooter() )
-//        .andThen(new WaitCommand(5))
-//        .andThen(()-> this.m_shooterSubsystem.stopShooter())
-// ;
-     return 
-     //new WaitCommand(.001)
-     //.andThen(
-    
-      // new ShootPIDCommand(
-      //   new LinearSetpointTrajectory(0, ShootPIDCommand.HighGoalShooterSpeed, 500, "pidShooter") //TODO: Move 
-      //   , this.m_shooterSubsystem
-      //   , true
-      // )
+    return 
+        new InstantCommand( 
+          ()-> {this.m_shooterSubsystem.runShooter( 
+                  ShooterSubsystem.rpmToPower(ShooterSubsystem.getTargetVelocity(), 1));
+                  //this.m_queueFeederSubsytem.startQueueFeederWheel(); 
+          }
+      )
+      .andThen( new WaitCommand(1))
+      .andThen(
+          new InstantCommand( ()-> {
+              this.m_beltSubsystem.startBelt(1);
+            }
+          )
+      .andThen( new WaitCommand(1.0))
+          .andThen( new InstantCommand( ()-> {
+              this.m_shooterSubsystem.stopShooter();
+              this.m_beltSubsystem.stopBelt();
+              this.m_queueFeederSubsytem.stopQueueFeederWheel();
+            } )) 
+        )//end parallel group
+      ;
       
-      //it ends
-    //  .andThen(
-      // new ParallelCommandGroup(
-      //  new ShootPIDCommand(ShootPIDCommand.HighGoalShooterSpeed, this.m_shooterSubsystem, true) // keep spinning
-        new ShootPIDCommand(new LinearSetpointTrajectory(0, ShootPIDCommand.LowGoalShooterSpeed, 500, "pidShooter"), this.m_shooterSubsystem , true
-      )
-      //  ,
-    //   .andThen( new WaitCommand(.2))
-        .andThen( new InstantCommand( ()-> this.m_beltSubsystem.startBelt(.1) ))
-        .andThen( new InstantCommand( () -> this.m_shooterSubsystem.startQueueFeederWheel()))
-        .andThen( new WaitCommand(2))
-        .andThen( new InstantCommand( ()-> this.m_shooterSubsystem.stopShooter() ))
-        .andThen( new InstantCommand( ()-> this.m_beltSubsystem.stopBelt() ))
-        .andThen( ()-> this.m_shooterSubsystem.stopQueueFeederWheel()
-       
-      )
-    ;
     }
      public SequentialCommandGroup onlyShoot(){
        return new InstantCommand (()-> this.m_shooterSubsystem.runShooter() ).andThen(new WaitCommand(3).andThen(new InstantCommand(()-> this.m_shooterSubsystem.runShooter())));

@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
@@ -17,17 +19,49 @@ import com.revrobotics.RelativeEncoder;
 
 
 public class ShooterSubsystem extends SubsystemBase {
-    private static final double QUEUE_MOTOR_POWER = .5;
     private CANSparkMax m_shooterMotor;  
     private RelativeEncoder m_shooterEncoder;
-    private CANSparkMax m_queueFeederWheerMotor; 
     private double m_velocity = 1.0;
 
     private BeltSubsystem m_beltSubsystem;
 
     private boolean m_isShooterOn = false;
-    private boolean m_isQueue1On = false;
-    private boolean m_isQueue2On = false;
+
+    private static NetworkTable table = NetworkTableInstance.getDefault().getTable("ShooterSubsystem");
+    
+    public enum GoalMode {
+      HighGoal,
+      LowGoal
+    }
+
+    public static final double HighGoalShooterSpeed = 3800; // max speed based n testing
+    public static final double LowGoalShooterSpeed = 1500;
+    
+    public static GoalMode CurrentGoalMode;
+
+    static {
+      ShooterSubsystem.setGoalMode(ShooterSubsystem.GoalMode.HighGoal);
+    }
+
+    public static void setGoalMode(GoalMode mode) { 
+      ShooterSubsystem.CurrentGoalMode = mode;
+      ShooterSubsystem.table.getEntry("GoalMode").setString(ShooterSubsystem.CurrentGoalMode.toString());
+      ShooterSubsystem.table.getEntry("GoalSpeed").setDouble(ShooterSubsystem.getTargetVelocity());
+
+    }
+    public static double getTargetVelocity() {
+      return ShooterSubsystem.CurrentGoalMode == GoalMode.HighGoal ? 
+      ShooterSubsystem.HighGoalShooterSpeed:
+      ShooterSubsystem.LowGoalShooterSpeed;
+    }
+  
+    public static void ToggleGoalMode() {
+      ShooterSubsystem.setGoalMode(
+      ShooterSubsystem.CurrentGoalMode == GoalMode.HighGoal? 
+          GoalMode.LowGoal : GoalMode.HighGoal );
+  
+  }
+  
 
   public ShooterSubsystem(BeltSubsystem beltSubsystem) {
     this.m_beltSubsystem = beltSubsystem;
@@ -39,10 +73,7 @@ public class ShooterSubsystem extends SubsystemBase {
     m_shooterMotor.restoreFactoryDefaults();
     m_shooterEncoder= this.m_shooterMotor.getEncoder();
     
-    m_queueFeederWheerMotor = new CANSparkMax(Constants.QUEUE_MOTOR_CAN2_ID, MotorType.kBrushless);
-    m_queueFeederWheerMotor.restoreFactoryDefaults();
-    m_queueFeederWheerMotor.setIdleMode(IdleMode.kBrake);
-  
+   
   }
   public double getVelocity(){
   return this.m_shooterEncoder.getVelocity();
@@ -71,14 +102,25 @@ public class ShooterSubsystem extends SubsystemBase {
   public void runShooter() {
     this.runShooter(m_velocity);
   }
-  public void runShooter(double power){
-    System.out.println("startShooter");
-    m_shooterMotor.set(power);  
-    m_isShooterOn = true;  
-      
 
-// this shoots with a speed based on the velocity
+  public void runShooter(double power){
+    //System.out.println("startShooter");
+    m_shooterMotor.set(power);  
+    m_isShooterOn = true;      
   }
+
+  public static double rpmToPower(double rpm, int direction /*1 or -1*/) {
+    return direction * rpm/3600;
+
+  }
+
+  //we have some data to show that max RPM of the shooter is about 3600
+  
+  public void runShooterRmp(double rpm, double control) {
+     
+     this.runShooter( rpmToPower(rpm, 1)+control);
+  }
+
   public void stopShooter(){
     System.out.println("stopShooter");
     m_shooterMotor.set(0.0);  
@@ -87,21 +129,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   
   //new stuff
-  public void  stopQueueFeederWheel(){
-    System.out.println("stopQueue2");
-    m_queueFeederWheerMotor.set(0); 
-    m_isQueue2On = false;
-    //this stops the entrance to the shooter to allow shooter to be turned on
-  }
-  public void  startQueueFeederWheel(){
-    System.out.println("startQueue2");
-    m_queueFeederWheerMotor.set(ShooterSubsystem.QUEUE_MOTOR_POWER); 
-    m_isQueue2On = true;
-
-
-    // this activates the queue motor that feeds balls into the shooter
-  }
-
+ 
   public void toggleShooter(){ 
     if(m_isShooterOn == false){
       runShooter();

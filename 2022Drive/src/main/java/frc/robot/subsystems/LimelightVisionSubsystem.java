@@ -25,16 +25,16 @@ public class LimelightVisionSubsystem extends SubsystemBase {
   }
 
   public double getHorizontalAngle() {
-    System.out.println("angleH, " + this.m_targetOffsetAngle_Horizontal);
+    //System.out.println("angleH, " + this.m_targetOffsetAngle_Horizontal);
     return this.m_targetOffsetAngle_Horizontal;
   }
   public double getVerticalAngle() {
-    System.out.println("angleV, " + this.m_targetOffsetAngle_Vertical);
+    //System.out.println("angleV, " + this.m_targetOffsetAngle_Vertical);
     return this.m_targetOffsetAngle_Vertical;
   }
 
   public boolean hasTarget() {
-    System.out.println("hasTarget, "+this.m_hasTarget);
+    //System.out.println("hasTarget, "+this.m_hasTarget);
     return this.m_hasTarget;
   }
 

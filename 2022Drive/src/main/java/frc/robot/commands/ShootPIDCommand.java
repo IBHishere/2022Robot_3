@@ -4,6 +4,9 @@
 
 package frc.robot.commands;
 
+import java.io.ObjectInputStream.GetField;
+import java.util.Date;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -21,22 +24,23 @@ public class ShootPIDCommand extends PIDCommand {
   private static final double kP = 1/15000;
   private static final double kD = 0;
   private static final double kI = 0;
-  public static final double HighGoalShooterSpeed = 5000;
-  public static final double LowGoalShooterSpeed = 200;
-
+  private boolean m_isInterrupted = false;
   static NetworkTable table = NetworkTableInstance.getDefault().getTable("ShootPIDCommand");
 
-  public enum GoalMode {
-    HighGoal,
-    LowGoal
+
+  public static ShootPIDCommand getSpinupCommand(ShooterSubsystem shooterSubsystem) {
+    return  new ShootPIDCommand(
+      ShooterSubsystem.getTargetVelocity() 
+      , shooterSubsystem
+      , true
+    );
   }
 
-  public static GoalMode CurrentGoalMode = GoalMode.HighGoal;
-  public static void setGoalMode(GoalMode mode) { ShootPIDCommand.CurrentGoalMode = mode;}
-  public static double getTargetVelocity() {
-    return ShootPIDCommand.CurrentGoalMode == GoalMode.HighGoal ? 
-      ShootPIDCommand.HighGoalShooterSpeed:
-      ShootPIDCommand.LowGoalShooterSpeed;
+
+  public static ShootPIDCommand getKeepSpinningCommand(ShooterSubsystem shooterSubsystem) {
+    return  new ShootPIDCommand(
+      ShooterSubsystem.getTargetVelocity(), shooterSubsystem, false
+    );
   }
 
   private boolean m_doesItEverEnd;
@@ -58,7 +62,7 @@ public class ShootPIDCommand extends PIDCommand {
           ShootPIDCommand.table.getEntry("shooterVelocity").setDouble(shooterSubsystem.getVelocity());
           ShootPIDCommand.table.getEntry("output").setDouble(output);
           
-          shooterSubsystem.runShooter(output);
+          shooterSubsystem.runShooterRmp(setpoint, output);
           // Use the output here
         });
     // Use addRequirements() here to declare subsystem dependencies.
@@ -66,11 +70,12 @@ public class ShootPIDCommand extends PIDCommand {
     // Configure additional PID options by calling `getController` here.
 
     this.m_doesItEverEnd = doesItEverEnd;
+    
     if( doesItEverEnd)  this.getController().setTolerance(10); //TODO: Extract constant
   }
 
 
-  public ShootPIDCommand(
+  private ShootPIDCommand(
     LinearSetpointTrajectory setpointTrajectory, 
     ShooterSubsystem m_shooterSubsystem,
     boolean doesItEverEnd
@@ -84,11 +89,13 @@ public class ShootPIDCommand extends PIDCommand {
         () -> setpointTrajectory.getSetpoint(),
         // This uses the output
         output -> {
-          System.out.println("shooter, " + m_shooterSubsystem.getVelocity() + ", " + output);   
-          m_shooterSubsystem.increaseVelocity(output);
-          m_shooterSubsystem.runShooter();
-          // Use the output here
+          //System.out.println("shooter, " + m_shooterSubsystem.getVelocity() + ", " + output);   
+          double targetRpm = setpointTrajectory.getSetpoint();
+          m_shooterSubsystem.runShooterRmp(targetRpm, output);
+          ShootPIDCommand.table.getEntry("control-output").getDouble(output);
+          ShootPIDCommand.table.getEntry("target-rpm").getDouble(targetRpm);
         });
+        
     // Use addRequirements() here to declare subsystem dependencies.
     this.addRequirements(m_shooterSubsystem);
     // Configure additional PID options by calling `getController` here.
@@ -100,14 +107,14 @@ public class ShootPIDCommand extends PIDCommand {
   // Returns true when the command should end.
   @Override
  public boolean isFinished() {
- //   if ( == 500)
-//    if (this.m_doesItEverEnd) 
-      return this.getController().atSetpoint();
-  //  return false;
+      
+    return 
+      (this.m_doesItEverEnd &&  this.getController().atSetpoint());
+  
+ }
+
+  public void finish() {
+    this.m_isInterrupted = true;
   }
-public static void ToggleMode() {
-  ShootPIDCommand.CurrentGoalMode = 
-      ShootPIDCommand.CurrentGoalMode == GoalMode.HighGoal? 
-      GoalMode.LowGoal : GoalMode.HighGoal;
-}
-}
+
+  }

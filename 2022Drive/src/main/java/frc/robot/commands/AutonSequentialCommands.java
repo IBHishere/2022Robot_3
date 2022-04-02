@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.util.Queue;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -11,6 +13,7 @@ import frc.robot.subsystems.BeltSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightVisionSubsystem;
+import frc.robot.subsystems.QueueFeederWheelSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 
@@ -24,6 +27,9 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
   private ShooterSubsystem m_shooterSubsystem;
   private BeltSubsystem m_beltSubsystem;
   private LimelightVisionSubsystem m_limelightVisionSubsystem;
+  private QueueFeederWheelSubsystem m_queueFeederWheelSubsystem;
+
+
   private double feetTotal = 0;
   private double angleTotal = 0;
   public AutonSequentialCommands(
@@ -31,12 +37,16 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
       , IntakeSubsystem intakeSubsystem
       , ShooterSubsystem shooterSubsystem
       , LimelightVisionSubsystem limelightVisionSubsystem
-      , BeltSubsystem beltSubsystem) {
+      , BeltSubsystem beltSubsystem
+      , QueueFeederWheelSubsystem queueFeederWheelSubsystem
+      ) {
     m_limelightVisionSubsystem = limelightVisionSubsystem;
     m_tankDriveSubsystem = tankDriveSubsystem;
     m_intakeSubsystem = intakeSubsystem;
     m_shooterSubsystem = shooterSubsystem;
     m_beltSubsystem = beltSubsystem;
+    this.m_queueFeederWheelSubsystem = queueFeederWheelSubsystem;
+
     addRequirements(m_tankDriveSubsystem, m_intakeSubsystem, m_shooterSubsystem, m_limelightVisionSubsystem, m_beltSubsystem);
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -99,7 +109,9 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     }
 
     public ShootSequence shootSequence(){
-      return new ShootSequence(this.m_shooterSubsystem, this.m_beltSubsystem);
+      return new ShootSequence(
+        this.m_shooterSubsystem, this.m_beltSubsystem,
+        this.m_queueFeederWheelSubsystem);
     }
     public InstantCommand intakePull(){
       return new InstantCommand(

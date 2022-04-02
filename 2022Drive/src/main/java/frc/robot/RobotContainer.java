@@ -51,8 +51,8 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem( this.m_beltSubsystem);
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(this.m_beltSubsystem);
   private final LimelightVisionSubsystem m_limelightVisionSubsystem = new LimelightVisionSubsystem();
-  //private final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
-
+  private final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
+  private final QueueFeederWheelSubsystem m_queueFeederWheelSubsystem = new QueueFeederWheelSubsystem();
   // ShootCommands m_shootCommand = new ShootCommands(
   //               this.m_shooterSubsystem);
 
@@ -61,7 +61,9 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
     , this.m_intakeSubsystem
     , this.m_shooterSubsystem
     , this.m_limelightVisionSubsystem
-    , this.m_beltSubsystem);
+    , this.m_beltSubsystem
+    , this.m_queueFeederWheelSubsystem
+    );
   private edu.wpi.first.wpilibj2.command.button.Button whenPressed;
  // PIDTurnRobotCommand m_PIDTurnRobotCommand = new PIDTurnRobotCommand(this.m_tankDriveSubsystem, targetAngle);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -159,7 +161,9 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
     //Shooter controls
     new JoystickButton(m_helperController, Button.kX.value)
     .whenPressed(
-      new ShootSequence(this.m_shooterSubsystem, this.m_beltSubsystem)
+      //new ShooterTestCommand(this.m_shooterSubsystem)
+    
+      new ShootSequence(this.m_shooterSubsystem, this.m_beltSubsystem, this.m_queueFeederWheelSubsystem)
     );
 
     new JoystickButton(m_driveController, Button.kX.value)
@@ -189,8 +193,8 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
         zeroClimber(this.m_leftClimberSubsystem, -20)
     );
 
-    // new JoystickButton(m_helperController, Button.kStart.value)
-    //   .whenPressed(()->ShootPIDCommand.ToggleMode());
+    new JoystickButton(m_helperController, Button.kStart.value)
+      .whenPressed(()->ShooterSubsystem.ToggleGoalMode());
     
     //End: Queue controls
     
