@@ -24,7 +24,8 @@ public class TurnAnglePidCommand extends PIDCommand {
   private final static double kI = .2;
   private final static double kD = 0;
 
-  private final static double rotationsPerDegree = 1.0/13.92;
+  private final static double empiricalAdjustment = 200.0/180.0;
+  private final static double rotationsPerDegree = 1.0/13.92 * empiricalAdjustment;
 
 
   /** Creates a new TurnAnglePidCommand. */

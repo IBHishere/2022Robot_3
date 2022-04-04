@@ -219,7 +219,15 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
    */
   public Command getAutonomousCommand() {
     this.table.getEntry("autonomousStarted").setBoolean(true);
-    return m_autonomous;
+    //return m_autonomous;
+    return new AutonSequentialCommands(
+      this.m_tankDriveSubsystem
+      , this.m_intakeSubsystem
+      , this.m_shooterSubsystem
+      , this.m_limelightVisionSubsystem
+      , this.m_beltSubsystem
+      , this.m_queueFeederWheelSubsystem
+      );
   }
 
   private SequentialCommandGroup climberMoveCommand(

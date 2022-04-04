@@ -6,9 +6,12 @@ package frc.robot.commands;
 
 import java.util.Queue;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.BeltSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -54,13 +57,39 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     
     addCommands(
       // all commands will go here with commas after them.
-      drive(1.5)
-      //, // move for the first shot
-      // shootSequence(),  //shoot first shot
-      // turn(180),  // turn around to pick up the second ball
-      // drive(2),   // pick up the second ball //TODO: do we need start the intake?
-      // turn(180),  // turn to shoot the second ball // do we need to drive back to the original position
-      // shootSequence()  // second shot
+      new InstantCommand( ()-> this.m_tankDriveSubsystem.setIdleMode(IdleMode.kBrake))
+      , new InstantCommand(() -> this.m_intakeSubsystem.intakePull())
+      , new WaitCommand(.5)
+      , drive(-5.0)   // pick up the second ball //TODO: do we need start the intake?
+      , new WaitCommand(.5)
+      , new InstantCommand( ()-> this.m_intakeSubsystem.intakeStop())
+      , turn(180)  // turn to shoot the second ball // do we need to drive back to the original position
+      , drive(-2.0)
+      , new WaitCommand(.5)
+      , shootSequence()  // second shot
+      , new InstantCommand(()-> this.m_tankDriveSubsystem.setIdleMode(IdleMode.kCoast))
+    
+    );
+  }
+
+  private void getFirstAuton() {
+    addCommands(
+      // all commands will go here with commas after them.
+      new InstantCommand( ()-> this.m_tankDriveSubsystem.setIdleMode(IdleMode.kBrake))
+      , drive(2.0) // move for the first shot
+      , shootSequence() //shoot first shot
+      , turn(190)  // turn around to pick up the second ball
+      , new WaitCommand(1)
+      , new InstantCommand(() -> this.m_intakeSubsystem.intakePull())
+      , new WaitCommand(.5)
+      , drive(-2.0)   // pick up the second ball //TODO: do we need start the intake?
+      , new WaitCommand(.5)
+      , new InstantCommand( ()-> this.m_intakeSubsystem.intakeStop())
+      , turn(190)  // turn to shoot the second ball // do we need to drive back to the original position
+      , drive(-2.0)
+      , new WaitCommand(.5)
+      , shootSequence()  // second shot
+      , new InstantCommand(()-> this.m_tankDriveSubsystem.setIdleMode(IdleMode.kCoast))
     );
   }
 
@@ -76,9 +105,6 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     return new TurnAnglePidCommand(m_tankDriveSubsystem, angleTotal);
   }
 
-  // public ShootCommands shootSequence5(){
-  //   return new ShootCommands(m_shooterSubsystem);
-  // }
 
   public FollowLimelightPidCommand followlimelight(){
     return new FollowLimelightPidCommand(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem);
