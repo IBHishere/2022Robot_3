@@ -23,6 +23,9 @@ public class DriveDistancePidCommand extends PIDCommand {
 
   //The gearing of the motors is 6.6667 to 1.  The diameter of the wheel is 6 inches.
   private final static double empiricalAdjustment = 60.0/62.0;
+  /// 6.66667 is the gear ratio
+  // 6 is the diameter of the wheel in inch
+  // 12 inch/foot is the conversation to feet
   private final static double rotationsPerFeet = 6.6667/(Math.PI * 6.0 / 12.0) * empiricalAdjustment;
 
   private final static double kP = 3;
