@@ -35,9 +35,9 @@ public class ShooterSubsystem extends SubsystemBase {
       LowGoal
     }
 
-    public static final double HighGoalShooterSpeed = 3800; // max speed based n testing
-    public static final double MiddlePathShooterSpeed = 3800*.8; // max speed based n testing
-    public static final double LowGoalShooterSpeed = 1000;
+    public static final double HighGoalShooterSpeed = 3800*.8; // max speed based n testing
+    public static final double MiddlePathShooterSpeed = 3800*.8/*.8*/; // max speed based n testing
+    public static final double LowGoalShooterSpeed = 3800*.8/*.4*/;
     
     public static GoalMode CurrentGoalMode =  ShooterSubsystem.GoalMode.HighGoal ;
 

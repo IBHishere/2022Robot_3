@@ -166,10 +166,10 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
       new ShootSequence(this.m_shooterSubsystem, this.m_beltSubsystem, this.m_queueFeederWheelSubsystem)
     );
 
-    new JoystickButton(m_driveController, Button.kX.value)
-    .whenPressed(
-      new FollowLimelightSequence(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem)
-    );
+    // new JoystickButton(m_driveController, Button.kX.value)
+    // .whenPressed(
+    //   new FollowLimelightSequence(this.m_tankDriveSubsystem, this.m_limelightVisionSubsystem)
+    // );
 
     new JoystickButton(m_helperController, Button.kRightBumper.value)
     .whenPressed( 
