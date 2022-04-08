@@ -60,7 +60,7 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
       new InstantCommand( ()-> this.m_tankDriveSubsystem.setIdleMode(IdleMode.kBrake))
       , new InstantCommand(() -> this.m_intakeSubsystem.intakePull())
       , new WaitCommand(.5)
-      , drive(-4.5)   // pick up the second ball 
+      , drive(-5)   // pick up the second ball 
       , new InstantCommand( ()-> this.m_intakeSubsystem.intakeStop())
       , new WaitCommand(.5)
       , turn(180)  // turn to shoot the second ball // do we need to drive back to the original position
