@@ -57,8 +57,8 @@
 
 ## Programmers:
 
-Matthew Wetzler @mwetz08(Lead Programmer)
+// Matthew Wetzler @mwetz08(Lead Programmer)
 ------------------------------------------------------
-Sam Rabb-Jaros  @GethrexFe(Head assistant Programmer)
+Sam Rabb-Jaros  @GethrexFe(Lead programmer 1)
 ______________________________________________________
-Jai Setty @IBHishere(Head Non-Assistant Non-Lead Programmer)
+Jai Setty @IBHishere(Lead Programmer 2)
