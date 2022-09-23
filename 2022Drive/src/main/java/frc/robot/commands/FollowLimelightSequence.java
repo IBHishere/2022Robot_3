@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -23,7 +24,7 @@ public class FollowLimelightSequence extends SequentialCommandGroup {
  
     addRequirements(m_tankDriveSubsystem, m_limelightVisionSubsystem);
     addCommands(
-    
+    new InstantCommand(()-> this.m_limelightVisionSubsystem.turnOnLed()),
     horizontalCenter(),
     verticalCenter(),
     horizontalCenter()

@@ -38,7 +38,7 @@ public class RobotContainer {
   
   NetworkTableInstance inst = NetworkTableInstance.getDefault();
   NetworkTable table = inst.getTable("RobotContainer");
-  double targetAngle = 90;
+  
   
 XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONTROLLER);
   XboxController  m_helperController = new XboxController(Constants.HELPER_XBOX_CONTROLLER);
@@ -51,7 +51,7 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem( this.m_beltSubsystem);
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(this.m_beltSubsystem);
   private final LimelightVisionSubsystem m_limelightVisionSubsystem = new LimelightVisionSubsystem();
-  private final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
+  //private final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
   private final QueueFeederWheelSubsystem m_queueFeederWheelSubsystem = new QueueFeederWheelSubsystem();
   // ShootCommands m_shootCommand = new ShootCommands(
   //               this.m_shooterSubsystem);

@@ -59,4 +59,5 @@ public class LimelightVisionSubsystem extends SubsystemBase {
     table.getEntry("VerticalOffsetAngle").setDouble(this.m_targetOffsetAngle_Vertical);
     
   }
+  
 }
