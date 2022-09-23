@@ -195,7 +195,15 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
     );
 
     new JoystickButton(m_helperController, Button.kStart.value)
-      .whenPressed(()->ShooterSubsystem.ToggleGoalMode());
+      .whenPressed(()->
+       {
+         table.getEntry("tetsts").setString("asdasdasd");
+          ShooterSubsystem.ToggleGoalMode();
+          System.out.println("tring to toggle goale mode");}
+
+
+
+      );
     
     //End: Queue controls
     

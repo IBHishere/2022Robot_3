@@ -21,6 +21,7 @@
       "/LiveWindow/DriveTrainSubsystem": "Subsystem",
       "/LiveWindow/IntakeSubsystem": "Subsystem",
       "/LiveWindow/LimelightVisionSubsystem": "Subsystem",
+      "/LiveWindow/QueueFeederWheelSubsystem": "Subsystem",
       "/LiveWindow/ShooterSubsystem": "Subsystem",
       "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
       "/LiveWindow/Ungrouped/PIDController[10]": "PIDController",
@@ -55,6 +56,9 @@
     },
     "PidClimbCommand": {
       "open": false
+    },
+    "ShooterSubsystem": {
+      "open": true
     },
     "TurnAnglePidCommand": {
       "open": false

@@ -12,6 +12,8 @@ import java.util.Timer;
 
 import org.ejml.equation.IntegerSequence;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -26,6 +28,8 @@ public class ShootSequence extends SequentialCommandGroup {
   private ShooterSubsystem m_shooterSubsystem;
   private BeltSubsystem m_beltSubsystem;
   private QueueFeederWheelSubsystem m_queueFeederSubsytem;
+
+  static NetworkTable table = NetworkTableInstance.getDefault().getTable("ShootSequence");
 
   public ShootSequence(
     ShooterSubsystem shooterSubsystem, 
@@ -65,6 +69,7 @@ public class ShootSequence extends SequentialCommandGroup {
           }
       )
       .andThen( new WaitCommand(1))
+      .andThen( ()-> table.getEntry("speed").setDouble(this.m_shooterSubsystem.getVelocity()))
       .andThen(
           new InstantCommand( ()-> {
               this.m_beltSubsystem.startBelt(1);

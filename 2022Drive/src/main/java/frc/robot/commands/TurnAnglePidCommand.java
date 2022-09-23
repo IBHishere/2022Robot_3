@@ -20,8 +20,8 @@ public class TurnAnglePidCommand extends PIDCommand {
   private DriveTrainSubsystem m_driveTrainSubsystem;
   private double m_angleToTurn;
   
-  private final static double kP = 1;
-  private final static double kI = .2;
+  private final static double kP = 2;
+  private final static double kI = .5;
   private final static double kD = 0;
 
   private final static double empiricalAdjustment = 200.0/180.0;
@@ -39,7 +39,7 @@ public class TurnAnglePidCommand extends PIDCommand {
         () -> angleToTurnInDegrees*rotationsPerDegree,
         // This uses the output
         output -> {
-          driveTrainSubsystem.tankDrive(output, -output, .3);
+          driveTrainSubsystem.tankDrive(output, -output, .35);
         });
 
         

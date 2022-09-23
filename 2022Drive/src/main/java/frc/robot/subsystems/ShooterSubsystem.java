@@ -31,36 +31,56 @@ public class ShooterSubsystem extends SubsystemBase {
     
     public enum GoalMode {
       HighGoal,
+      MiddlePath,
       LowGoal
     }
 
-    public static final double HighGoalShooterSpeed = 3800; // max speed based n testing
-    public static final double LowGoalShooterSpeed = 1500;
+    public static final double HighGoalShooterSpeed = 3800*.8; // max speed based n testing
+    public static final double MiddlePathShooterSpeed = 3800*.8/*.8*/; // max speed based n testing
+    public static final double LowGoalShooterSpeed = 3800*.8/*.4*/;
     
-    public static GoalMode CurrentGoalMode;
+    public static GoalMode CurrentGoalMode =  ShooterSubsystem.GoalMode.HighGoal ;
 
     static {
       ShooterSubsystem.setGoalMode(ShooterSubsystem.GoalMode.HighGoal);
     }
 
     public static void setGoalMode(GoalMode mode) { 
+      table.getEntry("insideSetGoalMode").setValue(mode.toString());
       ShooterSubsystem.CurrentGoalMode = mode;
       ShooterSubsystem.table.getEntry("GoalMode").setString(ShooterSubsystem.CurrentGoalMode.toString());
       ShooterSubsystem.table.getEntry("GoalSpeed").setDouble(ShooterSubsystem.getTargetVelocity());
 
     }
     public static double getTargetVelocity() {
-      return ShooterSubsystem.CurrentGoalMode == GoalMode.HighGoal ? 
-      ShooterSubsystem.HighGoalShooterSpeed:
-      ShooterSubsystem.LowGoalShooterSpeed;
+      if(ShooterSubsystem.CurrentGoalMode == GoalMode.HighGoal ) return ShooterSubsystem.HighGoalShooterSpeed;
+      if(ShooterSubsystem.CurrentGoalMode == GoalMode.MiddlePath ) return ShooterSubsystem.MiddlePathShooterSpeed;
+
+      return ShooterSubsystem.LowGoalShooterSpeed;
     }
   
     public static void ToggleGoalMode() {
-      ShooterSubsystem.setGoalMode(
-      ShooterSubsystem.CurrentGoalMode == GoalMode.HighGoal? 
-          GoalMode.LowGoal : GoalMode.HighGoal );
+      table.getEntry("test").setValue(ShooterSubsystem.CurrentGoalMode == GoalMode.HighGoal);
+      
+      table.getEntry("before").setValue(ShooterSubsystem.CurrentGoalMode.toString());
+      
+      if(ShooterSubsystem.CurrentGoalMode == GoalMode.HighGoal ){
+        table.getEntry("action").setValue("change to mid");
+      
+         ShooterSubsystem.setGoalMode(GoalMode.MiddlePath);}
+
+      else if(ShooterSubsystem.CurrentGoalMode == GoalMode.MiddlePath ){
+        table.getEntry("action").setValue("change to low");
+        ShooterSubsystem.setGoalMode(GoalMode.LowGoal);}
+
+      else if(ShooterSubsystem.CurrentGoalMode == GoalMode.LowGoal ){ 
+        table.getEntry("action").setValue("change to high");
+      ShooterSubsystem.setGoalMode(GoalMode.HighGoal);}
   
-  }
+      table.getEntry("after").setValue(ShooterSubsystem.CurrentGoalMode.toString());
+      
+  
+    }
   
 
   public ShooterSubsystem(BeltSubsystem beltSubsystem) {
