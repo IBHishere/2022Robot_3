@@ -25,8 +25,8 @@ public class FollowLimelightSequence extends SequentialCommandGroup {
     addRequirements(m_tankDriveSubsystem, m_limelightVisionSubsystem);
     addCommands(
     new InstantCommand(()-> this.m_limelightVisionSubsystem.turnOnLed()),
-    horizontalCenter(),
-    verticalCenter(),
+    //horizontalCenter(),
+    //verticalCenter(),
     horizontalCenter()
     );
   }
