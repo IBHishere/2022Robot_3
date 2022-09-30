@@ -29,6 +29,7 @@ public final class Constants {
     public static final int INTAKE_MOTOR_CAN_ID = 5;  // change to 5
 // shooter & queue
     public static final int SHOOTER_MOTOR_CAN_ID = 6;// change to 6
+    public static final double SHOOT_ANGLE = 60; //change to correct number
 
     public static final int QUEUE_MOTOR_CAN1_ID = 7; // change to 7
     public static final int QUEUE_MOTOR_CAN2_ID = 8; // change to 8
