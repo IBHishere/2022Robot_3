@@ -39,9 +39,9 @@ public class FollowLimelightPidCommand extends PIDCommand {
         // This should return the measurement
         () -> { 
           return 
-            	  limelightVisionSubsystem.hasTarget() ?  
+            	  //limelightVisionSubsystem.hasTarget() ?  
                 limelightVisionSubsystem.getHorizontalAngle()
-                : 10
+               // : 10
                 ; 
         },
         // This should return the setpoint (can also be a constant)
