@@ -7,6 +7,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
+import java.lang.Math;
  //comment 
 
 public class LimelightVisionSubsystem extends SubsystemBase {
@@ -59,5 +62,19 @@ public class LimelightVisionSubsystem extends SubsystemBase {
     table.getEntry("VerticalOffsetAngle").setDouble(this.m_targetOffsetAngle_Vertical);
     
   }
+  public double findDistance(double angle){
+    
+    double distance =(8*Math.sin(Math.toRadians(90-angle)));
+    System.out.println(angle + " is angle, which means " + distance + " is distance");
+    
+    return distance;
+  } 
+  public double findSpeed(double distance){
+    double shootangle =Math.toRadians(Constants.SHOOT_ANGLE);
+    double speed = (30*distance)/(Math.sin(shootangle))/(distance*Math.tan(shootangle)+10);
+    System.out.println(shootangle +" is shootangle, and " +distance + " is distance, which means " + speed + " is speed");
+    
+    return speed;
+  } 
   
 }
