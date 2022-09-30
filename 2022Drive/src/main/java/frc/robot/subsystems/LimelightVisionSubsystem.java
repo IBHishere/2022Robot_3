@@ -49,6 +49,7 @@ public class LimelightVisionSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    turnOnLed();
     this.m_targetOffsetAngle_Horizontal = m_limelightTable.getEntry("tx").getDouble(0.0);
     this.m_targetOffsetAngle_Vertical = m_limelightTable.getEntry("ty").getDouble(0.0);
     // this.targetArea = m_limelightTable.getEntry("ta").getDouble(0.0);
