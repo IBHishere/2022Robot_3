@@ -50,18 +50,19 @@ public class FollowLimelightPidCommand extends PIDCommand {
         output -> {
           System.out.println("limelight-output" + ", "+output);
 
-          driveTrainSubsystem.tankDrive(output, -output, .3);
+          driveTrainSubsystem.tankDrive(output, -output, .5);
         });
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrainSubsystem);
     addRequirements(limelightVisionSubsystem);
     // Configure additional PID options by calling `getController` here.
-    getController().setTolerance(10); // I think this is one degree
+    getController().setTolerance(5); // I think this is one degree
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return this.m_controller.atSetpoint();
+   
   }
 }

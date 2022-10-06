@@ -52,7 +52,8 @@ public class LimelightVerticalCommand extends PIDCommand {
     addRequirements(driveTrainSubsystem);
     addRequirements(limelightVisionSubsystem);
     // Configure additional PID options by calling `getController` here.
-    getController().setTolerance(10); // I(not me tho) think this is one degree
+    getController().setTolerance(40); // I(not me tho) think this is one degree
+    //sam changed based on behaver test befor doing enting 
   }
 
   // Returns true when the command should end.
