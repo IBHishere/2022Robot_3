@@ -57,7 +57,8 @@ public class LimelightVisionSubsystem extends SubsystemBase {
     this.m_targetOffsetAngle_Vertical = m_limelightTable.getEntry("ty").getDouble(0.0);
     // this.targetArea = m_limelightTable.getEntry("ta").getDouble(0.0);
     // this.targetSkew = m_limelightTable.getEntry("ts").getDouble(0.0);
-    this.m_hasTarget = 0.0 == m_limelightTable.getEntry("tv").getDouble(0.0);
+    var tv = m_limelightTable.getEntry("tv").getDouble(0.0);
+    this.m_hasTarget = 0.0 != tv;
 
     table.getEntry("HorizontalOffsetAngle").setDouble(this.m_targetOffsetAngle_Horizontal);
     table.getEntry("VerticalOffsetAngle").setDouble(this.m_targetOffsetAngle_Vertical);
