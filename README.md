@@ -57,8 +57,11 @@
 
 ## Programmers:
 
-// Matthew Wetzler @mwetz08(Lead Programmer)
+Charlie Lehr (no account yet)(Lead Lietennant Programmer)
 ------------------------------------------------------
 Sam Rabb-Jaros  @GethrexFe(Lead programmer 1)
 ______________________________________________________
-Jai Setty @IBHishere(Lead Programmer 2)
+Jai Setty @IBHishere(Cool Lead Programmer)
+------------------------------------------------------
+
+// Matthew Wetzler @mwetz08(Gone)
