@@ -20,7 +20,9 @@ public class LimelightVerticalCommand extends PIDCommand {
   private static double kI = 1;
   private static double kD = 1;
 
+
   private static double shootangle = 10;
+  private boolean isdone = false;
   private DriveTrainSubsystem m_driveTrainSubsystem;
   private LimelightVisionSubsystem m_limelightVisionSubsystem;
 
@@ -56,7 +58,7 @@ public class LimelightVerticalCommand extends PIDCommand {
           // Use the output here
           //System.out.println("limelight-output" + ", "+output);
           System.out.println("Output: " + output);
-          driveTrainSubsystem.tankDrive(output, -output, .4);
+          driveTrainSubsystem.tankDrive(1, -1, output);
         });
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrainSubsystem);
@@ -70,7 +72,8 @@ public class LimelightVerticalCommand extends PIDCommand {
     if (this.m_limelightVisionSubsystem.hasTarget()) { 
       return this.m_limelightVisionSubsystem.getHorizontalAngle();
     } else { 
-      return 0.0;
+      isdone = true;
+      return 0.0 ;
     }
   }
 
@@ -78,6 +81,6 @@ public class LimelightVerticalCommand extends PIDCommand {
   @Override
   public boolean isFinished() {
     System.out.println("is Finished = " + this.m_controller.atSetpoint());
-   return true;
+   return isdone;
   }
 }
