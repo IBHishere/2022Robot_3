@@ -60,7 +60,7 @@
 
 ------------------------------------------------------
 Sam Rabb-Jaros  @GethrexFe(Lead programmer 1)
-______________________________________________________
+-------------------------------------------------------
 Jai Setty @IBHishere(Cool Lead Programmer)
 ------------------------------------------------------
 Charlie Lehr (no account yet)(Lead Lietennant Programmer)
