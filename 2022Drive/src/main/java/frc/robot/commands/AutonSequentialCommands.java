@@ -76,7 +76,7 @@ public class AutonSequentialCommands extends SequentialCommandGroup {
     addCommands(
       // all commands will go here with commas after them.
       new InstantCommand( ()-> this.m_tankDriveSubsystem.setIdleMode(IdleMode.kBrake))
-      , drive(2.0) // move for the first shot
+      , drive(1.0) // move for the first shot
       , shootSequence() //shoot first shot
       , turn(180)  // turn around to pick up the second ball
       , new WaitCommand(1)
