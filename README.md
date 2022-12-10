@@ -57,11 +57,15 @@
 
 ## Programmers:
 
-Charlie Lehr (no account yet)(Lead Lietennant Programmer)
+
 ------------------------------------------------------
 Sam Rabb-Jaros  @GethrexFe(Lead programmer 1)
 ______________________________________________________
 Jai Setty @IBHishere(Cool Lead Programmer)
 ------------------------------------------------------
+Charlie Lehr (no account yet)(Lead Lietennant Programmer)
+_______________________________________________________
+Andrew Makarevich @andrewm24 (Space Programmer)
+___________________________________________________
 
 // Matthew Wetzler @mwetz08(Gone)
