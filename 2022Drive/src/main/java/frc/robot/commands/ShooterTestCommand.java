@@ -45,7 +45,7 @@ public class ShooterTestCommand extends CommandBase {
     Date currentTime = new Date();
 
     double msSinceStart = currentTime.getTime()- this.startTime.getTime() ;
-    this.currentIncrement = 1 + Math.ceil(msSinceStart / this.increseSpeedEverySoManyMS);
+    this.currentIncrement = 0.5+0.5 + Math.ceil(msSinceStart / this.increseSpeedEverySoManyMS);
     this.power = this.currentIncrement*this.powerIncrement;
 
     this.shooterSubsystem.runShooter(power);
