@@ -44,6 +44,7 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
   XboxController  m_helperController = new XboxController(Constants.HELPER_XBOX_CONTROLLER);
   
   // The robot's subsystems and commands are defined here...
+  private final limelight test = new limelight();
   // private final ClimberSubsystem m_leftClimberSubsystem = new ClimberSubsystem("left", Constants.CLIMBER_MOTOR_CANLEFT_ID, true);
   // private final ClimberSubsystem m_rightClimberSubsystem = new ClimberSubsystem("right", Constants.CLIMBER_MOTOR_CANRIGHT_ID, false);
   // private final DriveTrainSubsystem m_tankDriveSubsystem = new DriveTrainSubsystem();
@@ -117,19 +118,21 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
     
 
     //TODO: decide if we are doing anything with vision
-    /*
-    new JoystickButton (m_helperController, Button.kA.value)
-    .whenPressed( 
-      ()-> {
-        table.getEntry("test").forceSetString("A-button pressed");
-        this.m_visionSubsystem.ToggleCameraState();
-      }
-    );
+    
+    // new JoystickButton (m_helperController, Button.kA.value)
+    // .whenPressed( 
+    //   ()-> {
+    //     table.getEntry("test").forceSetString("A-button pressed");
+    //     this.m_visionSubsystem.ToggleCameraState();
+    //   }
+    // );
 
     new JoystickButton(m_helperController, Button.kB.value)
-    .whenPressed(new InstantCommand(this.m_visionSubsystem::ToggleCameraState));
-
-    */
+    .whenPressed(()->{
+        limelight.test();
+    }
+     ); 
+    
 
 
     //Start: Intake controls
