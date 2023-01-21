@@ -8,13 +8,15 @@ import java.lang.Math;
 public class limelight {
     
 public static void test(){
+
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry ty = table.getEntry("ty");
     
     double targetOffsetAngle_Vertical = ty.getDouble(0.0);
     
     // how many degrees back is your limelight rotated from perfectly vertical?
-    double limelightMountAngleDegrees = 6.75;
+    double limelightMountAngleDegrees = 0
+    ;
     
     // distance from the center of the Limelight lens to the floor
     double limelightLensHeightInches = 30.0;
