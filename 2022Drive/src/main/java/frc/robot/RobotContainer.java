@@ -44,7 +44,7 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
   XboxController  m_helperController = new XboxController(Constants.HELPER_XBOX_CONTROLLER);
   
   // The robot's subsystems and commands are defined here...
-  private final limelight test = new limelight();
+  private final Limelight test = new Limelight();
   
   private edu.wpi.first.wpilibj2.command.button.Button whenPressed;
  // PIDTurnRobotCommand m_PIDTurnRobotCommand = new PIDTurnRobotCommand(this.m_tankDriveSubsystem, targetAngle);
@@ -73,7 +73,7 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
 
     new JoystickButton(m_helperController, Button.kB.value)
     .whenPressed(()->{
-        limelight.test();
+        Limelight.test();
     }
      ); 
     

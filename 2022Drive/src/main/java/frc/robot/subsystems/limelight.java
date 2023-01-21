@@ -12,8 +12,7 @@ public class Limelight {
   private static final  double limelightLensHeightInches = 30.0; 
   // distance from the target to the floor
   private static final double goalHeightInches = 63.0;
-// distance from the target to the floor
- private static final  double goalHeightInches = 63.0;
+
 
 public static double test(){
 
