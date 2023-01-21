@@ -11,7 +11,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
-public class TankDriveCommand extends CommandBase {
+public class MechanumDriveCommand extends CommandBase {
   /** Creates a new TankDriveCommand. */
 
   private DriveTrainSubsystem m_driveTrainSubsystem;
@@ -22,7 +22,7 @@ public class TankDriveCommand extends CommandBase {
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table = inst.getTable("TankDriveCommand_1");
 
-  public TankDriveCommand(DriveTrainSubsystem driveSubsystem, DoubleSupplier getLeftY, DoubleSupplier getRightY) {
+  public MechanumDriveCommand(DriveTrainSubsystem driveSubsystem, DoubleSupplier getLeftY, DoubleSupplier getRightY) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveSubsystem);
     

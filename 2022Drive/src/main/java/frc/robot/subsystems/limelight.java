@@ -4,6 +4,7 @@ import edu.wpi.first.cscore.CameraServerJNI.TelemetryKind;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import java.lang.Math;
 public class limelight {
     
 public static void test(){
@@ -13,7 +14,7 @@ public static void test(){
     double targetOffsetAngle_Vertical = ty.getDouble(0.0);
     
     // how many degrees back is your limelight rotated from perfectly vertical?
-    double limelightMountAngleDegrees = 90;
+    double limelightMountAngleDegrees = 6.75;
     
     // distance from the center of the Limelight lens to the floor
     double limelightLensHeightInches = 30.0;
@@ -22,11 +23,12 @@ public static void test(){
     double goalHeightInches = 59.0;
     
     double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
-    double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
-    
+    double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180.0);
+
     //calculate distance
     double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches)/Math.tan(angleToGoalRadians);
-    System.out.println(distanceFromLimelightToGoalInches);
+    System.out.println(distanceFromLimelightToGoalInches + "   " +angleToGoalDegrees  );
+
 //return distanceFromLimelightToGoalInches;
     }
 }
