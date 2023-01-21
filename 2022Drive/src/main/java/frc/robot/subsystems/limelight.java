@@ -9,12 +9,12 @@ public class Limelight {
 // how many degrees back is your limelight rotated from perfectly vertical?
    private static final double limelightMountAngleDegrees = 0;
   // distance  from the center of the Limelight lens to the floor
-  private static final  double limelightLensHeightInches = 30.0; 
+  private static final  double limelightLensHeightInches = 29.0; 
   // distance from the target to the floor
-  private static final double goalHeightInches = 63.0;
+  private static final double goalHeightInches = 63;
 
 
-public static double test(){
+public  double getDistance(){
 
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry ty = table.getEntry("ty");
@@ -26,7 +26,7 @@ public static double test(){
 
     //calculate distance
     double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches)/Math.tan(angleToGoalRadians);
-    System.out.println(distanceFromLimelightToGoalInches + "   " +angleToGoalDegrees  );
+    System.out.println(distanceFromLimelightToGoalInches );
 
         return distanceFromLimelightToGoalInches;
     }
