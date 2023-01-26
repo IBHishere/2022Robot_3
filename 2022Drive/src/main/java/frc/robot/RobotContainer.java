@@ -45,9 +45,10 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
   
   // The robot's subsystems and commands are defined here...
   private final limelight test = new limelight();
+  private final MecanumDriveSubsystem m_MecanumDriveSubsystem = new MecanumDriveSubsystem();
+  private final DriveTrainSubsystem driveSubsystem = new DriveTrainSubsystem();
   
   private edu.wpi.first.wpilibj2.command.button.Button whenPressed;
- // PIDTurnRobotCommand m_PIDTurnRobotCommand = new PIDTurnRobotCommand(this.m_tankDriveSubsystem, targetAngle);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   
   public RobotContainer() {
@@ -70,8 +71,15 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
 
     table.getEntry("isXboxConnected").forceSetBoolean( m_helperController.isConnected() );
     
-
+MecanumDriveCommand driver = new MecanumDriveCommand(
+  this.m_MecanumDriveSubsystem, m_driveController.getLeftY(), m_driveController.getLeftX(), m_driveController.getRightX()
+);
     new JoystickButton(m_helperController, Button.kB.value)
+    .whenPressed(()->{
+        limelight.test();
+    }
+     ); 
+     new JoystickButton(m_helperController, Button.kLeftStick.value)
     .whenPressed(()->{
         limelight.test();
     }
@@ -80,15 +88,7 @@ XboxController  m_driveController = new XboxController(Constants.DRIVE_XBOX_CONT
   }
 
 
-  
-  private PidSettings getLiftPidSettings() {
-    return new PidSettings(25.0/(80.0), 100.0/80.0, .3/80.0);
-  }
 
-
-  private PidSettings getExtendClimberPidSettings() {
-    return new PidSettings(14.0/(80.0), 0, 0);
-  }
 
 
 }

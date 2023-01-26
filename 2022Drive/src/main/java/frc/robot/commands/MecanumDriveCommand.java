@@ -6,7 +6,7 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
+//import java.util.function.double;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -19,15 +19,15 @@ public class MecanumDriveCommand extends CommandBase {
 
   private MecanumDriveSubsystem m_mecanumDriveSubsystem;
   //Change this later
-  private DoubleSupplier m_getLeftX;
-  private DoubleSupplier m_getLeftY;
-  private DoubleSupplier m_getRightX;
+  private double m_getLeftX;
+  private double m_getLeftY;
+  private double m_getRightX;
   private int countCall = 0;
 
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table = inst.getTable("MecanumDriveCommand_1");
 
-  public MecanumDriveCommand(MecanumDriveSubsystem mecanumSubsystem, DoubleSupplier getLeftX, DoubleSupplier getLeftY, DoubleSupplier getRightX) {
+  public MecanumDriveCommand(MecanumDriveSubsystem mecanumSubsystem, double getLeftX, double getLeftY, double getRightX) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(mecanumSubsystem);
     
@@ -49,10 +49,10 @@ public class MecanumDriveCommand extends CommandBase {
   public void execute() {
 
     this.table.getEntry("countCall").setNumber(this.countCall++);
-    double test1 = this.m_getLeftY.getAsDouble();
+    double test1 = this.m_getLeftY;
     this.table.getEntry("m_getLeftY").setNumber(test1);
     
-    this.m_mecanumDriveSubsystem.MecanumDrive(this.m_getLeftY.getAsDouble(), this.m_getLeftX.getAsDouble(), this.m_getRightX.getAsDouble());
+    this.m_mecanumDriveSubsystem.MecanumDrive(this.m_getLeftY, this.m_getLeftX, this.m_getRightX);
   }
 
   // Called once the command ends or is interrupted.
