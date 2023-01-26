@@ -23,7 +23,7 @@ public class MecanumPIDCommand extends PIDCommand {
   public MecanumPIDCommand(double DistanceFromGoal, Limelight limelight, MecanumDriveSubsystem driver) {
     super(
         // The controller that the command will use
-        new PIDController(0, 0, 0),
+        new PIDController(0.01, 0, 0),
         // This should return the measurement
         () -> limelight.getDistance(),
         // This should return the setpoint (can also be a constant)
