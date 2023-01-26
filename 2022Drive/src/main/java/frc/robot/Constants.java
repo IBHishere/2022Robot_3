@@ -27,6 +27,8 @@ public final class Constants {
     public static final int RIGHT_MOTOR_CAN2_ID = 4; // change to 4
 
     
+// Setpoints
+public static final double INCHES_FROM_GOAL = 4; // change to 4
 
     
 

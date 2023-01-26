@@ -6,24 +6,32 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.MecanumDriveSubsystem;
+import frc.robot.Constants;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class MecanumPIDCommand extends PIDCommand {
+  private NetworkTableInstance inst = NetworkTableInstance.getDefault();
+  private NetworkTable table = inst.getTable("mecanumPID");
   /** Creates a new MecanumPIDCommand. */
   public double DistanceFromGoal;
-  public MecanumPIDCommand(double DistanceFromGoal) {
+  public MecanumPIDCommand(double DistanceFromGoal, Limelight limelight, MecanumDriveSubsystem driver) {
     super(
         // The controller that the command will use
         new PIDController(0, 0, 0),
         // This should return the measurement
-        () -> DistanceFromGoal,
+        () -> limelight.getDistance(),
         // This should return the setpoint (can also be a constant)
-        () -> 0,
+        () -> Constants.INCHES_FROM_GOAL,
         // This uses the output
         output -> {
-          // Use the output here
+          // change other 2 values later
+          driver.MecanumDrive(output,0,0);
         });
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
