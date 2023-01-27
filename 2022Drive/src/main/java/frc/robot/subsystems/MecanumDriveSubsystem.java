@@ -104,8 +104,8 @@ public class MecanumDriveSubsystem extends SubsystemBase {
 //   }
 
   public void MecanumDrive(
-    double leftJoystickValueX, 
     double leftJoystickValueY, 
+    double leftJoystickValueX, 
     double rightJoystickValueX) {
     
     
@@ -121,10 +121,10 @@ public class MecanumDriveSubsystem extends SubsystemBase {
     // table.getEntry("motorRightValue").setDouble(rightJoystickValue);
 
     // //convert joystick values to motor inputs
-    // double leftMotorValue = this.computeActualDriveFromInput(leftJoystickValue, speedScalingFactor);
+   // double leftMotorValue = this.computeActualDriveFromInput(leftJoystickValue, speedScalingFactor);
     // double rightMotorValue = this.computeActualDriveFromInput(rightJoystickValue, speedScalingFactor);
 
-    // table.getEntry("computedMotorLeftValue").setDouble(leftMotorValue);
+   //  table.getEntry("computedMotorLeftValue").setDouble(leftMotorValue);
     // table.getEntry("computedMotorRightValue").setDouble(rightMotorValue);
 
     // if(doLog) System.out.println("drive-l-r,  " + leftMotorValue +", " + rightMotorValue);
