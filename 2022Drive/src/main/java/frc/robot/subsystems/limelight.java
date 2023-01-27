@@ -9,9 +9,9 @@ public class Limelight {
 // how many degrees back is your limelight rotated from perfectly vertical?
     private static final double limelightMountAngleDegrees = 0;
   // distance  from the center of the Limelight lens to the floor
-    private static final  double limelightLensHeightInches = 29.0; 
+    private static final  double limelightLensHeightInches = 31.0; 
   // distance from the target to the floor
-    private static final double goalHeightInches = 20.0;
+    private static final double goalHeightInches = 15.0;
 
 
     public double getDistance() {
