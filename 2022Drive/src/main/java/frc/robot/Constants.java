@@ -28,7 +28,7 @@ public final class Constants {
 
     
 // Setpoints
-public static final double INCHES_FROM_GOAL = 4; // change to 4
+public static final double INCHES_FROM_GOAL = 24; // change to 4
 
 // Placeholders
 public static final double Zero_for_now = 0; // change to 0

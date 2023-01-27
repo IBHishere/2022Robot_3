@@ -20,19 +20,24 @@ public class MecanumPIDCommand extends PIDCommand {
   private NetworkTable table = inst.getTable("mecanumPID");
   /** Creates a new MecanumPIDCommand. */
   public double DistanceFromGoal;
-  public MecanumPIDCommand(double DistanceFromGoal, Limelight limelight, MecanumDriveSubsystem driver) {
+  public MecanumPIDCommand(Limelight limelight, MecanumDriveSubsystem driver) {
     super(
         // The controller that the command will use
         new PIDController(0.01, 0, 0),
         // This should return the measurement
         () -> limelight.getDistance(),
         // This should return the setpoint (can also be a constant)
-        () -> Constants.INCHES_FROM_GOAL,
+        Constants.INCHES_FROM_GOAL,
         // This uses the output
         output -> {
           // change other 2 values later
+          System.out.println(output);
           driver.MecanumDrive(output,0,0);
         });
+        
+        getController().setTolerance(4);
+        addRequirements(driver);
+
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
   }
@@ -40,6 +45,6 @@ public class MecanumPIDCommand extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return getController().atSetpoint();
   }
 }
