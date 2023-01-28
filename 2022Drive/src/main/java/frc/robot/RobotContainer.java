@@ -72,7 +72,7 @@ private final MecanumDriveSubsystem m_MecanumDriveSubsystem = new MecanumDriveSu
 
     table.getEntry("isXboxConnected").forceSetBoolean( m_helperController.isConnected() );
     
-MecanumDriveCommand driver = new MecanumDriveCommand(
+MecanumDriveCommand DriveMode = new MecanumDriveCommand(
   this.m_MecanumDriveSubsystem, m_driveController.getLeftY(), m_driveController.getLeftX(), m_driveController.getRightX()
 );
     new JoystickButton(m_helperController, Button.kB.value)
