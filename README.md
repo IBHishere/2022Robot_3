@@ -63,8 +63,9 @@ Sam Rabb-Jaros  @GethrexFe(Lead programmer 1)
 -------------------------------------------------------
 Jai Setty @IBHishere(Cool Lead Programmer)
 ------------------------------------------------------
+Harrison 
 _______________________________________________________
 Andrew Makarevich @andrewm24 (Space Programmer)
 ___________________________________________________
 
-][
+
