@@ -74,7 +74,7 @@ public class MecanumDriveSubsystem extends SubsystemBase {
     m_rightBackEncoder = this.m_rightMotorBack.getEncoder();
     
     zeroEncoders();
-    this.setIdleMode(IdleMode.kBrake);
+    this.setIdleMode(IdleMode.kCoast);
     m_myRobot = new MecanumDrive(m_leftMotorFront,m_leftMotorBack,m_rightMotorFront,m_rightMotorBack);
   }
 
@@ -82,6 +82,9 @@ public class MecanumDriveSubsystem extends SubsystemBase {
     this.currentSpeed = speed;
   }
 
+  public void setMode(IdleMode mode) {
+    this.setIdleMode(mode);
+  }
 
   @Override
   public void periodic() {
@@ -116,7 +119,17 @@ public class MecanumDriveSubsystem extends SubsystemBase {
     leftJoystickValueX = -Math.pow(Math.signum(leftJoystickValueX) * Math.min(1, Math.abs(leftJoystickValueX)) * Constants.SPEED_REGULATOR, 3);
     leftJoystickValueY = Math.pow(Math.signum(leftJoystickValueY) * Math.min(1, Math.abs(leftJoystickValueY)) * Constants.SPEED_REGULATOR, 3);
     
-    rightJoystickValueX = Math.pow(Math.signum(rightJoystickValueX) * Math.min(1, Math.abs(rightJoystickValueX)) * Constants.SPEED_REGULATOR, 3);
+    rightJoystickValueX = Math.pow(Math.signum(rightJoystickValueX) * Math.min(1, Math.abs(rightJoystickValueX)) * Constants.TURN_REGULATOR, 3);
+
+if (Math.abs(leftJoystickValueX) <= Constants.DEAD_ZONE_VALUE){
+  leftJoystickValueX = 0;
+}
+if (Math.abs(leftJoystickValueY) <= Constants.DEAD_ZONE_VALUE){
+  leftJoystickValueY = 0;
+}
+if (Math.abs(rightJoystickValueX) <= Constants.DEAD_ZONE_VALUE){
+  rightJoystickValueX = 0;
+}
 
     // //log joystick values to network tables
     // table.getEntry("motorLeftValue").setDouble(leftJoystickValue);

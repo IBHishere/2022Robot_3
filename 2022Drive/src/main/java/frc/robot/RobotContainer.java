@@ -6,6 +6,8 @@ package frc.robot;
 
 import java.util.Date;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -83,9 +85,14 @@ this.m_MecanumDriveSubsystem.setDefaultCommand(DriveMode);
       new MecanumPIDCommand(this.limelight, this.m_MecanumDriveSubsystem);
     }
      ); 
-     new JoystickButton(m_helperController, Button.kLeftStick.value)
+     new JoystickButton(m_helperController, Button.kLeftBumper.value)
     .whenPressed(()->{
-        //limelight.test();
+      this.m_MecanumDriveSubsystem.setMode(IdleMode.kCoast);
+    }
+     ); 
+     new JoystickButton(m_helperController, Button.kRightBumper.value)
+    .whenPressed(()->{
+      this.m_MecanumDriveSubsystem.setMode(IdleMode.kBrake);
     }
      ); 
     
