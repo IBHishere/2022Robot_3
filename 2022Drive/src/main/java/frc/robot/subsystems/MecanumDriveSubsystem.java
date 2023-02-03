@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
+import java.util.function.DoubleSupplier;
 
 
 import java.lang.Math;
@@ -36,7 +37,7 @@ public class MecanumDriveSubsystem extends SubsystemBase {
   public final static double lowSpeedLimit = .50;
   private double currentSpeed = highSpeedLimit;  
 
-  private IdleMode m_idleMode = IdleMode.kCoast;
+  private IdleMode m_idleMode = IdleMode.kBrake;
   public boolean doLog = false;
 
 
@@ -73,7 +74,7 @@ public class MecanumDriveSubsystem extends SubsystemBase {
     m_rightBackEncoder = this.m_rightMotorBack.getEncoder();
     
     zeroEncoders();
-    this.setIdleMode(IdleMode.kCoast);
+    this.setIdleMode(IdleMode.kBrake);
     m_myRobot = new MecanumDrive(m_leftMotorFront,m_leftMotorBack,m_rightMotorFront,m_rightMotorBack);
   }
 
@@ -112,10 +113,11 @@ public class MecanumDriveSubsystem extends SubsystemBase {
     if(doLog) System.out.println("joystick-X-Y,  " + leftJoystickValueX +", " + leftJoystickValueY);
 
     //limit input to [-1,1] range
-    leftJoystickValueX = Math.signum(leftJoystickValueX) * Math.min(1, Math.abs(leftJoystickValueX));
-    leftJoystickValueY = Math.signum(leftJoystickValueY) * Math.min(1, Math.abs(leftJoystickValueY));
+    leftJoystickValueX = -Math.pow(Math.signum(leftJoystickValueX) * Math.min(1, Math.abs(leftJoystickValueX)) * Constants.SPEED_REGULATOR, 3);
+    leftJoystickValueY = Math.pow(Math.signum(leftJoystickValueY) * Math.min(1, Math.abs(leftJoystickValueY)) * Constants.SPEED_REGULATOR, 3);
     
-    
+    rightJoystickValueX = Math.pow(Math.signum(rightJoystickValueX) * Math.min(1, Math.abs(rightJoystickValueX)) * Constants.SPEED_REGULATOR, 3);
+
     // //log joystick values to network tables
     // table.getEntry("motorLeftValue").setDouble(leftJoystickValue);
     // table.getEntry("motorRightValue").setDouble(rightJoystickValue);
@@ -129,7 +131,8 @@ public class MecanumDriveSubsystem extends SubsystemBase {
 
     // if(doLog) System.out.println("drive-l-r,  " + leftMotorValue +", " + rightMotorValue);
 
-    m_myRobot.driveCartesian(leftJoystickValueY, leftJoystickValueX, rightJoystickValueX);
+    m_myRobot.driveCartesian(leftJoystickValueX, leftJoystickValueY, rightJoystickValueX);
+   // m_myRobot.driveCartesian(0.1, 0,0);
   }
 
   private double getLeftFrontPosition() {

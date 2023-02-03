@@ -73,8 +73,10 @@ private final MecanumDriveSubsystem m_MecanumDriveSubsystem = new MecanumDriveSu
     table.getEntry("isXboxConnected").forceSetBoolean( m_helperController.isConnected() );
     
 MecanumDriveCommand DriveMode = new MecanumDriveCommand(
-  this.m_MecanumDriveSubsystem, m_driveController.getLeftY(), m_driveController.getLeftX(), m_driveController.getRightX()
+  this.m_MecanumDriveSubsystem, m_driveController::getLeftY, m_driveController::getLeftX, m_driveController::getRightX
+  
 );
+this.m_MecanumDriveSubsystem.setDefaultCommand(DriveMode);
     new JoystickButton(m_helperController, Button.kB.value)
     .whenPressed(()->{
       System.out.println(this.limelight.getDistance());
@@ -87,6 +89,11 @@ MecanumDriveCommand DriveMode = new MecanumDriveCommand(
     }
      ); 
     
+  }
+
+
+  public Command getAutonomousCommand() {
+    return null;
   }
 
 
