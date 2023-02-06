@@ -20,6 +20,7 @@ public class MecanumPIDCommand extends PIDCommand {
   private NetworkTable table = inst.getTable("mecanumPID");
   /** Creates a new MecanumPIDCommand. */
   public double DistanceFromGoal;
+
   public MecanumPIDCommand(Limelight limelight, MecanumDriveSubsystem driver) {
     super(
         // The controller that the command will use
@@ -32,11 +33,11 @@ public class MecanumPIDCommand extends PIDCommand {
         output -> {
           // change other 2 values later
           System.out.println(output);
-          driver.MecanumDrive(output,0,0);
+          driver.MecanumDrive(output, 0, 0);
         });
-        
-        getController().setTolerance(4);
-        addRequirements(driver);
+
+    getController().setTolerance(4);
+    addRequirements(driver);
 
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
